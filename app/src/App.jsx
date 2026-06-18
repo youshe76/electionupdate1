@@ -5,12 +5,15 @@ import {
   Candidates,
   HotSeats,
   Manifesto,
+  ManifestoDetail,
   Parties,
   PopularCandidates,
   Result,
   Videos,
   VoteDifference,
   Province,
+  District,
+  Constituency,
   Party,
   Candidate,
   Winner,
@@ -29,6 +32,8 @@ export default function App() {
       <Route path="/hot-seats.html" element={<HotSeats />} />
       <Route path="/manifesto" element={<Manifesto />} />
       <Route path="/manifesto.html" element={<Manifesto />} />
+      <Route path="/manifesto/:id" element={<ManifestoDetail />} />
+      <Route path="/manifesto/:id.html" element={<ManifestoDetail />} />
       <Route path="/parties" element={<Parties />} />
       <Route path="/parties.html" element={<Parties />} />
       <Route path="/popular-candidates" element={<PopularCandidates />} />
@@ -41,6 +46,10 @@ export default function App() {
       <Route path="/vote-difference.html" element={<VoteDifference />} />
       <Route path="/province/:slug" element={<Province />} />
       <Route path="/province/:slug.html" element={<Province />} />
+      <Route path="/district/:slug" element={<District />} />
+      <Route path="/district/:slug.html" element={<District />} />
+      <Route path="/constituency/:slug" element={<Constituency />} />
+      <Route path="/constituency/:slug.html" element={<Constituency />} />
       <Route path="/party/:slug" element={<Party />} />
       <Route path="/party/:slug.html" element={<Party />} />
       <Route path="/candidate/:slug" element={<Candidate />} />

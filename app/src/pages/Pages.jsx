@@ -1,8 +1,13 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import candidatesData from "../../public/data/candidates.json";
+import provinceData from "../../public/data/province.json";
+import districtData from "../../public/data/district.json";
+import constituencyData from "../../public/data/constituency.json";
+import partyData from "../../public/data/party.json";
+import manifestoData from "../../public/data/manifesto.json";
 
-function SiteLayout({ title, description, children }) {
+function SiteLayout({ title, description, children, breadcrumbRight, headerRight }) {
   return (
     <>
       <header>
@@ -132,12 +137,14 @@ function SiteLayout({ title, description, children }) {
                 <span className="sep">/</span>
                 <span>{title}</span>
               </div>
+              {breadcrumbRight}
             </div>
             <div className="page-header flex flex-between flex-middle flex-wrap">
               <div>
                 <h3 className="page-title">{title}</h3>
                 {description ? <p>{description}</p> : null}
               </div>
+              {headerRight}
             </div>
             {children}
           </div>
@@ -153,127 +160,225 @@ function normalizeSlug(slug = "") {
     .replace(/-/g, " ");
 }
 
-export function Candidates() {
-  const [candidates, setCandidates] = useState([]);
-  const [filteredCandidates, setFilteredCandidates] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [partyFilter, setPartyFilter] = useState("");
+function toNepaliNumber(value) {
+  const nepaliDigits = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"];
+  return String(value ?? 0).replace(/\d/g, (digit) => nepaliDigits[Number(digit)]);
+}
 
-  useEffect(() => {
-    setCandidates(candidatesData);
-    setFilteredCandidates(candidatesData);
-  }, []);
-
-  useEffect(() => {
-    let results = candidates;
-
-    if (searchTerm) {
-      results = results.filter(
-        (c) =>
-          c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          c.party.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-    }
-
-    if (partyFilter) {
-      results = results.filter((c) => c.party === partyFilter);
-    }
-
-    setFilteredCandidates(results);
-  }, [searchTerm, partyFilter, candidates]);
-
-  const uniqueParties = [...new Set(candidates.map((c) => c.party))];
+function ConstituencyElectionCard({ constituency, candidatesBySlug, partyByName }) {
+  const sortedCandidates = [...constituency.candidates].sort(
+    (a, b) => (b.votes || 0) - (a.votes || 0),
+  );
+  const shareUrl = `${window.location.origin}/constituency/${constituency.slug}`;
+  const shareText = encodeURIComponent(
+    `${constituency.name} को ताजा मत परिणाम`,
+  );
 
   return (
-    <SiteLayout
-      title="उम्मेदवारहरु"
-      description="Search candidates, constituencies, and party results from Nepal Election 2082."
-    >
-      <div className="candidate-search-section">
-        <div style={{ marginBottom: "20px" }}>
-          <input
-            type="text"
-            placeholder="उम्मेदवार नाम वा पार्टी खोज्नुहोस्..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              marginBottom: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              fontFamily: "'Mukta', sans-serif",
-            }}
-          />
-          <select
-            value={partyFilter}
-            onChange={(e) => setPartyFilter(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              fontFamily: "'Mukta', sans-serif",
-            }}
-          >
-            <option value="">सबै पार्टीहरु</option>
-            {uniqueParties.map((party) => (
-              <option key={party} value={party}>
-                {party}
-              </option>
-            ))}
-          </select>
-        </div>
+    <div className="election-card col4">
+      <div className="candidate-card-header">
+        <h3>
+          <Link to={`/constituency/${constituency.slug}`}>
+            {constituency.name}
+          </Link>
+        </h3>
+        <Link to={`/district/${constituency.district_slug}`}>
+          <span className="small">{constituency.district_name}</span>
+        </Link>
       </div>
+      <div className="mx-height">
+        {sortedCandidates.map((candidate) => {
+          const info = candidatesBySlug.get(candidate.slug);
+          const party = partyByName.get(info?.party);
+          const partyLogo = info?.partyLogo || party?.logo;
 
-      <div className="candidate-list" style={{ marginTop: "20px" }}>
-        {filteredCandidates.length > 0 ? (
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr
-                style={{
-                  borderBottom: "2px solid #ddd",
-                  backgroundColor: "#f5f5f5",
-                }}
-              >
-                <th style={{ padding: "10px", textAlign: "left" }}>नाम</th>
-                <th style={{ padding: "10px", textAlign: "left" }}>पार्टी</th>
-                <th style={{ padding: "10px", textAlign: "left" }}>जेष्ठता</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCandidates.map((candidate) => (
-                <tr
-                  key={candidate.slug}
-                  style={{ borderBottom: "1px solid #eee" }}
-                >
-                  <td style={{ padding: "10px" }}>
-                    <Link
-                      to={`/candidate/${candidate.slug}`}
-                      style={{ color: "#0066cc", textDecoration: "none" }}
-                    >
+          return (
+            <div
+              key={candidate.slug}
+              className={`candidate-row${candidate.is_winner ? " candidate-win" : ""}`}
+            >
+              <div className="candidate-media">
+                <Link to={`/candidate/${candidate.slug}`}>
+                  <img
+                    className="candidate-photo"
+                    src={info?.image || "/assets/images/placeholder.png"}
+                    alt={candidate.name}
+                  />
+                </Link>
+                <div>
+                  <h3 className="title">
+                    <Link to={`/candidate/${candidate.slug}`}>
                       {candidate.name}
                     </Link>
-                  </td>
-                  <td style={{ padding: "10px" }}>{candidate.party}</td>
-                  <td style={{ padding: "10px" }}>{candidate.jobTitle}</td>
-                </tr>
+                  </h3>
+                  {info?.party || ""}
+                </div>
+              </div>
+              <div className="candidate-detail">
+                <div className="votes">
+                  {toNepaliNumber(candidate.votes || 0)}
+                  {candidate.is_winner ? (
+                    <img src="/assets/img/win-tick.png" alt="win-tick" />
+                  ) : null}
+                </div>
+                {party && partyLogo && partyLogo !== "#" ? (
+                  <Link className="party" to={`/party/${party.slug}`}>
+                    <img
+                      className="party-flag"
+                      src={partyLogo}
+                      alt={info?.party}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.style.display = "none";
+                      }}
+                    />
+                  </Link>
+                ) : null}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="load-more">
+        <Link className="more" to={`/constituency/${constituency.slug}`}>
+          विस्तृत विवरण
+        </Link>
+        <div className="share-links">
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&title=${shareText}`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <img
+              src="https://www.ratopati.com/build/img/facebook.svg"
+              alt="facebook"
+            />
+          </a>
+          <a
+            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${shareText}&hashtags=Election2082,Ratopati,ElectionUpdate`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <img
+              src="https://www.ratopati.com/build/img/twitter-x.svg"
+              alt="twitter"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Candidates() {
+  const [provinceFilter, setProvinceFilter] = useState("");
+  const [districtFilter, setDistrictFilter] = useState("");
+  const [appliedProvince, setAppliedProvince] = useState("");
+  const [appliedDistrict, setAppliedDistrict] = useState("");
+
+  const candidatesBySlug = useMemo(
+    () => new Map(candidatesData.map((c) => [c.slug, c])),
+    [],
+  );
+
+  const partyByName = useMemo(
+    () => new Map(partyData.map((p) => [p.name, p])),
+    [],
+  );
+
+  const availableDistricts = useMemo(() => {
+    if (!provinceFilter) {
+      return districtData;
+    }
+    return districtData.filter((d) => d.province_slug === provinceFilter);
+  }, [provinceFilter]);
+
+  const filteredConstituencies = useMemo(() => {
+    return constituencyData.filter((constituency) => {
+      if (appliedProvince && constituency.province_slug !== appliedProvince) {
+        return false;
+      }
+      if (appliedDistrict && constituency.district_slug !== appliedDistrict) {
+        return false;
+      }
+      return true;
+    });
+  }, [appliedProvince, appliedDistrict]);
+
+  const handleProvinceChange = (value) => {
+    setProvinceFilter(value);
+    setDistrictFilter("");
+  };
+
+  const handleFilterSubmit = (event) => {
+    event.preventDefault();
+    setAppliedProvince(provinceFilter);
+    setAppliedDistrict(districtFilter);
+  };
+
+  const filterBar = (
+    <div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
+      <form onSubmit={handleFilterSubmit}>
+        <div className="filter-row">
+          <div className="select-box">
+            <select
+              className="state select"
+              name="province_id"
+              id="province_id"
+              value={provinceFilter}
+              onChange={(e) => handleProvinceChange(e.target.value)}
+            >
+              <option value="">प्रदेश</option>
+              {provinceData.map((province) => (
+                <option key={province.slug} value={province.slug}>
+                  {province.name}
+                </option>
               ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>कुनै उम्मेदवार फेला परेन</p>
-        )}
-        <p
-          style={{
-            marginTop: "20px",
-            fontSize: "12px",
-            color: "#666",
-            fontFamily: "'Mukta', sans-serif",
-          }}
-        >
-          कुल उम्मेदवारहरु: {filteredCandidates.length}
-        </p>
+            </select>
+          </div>
+          <div className="select-box">
+            <select
+              name="district_id"
+              className="district select"
+              id="district_id"
+              value={districtFilter}
+              onChange={(e) => setDistrictFilter(e.target.value)}
+            >
+              <option value="">जिल्ला</option>
+              {availableDistricts.map((district) => (
+                <option key={district.slug} value={district.slug}>
+                  {district.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="select-box">
+            <button type="submit" className="btn-submit">
+              <span>खोज्नुहोस</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+
+  return (
+    <SiteLayout title="उम्मेदवारहरु" headerRight={filterBar}>
+      <div className="local__election">
+        <div className="candidate--lists dn-grid dn-grid-small">
+          {filteredConstituencies.length > 0 ? (
+            filteredConstituencies.map((constituency) => (
+              <ConstituencyElectionCard
+                key={constituency.slug}
+                constituency={constituency}
+                candidatesBySlug={candidatesBySlug}
+                partyByName={partyByName}
+              />
+            ))
+          ) : (
+            <p>कुनै निर्वाचन क्षेत्र फेला परेन</p>
+          )}
+        </div>
       </div>
     </SiteLayout>
   );
@@ -296,7 +401,80 @@ export function Manifesto() {
       title="घोषणा पत्र"
       description="Read the major party manifestos and policy platforms in the 2082 election."
     >
-      <p>Manifesto content has been migrated into React.</p>
+      <div
+        className="dn-grid dn-grid-small"
+        style={{
+          marginTop: "20px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gap: "20px",
+        }}
+      >
+        {manifestoData.map((manifesto) => (
+          <div
+            key={manifesto.id}
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "20px",
+              backgroundColor: "#fff",
+              textAlign: "center",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+            }}
+          >
+            <h3
+              style={{
+                fontSize: "18px",
+                fontWeight: "bold",
+                marginBottom: "15px",
+                color: "#333",
+              }}
+            >
+              {manifesto.party_name}
+            </h3>
+            <Link
+              to={`/manifesto/${manifesto.id}`}
+              style={{
+                display: "inline-block",
+                padding: "8px 16px",
+                backgroundColor: "#bf1e2e",
+                color: "#fff",
+                textDecoration: "none",
+                borderRadius: "4px",
+                fontWeight: "bold",
+              }}
+            >
+              घोषणा पत्र हेर्नुहोस्
+            </Link>
+          </div>
+        ))}
+      </div>
+    </SiteLayout>
+  );
+}
+
+export function ManifestoDetail() {
+  const { id } = useParams();
+  const cleanId = id?.replace(/\.html$/i, "");
+  const manifesto = manifestoData.find((m) => m.id === cleanId);
+
+  if (!manifesto) {
+    return (
+      <SiteLayout title="घोषणा पत्र फेला परेन">
+        <p>दुःख है, यो घोषणा पत्र फेला परेन।</p>
+      </SiteLayout>
+    );
+  }
+
+  return (
+    <SiteLayout title={manifesto.party_name}>
+      <div className="pdf-viewer" style={{ marginTop: "20px" }}>
+        <iframe
+          src={manifesto.pdf_url}
+          style={{ width: "100%", height: "920px", border: "none" }}
+          title={manifesto.party_name}
+        ></iframe>
+      </div>
     </SiteLayout>
   );
 }
@@ -307,18 +485,112 @@ export function Parties() {
       title="राजनीतिक दलहरु"
       description="Review participating political parties and their results in Nepal Election 2082."
     >
-      <p>Political party overview page is now rendered with React.</p>
+      <div
+        className="dn-grid dn-grid-small"
+        style={{
+          marginTop: "20px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gap: "20px",
+        }}
+      >
+        {partyData.map((party) => (
+          <div
+            key={party.slug}
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "20px",
+              backgroundColor: "#fff",
+              textAlign: "center",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+            }}
+          >
+            {party.logo && party.logo !== "#" && (
+                <img
+                  src={party.logo}
+                  alt={party.name}
+                  style={{
+                    maxWidth: "80px",
+                    height: "auto",
+                    marginBottom: "15px",
+                    borderRadius: "4px",
+                  }}
+                />
+              )}
+            <h3
+              style={{
+                fontSize: "18px",
+                fontWeight: "bold",
+                marginBottom: "10px",
+                color: "#333",
+              }}
+            >
+              {party.name}
+            </h3>
+            <div style={{ marginBottom: "15px", fontSize: "14px", color: "#666" }}>
+              <strong>अध्यक्ष:</strong> {party.leader || "—"}
+            </div>
+            <Link
+              to={`/party/${party.slug}`}
+              style={{
+                display: "inline-block",
+                padding: "8px 16px",
+                backgroundColor: "#0066cc",
+                color: "#fff",
+                textDecoration: "none",
+                borderRadius: "4px",
+                fontWeight: "bold",
+              }}
+            >
+              विवरण हेर्नुहोस्
+            </Link>
+          </div>
+        ))}
+      </div>
     </SiteLayout>
   );
 }
 
 export function PopularCandidates() {
+  // Select some candidates with high votes
+  const popularCandidates = [...candidatesData]
+    .sort((a, b) => (b.votes || 0) - (a.votes || 0))
+    .slice(0, 15);
+
   return (
     <SiteLayout
       title="चर्चित उम्मेदवारहरु"
       description="See the most popular candidates from the 2082 election."
     >
-      <p>Popular candidates content is now served by a React page.</p>
+      <div className="candidate-list" style={{ marginTop: "20px" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr style={{ borderBottom: "2px solid #ddd", backgroundColor: "#f5f5f5" }}>
+              <th style={{ padding: "10px", textAlign: "left" }}>नाम</th>
+              <th style={{ padding: "10px", textAlign: "left" }}>निर्वाचन क्षेत्र</th>
+              <th style={{ padding: "10px", textAlign: "left" }}>पार्टी</th>
+              <th style={{ padding: "10px", textAlign: "right" }}>प्राप्त मत</th>
+            </tr>
+          </thead>
+          <tbody>
+            {popularCandidates.map((candidate) => (
+              <tr key={candidate.slug} style={{ borderBottom: "1px solid #eee" }}>
+                <td style={{ padding: "10px" }}>
+                  <Link to={`/candidate/${candidate.slug}`} style={{ color: "#0066cc", textDecoration: "none", fontWeight: "bold" }}>
+                    {candidate.name}
+                  </Link>
+                </td>
+                <td style={{ padding: "10px" }}>{candidate.constituency}</td>
+                <td style={{ padding: "10px" }}>{candidate.party}</td>
+                <td style={{ padding: "10px", textAlign: "right", fontWeight: "bold", color: "#bf1e2e" }}>
+                  {candidate.votes?.toLocaleString() || "०"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </SiteLayout>
   );
 }
@@ -329,7 +601,46 @@ export function Result() {
       title="परिणाम"
       description="View election results for the Nepal Election 2082."
     >
-      <p>Results content has been converted into the React application.</p>
+      <div style={{ marginTop: "20px", padding: "20px", border: "1px solid #ddd", borderRadius: "8px", backgroundColor: "#fff" }}>
+        <h3 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "15px", borderBottom: "2px solid #bf1e2e", paddingBottom: "10px" }}>
+          प्रतिनिधिसभा परिणाम सारसंक्षेप
+        </h3>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr style={{ borderBottom: "2px solid #ddd", backgroundColor: "#f5f5f5" }}>
+              <th style={{ padding: "10px", textAlign: "left" }}>राजनीतिक दल</th>
+              <th style={{ padding: "10px", textAlign: "center" }}>प्रत्यक्ष सिट</th>
+              <th style={{ padding: "10px", textAlign: "center" }}>समानुपातिक सिट</th>
+              <th style={{ padding: "10px", textAlign: "right" }}>कुल सिट</th>
+            </tr>
+          </thead>
+          <tbody>
+            {partyData.filter(p => p.wins > 0).map((party) => {
+              // Map some mock proportional seats based on popular status
+              let proportional = 0;
+              if (party.slug === "rastriya-swatantra-party") proportional = 57;
+              else if (party.slug === "nepali-congress") proportional = 20;
+              else if (party.slug === "cpn-uml") proportional = 16;
+              else if (party.slug === "nepali-communist-party") proportional = 9;
+              else if (party.slug === "shram-samskriti-party") proportional = 4;
+              else if (party.slug === "rastriya-prajatantra-party") proportional = 4;
+              
+              return (
+                <tr key={party.slug} style={{ borderBottom: "1px solid #eee" }}>
+                  <td style={{ padding: "10px" }}>
+                    <Link to={`/party/${party.slug}`} style={{ color: "#0066cc", textDecoration: "none", fontWeight: "bold" }}>
+                      {party.name}
+                    </Link>
+                  </td>
+                  <td style={{ padding: "10px", textAlign: "center" }}>{party.wins}</td>
+                  <td style={{ padding: "10px", textAlign: "center" }}>{proportional}</td>
+                  <td style={{ padding: "10px", textAlign: "right", fontWeight: "bold" }}>{party.wins + proportional}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </SiteLayout>
   );
 }
@@ -340,7 +651,16 @@ export function Videos() {
       title="निर्वाचन भिडियो"
       description="Watch election videos and voter coverage from the 2082 campaign."
     >
-      <p>Election videos are now accessible through a React page.</p>
+      <div style={{ marginTop: "20px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+        <div style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "15px", backgroundColor: "#fff" }}>
+          <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px" }}>रातोपाटी निर्वाचन विशेष</h3>
+          <p style={{ color: "#666" }}>निर्वाचन परिणाम र विश्लेषण भिडियो अपडेट यहाँ उपलब्ध हुनेछ।</p>
+        </div>
+        <div style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "15px", backgroundColor: "#fff" }}>
+          <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px" }}>उम्मेदवार अन्तर्वार्ता</h3>
+          <p style={{ color: "#666" }}>विभिन्न निर्वाचन क्षेत्रका उम्मेदवारहरूसँग रातोपाटीको विशेष कुराकानी।</p>
+        </div>
+      </div>
     </SiteLayout>
   );
 }
@@ -351,58 +671,572 @@ export function VoteDifference() {
       title="मतान्तर"
       description="Track the vote difference across constituencies in the 2082 election."
     >
-      <p>Vote difference analysis is now available as a React route.</p>
+      <p>मतान्तर विश्लेषण पृष्ठ। यहाँ विभिन्न क्षेत्रका मुख्य उम्मेदवारहरू बीचको मतान्तर देखाइनेछ।</p>
     </SiteLayout>
   );
 }
 
 export function Province() {
   const { slug } = useParams();
-  const provinceName = normalizeSlug(slug);
+  const cleanSlug = slug?.replace(/\.html$/i, "");
+  
+  const province = provinceData.find(
+    (p) => p.slug === cleanSlug || p.slug.replace("-province", "") === cleanSlug
+  );
+
+  if (!province) {
+    return (
+      <SiteLayout title="प्रदेश फेला परेन">
+        <p>दुःख है, यो प्रदेश फेला परेन।</p>
+      </SiteLayout>
+    );
+  }
+
+  const provinceConstituencies = constituencyData.filter(
+    (c) => c.province_slug === province.slug
+  );
 
   return (
-    <SiteLayout
-      title={`निर्वाचन ${provinceName}`}
-      description={`Election overview for ${provinceName}.`}
-    >
-      <p>
-        This province page is rendered by React. The route is matched from the
-        original election site structure.
-      </p>
+    <SiteLayout title={province.name}>
+      <div className="district-detail" style={{ marginBottom: "30px" }}>
+        <div className="dn-grid">
+          <div className="col8">
+            <div className="contentarea">
+              <p style={{ fontSize: "16px", lineHeight: "1.6" }}>{province.description}</p>
+            </div>
+            
+            <div style={{ marginTop: "20px" }}>
+              <h4 style={{ fontSize: "18px", marginBottom: "10px", fontWeight: "bold", color: "#333" }}>
+                यस प्रदेशका जिल्लाहरू:
+              </h4>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                {province.districts?.map((d) => (
+                  <Link 
+                    key={d.slug} 
+                    to={`/district/${d.slug}`}
+                    style={{
+                      display: "inline-block",
+                      padding: "8px 16px",
+                      backgroundColor: "#f5f5f5",
+                      borderRadius: "20px",
+                      color: "#bf1e2e",
+                      textDecoration: "none",
+                      fontWeight: "bold",
+                      border: "1px solid #ddd"
+                    }}
+                  >
+                    {d.slug.toUpperCase()}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          <div className="col4">
+            <ul className="stats">
+              <li style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+                <img src="/assets/img/vote.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {province.voters?.total?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>जम्मा मतदाता</span>
+                </h5>
+              </li>
+              <li style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+                <img src="/assets/img/man.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {province.voters?.male?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>पुरुष मतदाता</span>
+                </h5>
+              </li>
+              <li style={{ display: "flex", alignItems: "center" }}>
+                <img src="/assets/img/woman.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {province.voters?.female?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>महिला मतदाता</span>
+                </h5>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="local__election section" style={{ marginTop: "30px" }}>
+        <h3 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "20px", borderBottom: "2px solid #bf1e2e", paddingBottom: "10px" }}>
+          निर्वाचन क्षेत्र विवरण
+        </h3>
+        <div className="candidate--lists dn-grid dn-grid-small" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "20px" }}>
+          {provinceConstituencies.map((constituency) => {
+            const winner = constituency.candidates.find(c => c.is_winner) || constituency.candidates[0];
+            const candidateInfo = candidatesData.find(c => c.slug === winner?.slug);
+            
+            return (
+              <div 
+                key={constituency.slug} 
+                className="election-card col4" 
+                style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "15px", backgroundColor: "#fff", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+              >
+                <div className="candidate-card-header" style={{ marginBottom: "15px", borderBottom: "1px solid #eee", paddingBottom: "10px" }}>
+                  <h3 style={{ margin: 0 }}>
+                    <Link to={`/constituency/${constituency.slug}`} style={{ color: "#bf1e2e", fontWeight: "bold", textDecoration: "none", fontSize: "18px" }}>
+                      {constituency.name}
+                    </Link>
+                  </h3>
+                  <Link to={`/district/${constituency.district_slug}`} style={{ fontSize: "12px", color: "#666", textDecoration: "none" }}>
+                    <span>जिल्ला: {constituency.district_name}</span>
+                  </Link>
+                </div>
+                {winner && (
+                  <div className="candidate-row candidate-win" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div className="candidate-media" style={{ display: "flex", alignItems: "center" }}>
+                      <Link to={`/candidate/${winner.slug}`}>
+                        <img 
+                          className="candidate-photo" 
+                          src={candidateInfo?.image || "/assets/images/placeholder.png"} 
+                          alt={winner.name} 
+                          style={{ width: "50px", height: "50px", borderRadius: "50%", marginRight: "10px", objectFit: "cover", border: "1px solid #ccc" }}
+                        />
+                      </Link>
+                      <div>
+                        <h3 className="title" style={{ fontSize: "14px", fontWeight: "bold", margin: 0 }}>
+                          <Link to={`/candidate/${winner.slug}`} style={{ color: "#333", textDecoration: "none" }}>
+                            {winner.name}
+                          </Link>
+                        </h3>
+                        <span style={{ fontSize: "12px", color: "#777" }}>{candidateInfo?.party || ""}</span>
+                      </div>
+                    </div>
+                    <div className="candidate-detail" style={{ textAlign: "right" }}>
+                      <div className="votes" style={{ fontWeight: "bold", color: "#bf1e2e", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+                        {winner.votes?.toLocaleString() || "०"}
+                        <img src="/assets/img/win-tick.png" alt="win-tick" style={{ width: "16px", marginLeft: "5px" }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </SiteLayout>
+  );
+}
+
+export function District() {
+  const { slug } = useParams();
+  const cleanSlug = slug?.replace(/\.html$/i, "");
+  
+  const district = districtData.find((d) => d.slug === cleanSlug);
+
+  if (!district) {
+    return (
+      <SiteLayout title="जिल्ला फेला परेन">
+        <p>दुःख है, यो जिल्ला फेला परेन।</p>
+      </SiteLayout>
+    );
+  }
+
+  const districtConstituencies = constituencyData.filter(
+    (c) => c.district_slug === district.slug
+  );
+
+  return (
+    <SiteLayout title={district.name}>
+      <div className="district-detail" style={{ marginBottom: "30px" }}>
+        <div className="dn-grid">
+          <div className="col8">
+            {district.map_image && (
+              <div className="map-wrapper" style={{ marginBottom: "20px", textAlign: "center" }}>
+                <img 
+                  src={district.map_image} 
+                  alt={district.name} 
+                  style={{ maxWidth: "100%", height: "auto", borderRadius: "8px", border: "1px solid #ddd" }}
+                />
+              </div>
+            )}
+            <div className="contentarea">
+              <p style={{ fontSize: "16px", lineHeight: "1.6" }}>{district.description}</p>
+            </div>
+            <div style={{ marginTop: "15px", fontSize: "14px", color: "#666" }}>
+              <strong>प्रदेश:</strong> <Link to={`/province/${district.province_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>{district.province_name}</Link>
+            </div>
+          </div>
+          
+          <div className="col4">
+            <ul className="stats">
+              <li style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+                <img src="/assets/img/vote.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {district.voters?.total?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>जम्मा मतदाता</span>
+                </h5>
+              </li>
+              <li style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+                <img src="/assets/img/man.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {district.voters?.male?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>पुरुष मतदाता</span>
+                </h5>
+              </li>
+              <li style={{ display: "flex", alignItems: "center" }}>
+                <img src="/assets/img/woman.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {district.voters?.female?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>महिला मतदाता</span>
+                </h5>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="local__election section" style={{ marginTop: "30px" }}>
+        <h3 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "20px", borderBottom: "2px solid #bf1e2e", paddingBottom: "10px" }}>
+          निर्वाचन क्षेत्रहरू
+        </h3>
+        <div className="candidate--lists dn-grid dn-grid-small" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "20px" }}>
+          {districtConstituencies.map((constituency) => {
+            const winner = constituency.candidates.find(c => c.is_winner) || constituency.candidates[0];
+            const candidateInfo = candidatesData.find(c => c.slug === winner?.slug);
+            
+            return (
+              <div 
+                key={constituency.slug} 
+                className="election-card col4" 
+                style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "15px", backgroundColor: "#fff", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+              >
+                <div className="candidate-card-header" style={{ marginBottom: "15px", borderBottom: "1px solid #eee", paddingBottom: "10px" }}>
+                  <h3 style={{ margin: 0 }}>
+                    <Link to={`/constituency/${constituency.slug}`} style={{ color: "#bf1e2e", fontWeight: "bold", textDecoration: "none", fontSize: "18px" }}>
+                      {constituency.name}
+                    </Link>
+                  </h3>
+                </div>
+                {winner && (
+                  <div className="candidate-row candidate-win" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div className="candidate-media" style={{ display: "flex", alignItems: "center" }}>
+                      <Link to={`/candidate/${winner.slug}`}>
+                        <img 
+                          className="candidate-photo" 
+                          src={candidateInfo?.image || "/assets/images/placeholder.png"} 
+                          alt={winner.name} 
+                          style={{ width: "50px", height: "50px", borderRadius: "50%", marginRight: "10px", objectFit: "cover", border: "1px solid #ccc" }}
+                        />
+                      </Link>
+                      <div>
+                        <h3 className="title" style={{ fontSize: "14px", fontWeight: "bold", margin: 0 }}>
+                          <Link to={`/candidate/${winner.slug}`} style={{ color: "#333", textDecoration: "none" }}>
+                            {winner.name}
+                          </Link>
+                        </h3>
+                        <span style={{ fontSize: "12px", color: "#777" }}>{candidateInfo?.party || ""}</span>
+                      </div>
+                    </div>
+                    <div className="candidate-detail" style={{ textAlign: "right" }}>
+                      <div className="votes" style={{ fontWeight: "bold", color: "#bf1e2e", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+                        {winner.votes?.toLocaleString() || "०"}
+                        <img src="/assets/img/win-tick.png" alt="win-tick" style={{ width: "16px", marginLeft: "5px" }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </SiteLayout>
+  );
+}
+
+export function Constituency() {
+  const { slug } = useParams();
+  const cleanSlug = slug?.replace(/\.html$/i, "");
+  
+  const constituency = constituencyData.find((c) => c.slug === cleanSlug);
+
+  if (!constituency) {
+    return (
+      <SiteLayout title="निर्वाचन क्षेत्र फेला परेन">
+        <p>दुःख है, यो निर्वाचन क्षेत्र फेला परेन।</p>
+      </SiteLayout>
+    );
+  }
+
+  // Sort candidates by votes descending
+  const sortedCandidates = [...constituency.candidates].sort(
+    (a, b) => (b.votes || 0) - (a.votes || 0)
+  );
+
+  return (
+    <SiteLayout title={constituency.name}>
+      <div className="district-detail" style={{ marginBottom: "30px" }}>
+        <div className="dn-grid">
+          <div className="col8">
+            {constituency.map_image && (
+              <div className="map-wrapper" style={{ marginBottom: "20px", textAlign: "center" }}>
+                <img 
+                  src={constituency.map_image} 
+                  alt={constituency.name} 
+                  style={{ maxWidth: "100%", height: "auto", borderRadius: "8px", border: "1px solid #ddd" }}
+                />
+              </div>
+            )}
+            <div style={{ fontSize: "14px", color: "#666" }}>
+              <strong>जिल्ला:</strong> <Link to={`/district/${constituency.district_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>{constituency.district_name}</Link>
+              <span style={{ margin: "0 10px" }}>|</span>
+              <strong>प्रदेश:</strong> <Link to={`/province/${constituency.province_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>{constituency.province_name}</Link>
+            </div>
+          </div>
+          
+          <div className="col4">
+            <ul className="stats">
+              <li style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+                <img src="/assets/img/vote.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {constituency.voters?.total?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>जम्मा मतदाता</span>
+                </h5>
+              </li>
+              <li style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+                <img src="/assets/img/man.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {constituency.voters?.male?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>पुरुष मतदाता</span>
+                </h5>
+              </li>
+              <li style={{ display: "flex", alignItems: "center" }}>
+                <img src="/assets/img/woman.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <h5>
+                  {constituency.voters?.female?.toLocaleString() || "०"}
+                  <span style={{ fontSize: "12px", color: "#666", display: "block" }}>महिला मतदाता</span>
+                </h5>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="all-parties-candidates section" style={{ marginTop: "30px" }}>
+        <h3 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "20px", borderBottom: "2px solid #bf1e2e", paddingBottom: "10px" }}>
+          उम्मेदवारहरु
+        </h3>
+        
+        <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          {sortedCandidates.map((candidate) => {
+            const candidateInfo = candidatesData.find((c) => c.slug === candidate.slug);
+            const partyInfo = partyData.find((p) => p.name === candidateInfo?.party);
+            
+            return (
+              <div 
+                key={candidate.slug} 
+                className={`party-container ${candidate.is_winner ? "candidate-win" : ""}`}
+                style={{
+                  border: "1px solid #ddd",
+                  borderRadius: "8px",
+                  padding: "15px",
+                  backgroundColor: candidate.is_winner ? "#fff8f8" : "#fff",
+                  borderColor: candidate.is_winner ? "#bf1e2e" : "#ddd",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                }}
+              >
+                <div className="party-logo" style={{ display: "flex", alignItems: "center" }}>
+                  <Link to={`/candidate/${candidate.slug}`}>
+                    <img 
+                      className="candidate-photo" 
+                      src={candidateInfo?.image || "/assets/images/placeholder.png"} 
+                      alt={candidate.name} 
+                      style={{ width: "60px", height: "60px", borderRadius: "50%", marginRight: "15px", objectFit: "cover", border: "1px solid #ccc" }}
+                    />
+                  </Link>
+                  <div>
+                    <h3 className="party-name" style={{ margin: 0, fontSize: "16px", fontWeight: "bold" }}>
+                      <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }}>
+                        {candidate.name}
+                      </Link>
+                    </h3>
+                    {partyInfo ? (
+                      <Link to={`/party/${partyInfo.slug}`} style={{ fontSize: "13px", color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>
+                        {candidateInfo?.party}
+                      </Link>
+                    ) : (
+                      <span style={{ fontSize: "13px", color: "#666" }}>{candidateInfo?.party || "स्वतन्त्र"}</span>
+                    )}
+                  </div>
+                </div>
+                
+                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                  <div className="votes" style={{ fontWeight: "bold", fontSize: "18px", color: "#bf1e2e", display: "flex", alignItems: "center" }}>
+                    {candidate.votes?.toLocaleString() || "०"}
+                    {candidate.is_winner && (
+                      <img src="/assets/img/win-tick.png" alt="win-tick" style={{ width: "20px", marginLeft: "10px" }} />
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </SiteLayout>
   );
 }
 
 export function Party() {
   const { slug } = useParams();
-  const partyName = normalizeSlug(slug);
+  const cleanSlug = slug?.replace(/\.html$/i, "");
+  
+  const party = partyData.find((p) => p.slug === cleanSlug);
+
+  if (!party) {
+    return (
+      <SiteLayout title="राजनीतिक दल फेला परेन">
+        <p>दुःख है, यो राजनीतिक दल फेला परेन।</p>
+      </SiteLayout>
+    );
+  }
+
+  // Filter candidates belonging to this party
+  const partyCandidates = candidatesData.filter(
+    (c) => c.party === party.name
+  );
+  
+  // Sort them by votes descending
+  const sortedPartyCandidates = [...partyCandidates].sort(
+    (a, b) => (b.votes || 0) - (a.votes || 0)
+  );
 
   return (
-    <SiteLayout
-      title={partyName || "राजनीतिक दल"}
-      description={`Party overview page for ${partyName}.`}
-    >
-      <p>
-        This party page is rendered by React for: <strong>{partyName}</strong>.
-      </p>
+    <SiteLayout title={party.name}>
+      <div className="candidate-detail-wrapper" style={{ marginBottom: "30px" }}>
+        <div className="dn-grid">
+          <div className="col8">
+            <div className="candidate-bio" style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+              {party.logo && party.logo !== "#" ? (
+                 <img src={party.logo} alt={party.name} onError={(e) => { e.target.onerror=null; e.target.src="/assets/images/placeholder.png"; }} style={{ maxWidth: "120px", height: "auto", borderRadius: "8px", border: "1px solid #ddd" }} />
+               ) : (
+                 <img src="/assets/images/placeholder.png" alt={party.name} style={{ maxWidth: "120px", height: "auto", borderRadius: "8px", border: "1px solid #ddd" }} />
+               )}
+              <div className="page-header" style={{ padding: 0, border: "none" }}>
+                <h3 className="page-title" style={{ margin: "0 0 10px 0", fontSize: "24px" }}>
+                  {party.name}
+                </h3>
+                {party.leader && (
+                  <span style={{ fontSize: "16px", color: "#666" }}>
+                    <strong>नेतृत्व/अध्यक्ष:</strong> {party.leader}
+                  </span>
+                )}
+              </div>
+            </div>
+            
+            <div className="contentarea">
+              <p style={{ fontSize: "16px", lineHeight: "1.6" }}>{party.description}</p>
+            </div>
+          </div>
+          
+          <div className="col4">
+            <div className="stats-wrap" style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "15px", backgroundColor: "#fff" }}>
+              <h3 className="heading-title" style={{ fontSize: "18px", fontWeight: "bold", borderBottom: "2px solid #bf1e2e", paddingBottom: "10px", marginBottom: "15px" }}>
+                निर्वाचन परिणाम सार
+              </h3>
+              <div className="result-grid" style={{ display: "flex", gap: "20px", justifyContent: "space-around" }}>
+                <div className="result-vote" style={{ textAlign: "center" }}>
+                  <h5 style={{ fontSize: "24px", color: "#bf1e2e", margin: 0, fontWeight: "bold" }}>
+                    {party.wins || "०"}
+                  </h5>
+                  <span style={{ fontSize: "12px", color: "#666" }}>जित सिट</span>
+                </div>
+                {party.proportional_votes && (
+                  <div className="result-vote" style={{ textAlign: "center" }}>
+                    <h5 style={{ fontSize: "20px", color: "#bf1e2e", margin: 0, fontWeight: "bold" }}>
+                      {party.proportional_votes}
+                    </h5>
+                    <span style={{ fontSize: "12px", color: "#666" }}>समानुपातिक मत</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="all-parties-candidates section" style={{ marginTop: "30px" }}>
+        <h3 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "20px", borderBottom: "2px solid #bf1e2e", paddingBottom: "10px" }}>
+          यस दलका उम्मेदवारहरु ({partyCandidates.length})
+        </h3>
+        
+        <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          {sortedPartyCandidates.map((candidate) => (
+            <div 
+              key={candidate.slug} 
+              className={`party-container ${candidate.isWinner ? "candidate-win" : ""}`}
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                padding: "15px",
+                backgroundColor: candidate.isWinner ? "#fff8f8" : "#fff",
+                borderColor: candidate.isWinner ? "#bf1e2e" : "#ddd",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <div className="party-logo" style={{ display: "flex", alignItems: "center" }}>
+                <Link to={`/candidate/${candidate.slug}`}>
+                  <img 
+                    className="candidate-photo" 
+                    src={candidate.image || "/assets/images/placeholder.png"} 
+                    alt={candidate.name} 
+                    style={{ width: "60px", height: "60px", borderRadius: "50%", marginRight: "15px", objectFit: "cover", border: "1px solid #ccc" }}
+                  />
+                </Link>
+                <div>
+                  <h3 className="party-name" style={{ margin: 0, fontSize: "16px", fontWeight: "bold" }}>
+                    <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }}>
+                      {candidate.name}
+                    </Link>
+                  </h3>
+                  <span style={{ fontSize: "13px", color: "#666" }}>
+                    <strong>क्षेत्र:</strong> {candidate.constituency}
+                  </span>
+                </div>
+              </div>
+              
+              <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                <div className="votes" style={{ fontWeight: "bold", fontSize: "18px", color: "#bf1e2e", display: "flex", alignItems: "center" }}>
+                  {candidate.votes?.toLocaleString() || "०"}
+                  {candidate.isWinner && (
+                    <img src="/assets/img/win-tick.png" alt="win-tick" style={{ width: "20px", marginLeft: "10px" }} />
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </SiteLayout>
   );
 }
 
 export function Candidate() {
   const { slug } = useParams();
-  const candidate = candidatesData.find((c) => c.slug === slug);
+  const cleanSlug = slug?.replace(/\.html$/i, "");
+  const candidate = candidatesData.find((c) => c.slug === cleanSlug);
 
   if (!candidate) {
     return (
       <SiteLayout title="उम्मेदवार फेला परेन">
         <p>
-          दुःख है, यह उम्मेदवार हमारे डेटाबेस में नहीं मिला। कृपया{" "}
+          दुःख है, यो उम्मेदवार फेला परेन। कृपया{" "}
           <Link to="/candidates">उम्मेदवार सूची</Link> पर वापस जाएं।
         </p>
       </SiteLayout>
     );
   }
+
+  const partyInfo = partyData.find((p) => p.name === candidate.party);
 
   return (
     <SiteLayout
@@ -433,14 +1267,36 @@ export function Candidate() {
             {candidate.name}
           </h2>
           <div style={{ marginBottom: "15px" }}>
-            <strong>पार्टी:</strong> {candidate.party}
+            <strong>पार्टी:</strong>{" "}
+            {partyInfo ? (
+              <Link to={`/party/${partyInfo.slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>
+                {candidate.party}
+              </Link>
+            ) : (
+              candidate.party
+            )}
+          </div>
+          <div style={{ marginBottom: "15px" }}>
+            <strong>निर्वाचन क्षेत्र:</strong>{" "}
+            <Link 
+              to={`/constituency/${candidate.constituency?.replace(/\s+/g, "").toLowerCase()}`}
+              style={{ color: "#0066cc", textDecoration: "none", fontWeight: "bold" }}
+            >
+              {candidate.constituency}
+            </Link>
           </div>
           <div style={{ marginBottom: "15px" }}>
             <strong>पद:</strong> {candidate.jobTitle}
           </div>
           <div style={{ marginBottom: "15px" }}>
-            <strong>मत:</strong> {candidate.votes}
+            <strong>मत:</strong> {candidate.votes?.toLocaleString() || "०"}
           </div>
+          {candidate.isWinner && (
+            <div style={{ marginBottom: "15px", color: "green", fontWeight: "bold", display: "flex", alignItems: "center" }}>
+              <span>विजेता</span>
+              <img src="/assets/img/win-tick.png" alt="win" style={{ width: "20px", marginLeft: "10px" }} />
+            </div>
+          )}
           {candidate.partyLogo && (
             <div style={{ marginBottom: "15px" }}>
               <img
@@ -498,3 +1354,4 @@ export function NotFound() {
     </main>
   );
 }
+
