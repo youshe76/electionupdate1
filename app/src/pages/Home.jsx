@@ -135,12 +135,12 @@ export default function Home() {
           <div className="elc-container">
             <div className="header-holder flex flex-middle flex-wrap flex-between">
               <div className="header-logo">
-                <Link to="/" className="logo">
+                {/* <Link to="/" className="logo">
                   <img
                     src="/assets/images/ratopati-logo_zD9OASMMFx.png"
                     alt="Logo"
                   />
-                </Link>
+                </Link> */}
               </div>
               <div className="header-right">
                 <img
@@ -213,17 +213,8 @@ export default function Home() {
               <li>
                 <Link to="/manifesto">घोषणा पत्र</Link>
               </li>
-              <li>
-                <Link to="/videos">निर्वाचन भिडियो</Link>
-              </li>
-              <li>
-                <a
-                  href="https://www.ratopati.com/segment/parliament-election-2082"
-                  target="_blank"
-                >
-                  समाचार
-                </a>
-              </li>
+             
+              
             </ul>
             <div className="nav-right">
               <span className="btn-search fa fa-search btn-trigger"></span>
@@ -232,7 +223,7 @@ export default function Home() {
                 href="https://www.ratopati.com/"
                 target="_blank"
               >
-                रातोपाटी होमपेज
+                 होमपेज
               </a>
             </div>
           </div>
