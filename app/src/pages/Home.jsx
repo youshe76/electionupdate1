@@ -136,7 +136,7 @@ export default function Home() {
           <div className="elc-container">
             <div className="header-holder flex flex-middle flex-wrap flex-between">
               <div className="header-logo">
-                <Link to="/" className="logo">
+                {/* <Link to="/" className="logo">
                   <img
                     src="/assets/images/ratopati-logo_zD9OASMMFx.png"
                     alt="Logo"
@@ -222,7 +222,7 @@ export default function Home() {
                 href="https://www.ratopati.com/"
                 target="_blank"
               >
-                रातोपाटी होमपेज
+                 होमपेज
               </a>
             </div>
           </div>
