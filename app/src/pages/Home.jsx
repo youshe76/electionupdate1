@@ -151,7 +151,7 @@ export default function Home() {
                     src="/assets/images/ratopati-logo_zD9OASMMFx.png"
                     alt="Logo"
                   />
-                </Link>
+                </Link> */}
               </div>
               <div className="header-right">
                 <img
