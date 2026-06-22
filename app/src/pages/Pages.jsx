@@ -8,7 +8,8 @@ import partyData from "../../public/data/party.json";
 import manifestoData from "../../public/data/manifesto.json";
 import hotSeatsData from "../../public/data/hot-seats.json";
 import voteDifferenceData from "../../public/data/vote-difference.json";
-
+import { ChevronDown } from  "lucide-react";
+  
 function SiteLayout({ title, description, children, breadcrumbRight, headerRight }) {
   return (
     <>
@@ -53,7 +54,7 @@ function SiteLayout({ title, description, children, breadcrumbRight, headerRight
               </li>
               <li>
                 <a href="#" onClick={(e) => e.preventDefault()}>
-                  निर्वाचन
+                  निर्वाचन <ChevronDown size={18}/>
                 </a>
                 <ul>
                   <li>
