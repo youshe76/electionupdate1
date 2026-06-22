@@ -1,11 +1,21 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NepalMap from "../components/map/map";
 
 export default function Home() {
   const [selectedProvince, setSelectedProvince] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedConstituency, setSelectedConstituency] = useState("");
+  const [hoveredConstituency, setHoveredConstituency] = useState(null);
+  const [constituenciesData, setConstituenciesData] = useState([]);
+
+  // Load constituency data on mount
+  useEffect(() => {
+    fetch("/data/constituency.json")
+      .then(res => res.json())
+      .then(data => setConstituenciesData(data))
+      .catch(err => console.error("Error loading constituency data:", err));
+  }, []);
 
   const provinces = [
     { id: 1, name: "कोशी प्रदेश" },
@@ -131,17 +141,17 @@ export default function Home() {
       </div>
 
       {/* Header */}
-      {/* <header>
+       <header>
         <div className="header-section">
           <div className="elc-container">
             <div className="header-holder flex flex-middle flex-wrap flex-between">
               <div className="header-logo">
-                <Link to="/" className="logo">
+                {/* <Link to="/" className="logo">
                   <img
                     src="/assets/images/ratopati-logo_zD9OASMMFx.png"
                     alt="Logo"
                   />
-                </Link>
+                </Link> */}
               </div>
               <div className="header-right">
                 <img
@@ -158,7 +168,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </header> */}
+      </header>
 
       {/* Navigation */}
       <nav className="navigation">
@@ -222,7 +232,7 @@ export default function Home() {
                 href="https://www.ratopati.com/"
                 target="_blank"
               >
-                रातोपाटी होमपेज
+                 होमपेज
               </a>
             </div>
           </div>
@@ -295,12 +305,171 @@ export default function Home() {
       >
         {/* Map Section */}
         <section className="section nepalmap">
-          <div className="elc-container">
-            <div className="mapcontainer" id="constituency-map">
+          <div className="elc-container flex" style={{ position: "relative" }}>
+            <div className="mapcontainer" id="constituency-map" style={{ flex: 1 }}>
               <div className="spinner-wrapper flex flex-middle flex-center">
-                <NepalMap/>
+                <NepalMap 
+                  onConstituencyHover={setHoveredConstituency}
+                  constituenciesData={constituenciesData}
+                />
               </div>
             </div>
+            
+            {/* Hovered Constituency Candidates Card */}
+            {hoveredConstituency && (
+              <div className="constituency-hover-card" style={{
+                position: "absolute",
+                right: "20px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                backgroundColor: "#fff",
+                border: "none",
+                borderLeft: "5px solid #4caf50",
+                borderRadius: "8px",
+                padding: "0",
+                width: "340px",
+                maxHeight: "500px",
+                overflowY: "auto",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
+                zIndex: 100,
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+              }}>
+                {/* Header */}
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "16px 20px",
+                  backgroundColor: "#f5f5f5",
+                  borderBottom: "2px solid #e91e63",
+                }}>
+                  <h3 style={{
+                    margin: "0",
+                    fontSize: "18px",
+                    fontWeight: "700",
+                    color: "#e91e63",
+                  }}>
+                    {hoveredConstituency.name}
+                  </h3>
+                  <div style={{
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    color: "#e91e63",
+                    textAlign: "right"
+                  }}>
+                    {hoveredConstituency.province_name}
+                  </div>
+                </div>
+
+                {/* Top 3 Candidates */}
+                <div style={{ padding: "0" }}>
+                  {hoveredConstituency.candidates && hoveredConstituency.candidates.length > 0 ? (
+                    hoveredConstituency.candidates
+                      .sort((a, b) => b.votes - a.votes)
+                      .slice(0, 3)
+                      .map((candidate, idx) => (
+                      <div key={idx} style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        padding: "14px 16px",
+                        marginBottom: "0",
+                        backgroundColor: candidate.is_winner ? "#fffacd" : "#fff",
+                        borderBottom: "1px solid #f0f0f0",
+                        transition: "background-color 0.2s"
+                      }}>
+                        {/* Profile Image */}
+                        <div style={{
+                          width: "56px",
+                          height: "56px",
+                          minWidth: "56px",
+                          marginRight: "14px",
+                          borderRadius: "50%",
+                          backgroundColor: "#e8e8e8",
+                          overflow: "hidden",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "26px",
+                          fontWeight: "bold",
+                          color: "#999",
+                          border: "2px solid #e0e0e0"
+                        }}>
+                          👤
+                        </div>
+
+                        {/* Candidate Info */}
+                        <div style={{ flex: 1, minWidth: "0", marginTop: "2px" }}>
+                          <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            marginBottom: "5px"
+                          }}>
+                            <div style={{
+                              fontSize: "14px",
+                              fontWeight: candidate.is_winner ? "700" : "600",
+                              color: candidate.is_winner ? "#1a1a1a" : "#333",
+                              wordBreak: "break-word",
+                              lineHeight: "1.3"
+                            }}>
+                              {candidate.name}
+                            </div>
+                            {candidate.is_winner && (
+                              <span style={{ fontSize: "18px", marginLeft: "2px" }}>⭐</span>
+                            )}
+                          </div>
+                          <div style={{
+                            fontSize: "12px",
+                            color: "#888",
+                            wordBreak: "break-word",
+                            lineHeight: "1.3"
+                          }}>
+                            {candidate.party_name || "राजनीतिक दल"}
+                          </div>
+                        </div>
+
+                        {/* Vote Count and Indicator */}
+                        <div style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-end",
+                          marginLeft: "12px",
+                          minWidth: "70px",
+                          textAlign: "right",
+                          justifyContent: "flex-start"
+                        }}>
+                          <div style={{
+                            fontSize: "16px",
+                            fontWeight: "700",
+                            color: candidate.is_winner ? "#4caf50" : "#e91e63",
+                            marginBottom: "3px",
+                            lineHeight: "1"
+                          }}>
+                            {candidate.votes.toLocaleString()}
+                          </div>
+                          <div style={{
+                            fontSize: "14px",
+                            color: candidate.is_winner ? "#4caf50" : "#e91e63",
+                            fontWeight: "bold"
+                          }}>
+                            {candidate.is_winner ? "✓" : "●"}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{
+                      padding: "20px",
+                      textAlign: "center",
+                      fontSize: "12px",
+                      color: "#999"
+                    }}>
+                      कोनो उम्मेदवार उपलब्ध छैन
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
