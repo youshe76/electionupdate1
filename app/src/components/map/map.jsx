@@ -1,6 +1,82 @@
-export default function NepalMap() {
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
+
+export default function NepalMap({ onConstituencyHover, constituenciesData = [] }) {
+	const navigate = useNavigate();
+
+	// Setup hover handlers when SVG is loaded
+	useEffect(() => {
+		const svg = document.getElementById("constituency-map");
+		if (svg && constituenciesData.length > 0) {
+			
+			// Build a map from district_slug to all constituencies in that district
+			const districtToConstituenciesMap = {};
+			constituenciesData.forEach(constituency => {
+				const districtSlug = constituency.district_slug;
+				if (!districtToConstituenciesMap[districtSlug]) {
+					districtToConstituenciesMap[districtSlug] = [];
+				}
+				districtToConstituenciesMap[districtSlug].push(constituency);
+			});
+			
+			// Get all group elements in SVG (these represent constituencies)
+			const groups = svg.querySelectorAll("g[id]");
+			
+			groups.forEach(group => {
+				const groupId = group.getAttribute("id");
+				
+				// Try to find a district match for this group ID
+				// Check if the group ID matches any district slug directly
+				if (districtToConstituenciesMap[groupId]) {
+					// This group ID matches a district with only one constituency
+					const constituency = districtToConstituenciesMap[groupId][0];
+					attachEventListeners(group, constituency);
+				} else {
+					// Check if this is a numbered constituency like "gulmi1", "gulmi2"
+					// Extract the base district name (remove trailing digits)
+					const match = groupId.match(/^([a-z]+)(\d+)?$/);
+					if (match) {
+						const baseDistrictSlug = match[1];
+						const constituencyIndex = match[2] ? parseInt(match[2]) - 1 : 0;
+						
+						if (districtToConstituenciesMap[baseDistrictSlug]) {
+							const constituencies = districtToConstituenciesMap[baseDistrictSlug];
+							if (constituencyIndex < constituencies.length) {
+								const constituency = constituencies[constituencyIndex];
+								attachEventListeners(group, constituency);
+							}
+						}
+					}
+				}
+			});
+			
+			function attachEventListeners(group, constituency) {
+				group.style.cursor = "pointer";
+				
+				group.addEventListener("mouseenter", () => {
+					onConstituencyHover && onConstituencyHover(constituency);
+					group.style.opacity = "0.7";
+				});
+				
+				group.addEventListener("mouseleave", () => {
+					onConstituencyHover && onConstituencyHover(null);
+					group.style.opacity = "1";
+				});
+				
+				group.addEventListener("click", () => {
+					navigate(`/constituency/${constituency.slug}`);
+				});
+			}
+		}
+	}, [constituenciesData, onConstituencyHover, navigate]);
+
   return (
       <svg id="constituency-map" viewBox="0 0 2716.3 1708.1">
+    <style>{`
+      text {
+        font-size: 26px !important;
+      }
+    `}</style>
     <g id="humla">
         <path fill="#2e7a05" d="M823.6,296.3c5.4-9,9.6-6.4,15.1-0.7c4.1,4.1,9.1,7.7,15.2,10c10.3,3.8,11.4,11.7,4.7,20c-3.8,4.7-12.1,7.9-7.5,17.1
 			c1.1,2.3-3,4.6-4.9,6.8c-2.4,2.5-5.1,4.1-2.9,8.7c2,3.8-2.5,4.8-4.9,5.8c-2.5,0.9-6.9,1.8-6.1,3.8c2.9,7.5-4.2,14.9,0.8,22.5

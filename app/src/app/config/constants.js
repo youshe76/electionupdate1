@@ -3,16 +3,19 @@
  */
 
 export const MANIFESTO_IMAGES = {
-  1: "/assets/images/manifesto-1.png",
-  2: "/assets/images/manifesto-2.png",
-  3: "/assets/images/manifesto-3.png",
-  4: "/assets/images/manifesto-4.png",
-  5: "/assets/images/manifesto-5.png",
-  6: "/assets/images/manifesto-6.png",
-  7: "/assets/images/manifesto-7.png",
-  8: "/assets/images/manifesto-8.png",
-  9: "/assets/images/manifesto-9.png",
+  1: "/election/media/party-manifesto/pratibaddatapatra-pralo-pa_E1AqsXAJyr.jpg",
+  2: "/election/media/party-manifesto/congress-manifesto-082_vcRT3VJKFK.jpg",
+  3: "/election/media/party-manifesto/nepali-communist-manifesto_7Yi5M2ya8I.jpg",
+  4: "/election/media/party-manifesto/rsp-bachapatra_N3Q271hh8R.jpg",
+  5: "/election/media/party-manifesto/unp_election_menifesto_book_2082_LXbjETeuoP.jpg",
+  6: "/election/media/party-manifesto/uml-election-manifesto_ilAJhqpl3m.jpg",
+  7: "/election/media/party-manifesto/rpp_c9PJTTVU6z.jpg",
+  8: "/election/media/party-manifesto/nepal-majdur-kisan-party_07xDyXZ0vI.jpg",
+  9: "/election/media/party-manifesto/rastriya_janamorcha_manifesto_2082_CRDSjZ6jBd.jpg",
 };
+
+export const getManifestoImage = (manifestoId) =>
+  MANIFESTO_IMAGES[manifestoId] || PLACEHOLDER_IMAGE;
 
 export const PLACEHOLDER_IMAGE = "/assets/images/placeholder.png";
 export const PARTY_LOGO_BASE = "https://npcdn.ratopati.com";
