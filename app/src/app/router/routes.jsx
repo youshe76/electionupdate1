@@ -3,7 +3,6 @@
  * Centralized route definitions for the application
  */
 
-// Pages will be imported in App.jsx
 export const routes = [
   { path: "/", routePath: "/", pageName: "Home" },
   { path: "/index.html", routePath: "/", pageName: "Home" },

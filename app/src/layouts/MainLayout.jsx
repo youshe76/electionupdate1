@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 
 /**
  * MainLayout Component
@@ -10,6 +11,7 @@ export function MainLayout({
   children,
   breadcrumbRight,
   headerRight,
+  bare = false,
 }) {
   return (
     <>
@@ -54,7 +56,7 @@ export function MainLayout({
               </li>
               <li>
                 <a href="#" onClick={(e) => e.preventDefault()}>
-                  निर्वाचन
+                  निर्वाचन <ChevronDown size={18} />
                 </a>
                 <ul>
                   <li>
@@ -95,18 +97,6 @@ export function MainLayout({
               <li>
                 <Link to="/manifesto">घोषणा पत्र</Link>
               </li>
-              <li>
-                <Link to="/videos">निर्वाचन भिडियो</Link>
-              </li>
-              <li>
-                <a
-                  href="https://www.ratopati.com/segment/parliament-election-2082"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  समाचार
-                </a>
-              </li>
             </ul>
             <div className="nav-right">
               <span className="btn-search fa fa-search btn-trigger"></span>
@@ -131,28 +121,32 @@ export function MainLayout({
         ></div>
       </div>
 
-      <div className="elec-content-wrap">
-        <section className="section section-candidates section-bottom">
-          <div className="elc-container">
-            <div className="backward flex flex-wrap flex-between flex-middle">
-              <div className="breadcrumb">
-                <Link to="/">प्रतिनिधि सभा निर्वाचन २०८२</Link>
-                <span className="sep">/</span>
-                <span>{title}</span>
+      {bare ? (
+        children
+      ) : (
+        <div className="elec-content-wrap">
+          <section className="section section-candidates section-bottom">
+            <div className="elc-container">
+              <div className="backward flex flex-wrap flex-between flex-middle">
+                <div className="breadcrumb">
+                  <Link to="/">प्रतिनिधि सभा निर्वाचन २०८२</Link>
+                  <span className="sep">/</span>
+                  <span>{title}</span>
+                </div>
+                {breadcrumbRight}
               </div>
-              {breadcrumbRight}
-            </div>
-            <div className="page-header flex flex-between flex-middle flex-wrap">
-              <div>
-                <h3 className="page-title">{title}</h3>
-                {description ? <p>{description}</p> : null}
+              <div className="page-header flex flex-between flex-middle flex-wrap">
+                <div>
+                  <h3 className="page-title">{title}</h3>
+                  {description ? <p>{description}</p> : null}
+                </div>
+                {headerRight}
               </div>
-              {headerRight}
+              {children}
             </div>
-            {children}
-          </div>
-        </section>
-      </div>
+          </section>
+        </div>
+      )}
     </>
   );
 }
