@@ -48,7 +48,7 @@ export default function Result() {
               return (
                 <tr key={party.slug} style={{ borderBottom: "1px solid #eee" }}>
                   <td style={{ padding: "10px" }}>
-                    <Link to={`/party/${party.slug}`} style={{ color: "#0066cc", textDecoration: "none", fontWeight: "bold" }}>
+                    <Link to={`/party/${party.slug}`} style={{ color: "#0066cc", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">
                       {party.name}
                     </Link>
                   </td>

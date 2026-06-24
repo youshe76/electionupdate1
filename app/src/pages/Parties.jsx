@@ -145,6 +145,8 @@ export default function Parties() {
             <div style={{ marginTop: "20px", textAlign: "center" }}>
               <Link
                 to={`/party/${party.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   display: "inline-block",
                   padding: "10px 18px",

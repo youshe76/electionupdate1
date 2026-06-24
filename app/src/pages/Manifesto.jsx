@@ -43,7 +43,7 @@ export default function Manifesto() {
             }}
           >
             <div style={{ position: "relative", overflow: "hidden" }}>
-              <Link to={`/manifesto/${manifesto.id}`} style={{ display: "block" }}>
+              <Link to={`/manifesto/${manifesto.id}`} style={{ display: "block" }} target="_blank" rel="noopener noreferrer">
                 <img
                   src={getManifestoImage(manifesto.id)}
                   alt={manifesto.party_name}
@@ -86,7 +86,7 @@ export default function Manifesto() {
                   fontWeight: "bold",
                   fontSize: "13px",
                 }}
-              >
+               target="_blank" rel="noopener noreferrer">
                 घोषणा पत्र हेर्नुहोस्
               </Link>
             </div>

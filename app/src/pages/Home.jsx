@@ -1,8 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import NepalMap from "../components/map/NepalMap.jsx";
 import { MainLayout } from "../layouts/MainLayout";
+import ProportionalResultsSection from "../components/home/ProportionalResultsSection.jsx";
+import ProvinceResultsSection from "../components/home/ProvinceResultsSection.jsx";
+import HotSeatsPreviewSection from "../components/home/HotSeatsPreviewSection.jsx";
+import PopularCandidatesPreviewSection from "../components/home/PopularCandidatesPreviewSection.jsx";
+import AllCandidatesPreviewSection from "../components/home/AllCandidatesPreviewSection.jsx";
 import { toNepaliNumber } from "../utils";
-import { useRef } from "react";
 import { BadgeCheck } from "lucide-react";
 
 export default function Home() {
@@ -45,7 +50,7 @@ export default function Home() {
 
 	const parties = [
 		{
-			id: "rsp",
+			slug: "rastriya-swatantra-party",
 			name: "राष्ट्रिय स्वतन्त्र पार्टी",
 			image: "/assets/images/rsp_AiC1qh2xlI.jpg",
 			direct: 125,
@@ -55,7 +60,7 @@ export default function Home() {
 			color: "#07a4f2",
 		},
 		{
-			id: "congress",
+			slug: "nepali-congress",
 			name: "नेपाली कांग्रेस",
 			image: "/assets/images/congress-logo_zVeY3un3Hj.jpg",
 			direct: 18,
@@ -65,7 +70,7 @@ export default function Home() {
 			color: "#2e7a05",
 		},
 		{
-			id: "uml",
+			slug: "cpn-uml",
 			name: "नेकपा (एमाले)",
 			image: "/assets/images/uml-1_zfT0bMAJFO.jpg",
 			direct: 9,
@@ -75,7 +80,7 @@ export default function Home() {
 			color: "#910808",
 		},
 		{
-			id: "ncp",
+			slug: "nepali-communist-party",
 			name: "नेपाली कम्युनिष्ट पार्टी",
 			image: "/assets/images/nepali-communist_uVwmNizOSk.jpg",
 			direct: 8,
@@ -85,7 +90,7 @@ export default function Home() {
 			color: "#f50f0f",
 		},
 		{
-			id: "shram",
+			slug: "shram-samskriti-party",
 			name: "श्रम संस्कृति पार्टी",
 			image: "/assets/images/shram-sanskriti-party_jrxdNsjzjb.jpg",
 			direct: 3,
@@ -95,7 +100,7 @@ export default function Home() {
 			color: "#d54b10",
 		},
 		{
-			id: "rpp",
+			slug: "rastriya-prajatantra-party",
 			name: "राष्ट्रिय प्रजातन्त्र पार्टी",
 			image: "/assets/images/raprapa_RPVSZDsBPg.jpg",
 			direct: 1,
@@ -152,13 +157,20 @@ export default function Home() {
 			if (!isMapHoveredRef.current && !isPopupHoveredRef.current) {
 				setHoveredConstituency(null);
 			}
-		}, 4000); // ⬅️ adjust time (3–6 sec recommended)
+		}, 10000); // ⬅️ adjust time (3–6 sec recommended)
 	};
 
-	const legendItems = parties.map((p) => ({
-		name: p.name,
-		color: p.color,
-	}));
+	const legendItems = [{ name: "सबै", color: "#ddd" }]
+		.concat(
+			parties.map((p) => ({
+				name: p.name,
+				color: p.color,
+			})),
+		)
+		.concat([
+			{ name: "स्वतन्त्र", color: "#043e62" },
+			{ name: "निकुञ्ज तथा आरक्ष", color: "#55e5a5" },
+		]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -523,26 +535,32 @@ export default function Home() {
 						<div className="elc-container">
 							<div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
 								<h3 className="heading-title">प्रतिनिधिसभा परिणाम</h3>
-								<a
+								<Link
 									className="btn"
-									href="/result"
+									to="/parties"
+									target="_blank"
+									rel="noopener noreferrer"
 								>
 									विस्तृत
-								</a>
+								</Link>
 							</div>
 							<div className="dn-grid dn-grid-small">
 								{parties.map((party) => (
 									<div
-										key={party.id}
+										key={party.slug}
 										className="col2 parties-card is-border"
 									>
-										<a href={`/party/${party.id}`}>
+										<Link
+											to={`/party/${party.slug}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
 											<img
 												src={party.image}
 												alt={party.name}
 											/>
 											<span className="title">{party.name}</span>
-										</a>
+										</Link>
 										<table>
 											<thead>
 												<tr>
@@ -553,7 +571,13 @@ export default function Home() {
 											<tbody>
 												<tr>
 													<td>
-														<a href={`/winners?party_id=${party.id}`}>{party.direct}</a>
+														<Link
+															to={`/party/${party.slug}`}
+															target="_blank"
+															rel="noopener noreferrer"
+														>
+															{party.direct}
+														</Link>
 													</td>
 													<td>{party.proportional}</td>
 												</tr>
@@ -575,65 +599,11 @@ export default function Home() {
 						</div>
 					</section>
 
-					{/* Province Results Section */}
-					<section className="section pradesh-result">
-						<div className="elc-container">
-							<div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
-								<h3 className="heading-title">प्रदेशअनुसार परिणाम</h3>
-							</div>
-							<div className="candidate--lists dn-grid dn-grid-small">
-								{provinces.map((province) => (
-									<div
-										key={province.id}
-										className="election-card col3"
-									>
-										<div className="candidate-card-header">
-											<h3>
-												<a href={`/province/${province.id}`}>{province.name}</a>
-											</h3>
-										</div>
-										<div className="mx-height">
-											<a
-												href={`/province/${province.id}`}
-												className="candidate-row pradesh-row"
-											>
-												<div className="candidate-media">
-													<img
-														className="candidate-photo"
-														src="/assets/images/rsp_AiC1qh2xlI.jpg"
-														alt="राष्ट्रिय स्वतन्त्र पार्टी"
-													/>
-													<div>
-														<h3 className="title">राष्ट्रिय स्वतन्त्र पार्टी</h3>
-														<div className="progress-bar">
-															<div
-																style={{
-																	background: "#07a4f2",
-																	width: "45%",
-																}}
-																className="progress-fill"
-															></div>
-														</div>
-													</div>
-												</div>
-												<div className="candidate-detail">
-													<div className="votes">—</div>
-												</div>
-											</a>
-										</div>
-										<div className="load-more">
-											<a
-												className="more"
-												href={`/province/${province.id}`}
-											>
-												विस्तृत विवरण
-											</a>
-										</div>
-									</div>
-								))}
-							</div>
-						</div>
-					</section>
+					<ProvinceResultsSection />
+					<ProportionalResultsSection />
+					<HotSeatsPreviewSection />
+					<PopularCandidatesPreviewSection />
+					<AllCandidatesPreviewSection />
 				</div>
 			</MainLayout>
 		</div>

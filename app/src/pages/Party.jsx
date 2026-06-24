@@ -115,7 +115,7 @@ export default function Party() {
               }}
             >
               <div className="party-logo" style={{ display: "flex", alignItems: "center" }}>
-                <Link to={`/candidate/${candidate.slug}`}>
+                <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                   <img 
                     className="candidate-photo" 
                     src={candidate.image || "/assets/images/placeholder.png"} 
@@ -125,7 +125,7 @@ export default function Party() {
                 </Link>
                 <div>
                   <h3 className="party-name" style={{ margin: 0, fontSize: "16px", fontWeight: "bold" }}>
-                    <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }}>
+                    <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }} target="_blank" rel="noopener noreferrer">
                       {candidate.name}
                     </Link>
                   </h3>

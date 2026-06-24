@@ -61,7 +61,7 @@ export default function District() {
               <p style={{ fontSize: "16px", lineHeight: "1.6" }}>{district.description}</p>
             </div>
             <div style={{ marginTop: "15px", fontSize: "14px", color: "#666" }}>
-              <strong>प्रदेश:</strong> <Link to={`/province/${district.province_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>{district.province_name}</Link>
+              <strong>प्रदेश:</strong> <Link to={`/province/${district.province_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">{district.province_name}</Link>
             </div>
           </div>
           

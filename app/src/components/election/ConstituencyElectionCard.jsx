@@ -22,11 +22,11 @@ export default function ConstituencyElectionCard({
     <div className="election-card col4">
       <div className="candidate-card-header">
         <h3>
-          <Link to={`/constituency/${constituency.slug}`}>
+          <Link to={`/constituency/${constituency.slug}`} target="_blank" rel="noopener noreferrer">
             {constituency.name}
           </Link>
         </h3>
-        <Link to={`/district/${constituency.district_slug}`}>
+        <Link to={`/district/${constituency.district_slug}`} target="_blank" rel="noopener noreferrer">
           <span className="small">{constituency.district_name}</span>
         </Link>
       </div>
@@ -42,7 +42,7 @@ export default function ConstituencyElectionCard({
               className={`candidate-row${candidate.is_winner ? " candidate-win" : ""}`}
             >
               <div className="candidate-media">
-                <Link to={`/candidate/${candidate.slug}`}>
+                <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                   <img
                     className="candidate-photo"
                     src={info?.image || "/assets/images/placeholder.png"}
@@ -51,7 +51,7 @@ export default function ConstituencyElectionCard({
                 </Link>
                 <div>
                   <h3 className="title">
-                    <Link to={`/candidate/${candidate.slug}`}>
+                    <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                       {candidate.name}
                     </Link>
                   </h3>
@@ -66,7 +66,7 @@ export default function ConstituencyElectionCard({
                   ) : null}
                 </div>
                 {party && partyLogo && partyLogo !== "#" ? (
-                  <Link className="party" to={`/party/${party.slug}`}>
+                  <Link className="party" to={`/party/${party.slug}`} target="_blank" rel="noopener noreferrer">
                     <img
                       className="party-flag"
                       src={partyLogo}
@@ -84,8 +84,8 @@ export default function ConstituencyElectionCard({
         })}
       </div>
       <div className="load-more">
-        <Link className="more" to={`/constituency/${constituency.slug}`}>
-          विस्तृत विवरण
+        <Link className="more" to={`/constituency/${constituency.slug}`} target="_blank" rel="noopener noreferrer">
+          विस्तृत
         </Link>
         <div className="share-links">
           <a

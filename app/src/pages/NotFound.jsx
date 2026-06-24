@@ -20,7 +20,7 @@ export default function NotFound() {
     <main className="not-found-page elc-container">
       <h1>Page not found</h1>
       <p>
-        Go back to the <Link to="/">home page</Link>.
+        Go back to the <Link to="/" target="_blank" rel="noopener noreferrer">home page</Link>.
       </p>
     </main>
   );

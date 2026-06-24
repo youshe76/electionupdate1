@@ -31,7 +31,7 @@ export default function PopularCandidates() {
           <div key={candidate.slug} className="popular-card">
             <div className="popular-card-inner">
               <div className="photo-wrap">
-                <Link to={`/candidate/${candidate.slug}`}>
+                <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                   <div className="photo-circle">
                     <img
                       src={candidate.image || "/assets/images/placeholder.png"}
@@ -44,7 +44,7 @@ export default function PopularCandidates() {
 
               <div className="card-body">
                 <h4 className="candidate-name">
-                  <Link to={`/candidate/${candidate.slug}`}>{candidate.name}</Link>
+                  <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">{candidate.name}</Link>
                 </h4>
                 <div className="candidate-meta">{candidate.party}</div>
                 <div className="constituency-pill">{candidate.constituency}</div>

@@ -20,7 +20,7 @@ export function MainLayout({
           <div className="elc-container">
             <div className="header-holder flex flex-middle flex-wrap flex-between">
               <div className="header-logo">
-                <Link to="/" className="logo">
+                <Link to="/" className="logo" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/assets/images/ratopati-logo_zD9OASMMFx.png"
                     alt="Logo"
@@ -49,10 +49,10 @@ export function MainLayout({
           <div className="menu-container">
             <ul>
               <li>
-                <Link to="/">होम पेज</Link>
+                <Link to="/" target="_blank" rel="noopener noreferrer">होम पेज</Link>
               </li>
               <li>
-                <Link to="/candidates">उम्मेदवारहरु</Link>
+                <Link to="/candidates" target="_blank" rel="noopener noreferrer">उम्मेदवारहरु</Link>
               </li>
               <li>
                 <a href="#" onClick={(e) => e.preventDefault()}>
@@ -60,42 +60,42 @@ export function MainLayout({
                 </a>
                 <ul>
                   <li>
-                    <Link to="/province/koshi">कोशी प्रदेश</Link>
+                    <Link to="/province/koshi" target="_blank" rel="noopener noreferrer">कोशी प्रदेश</Link>
                   </li>
                   <li>
-                    <Link to="/province/madhesh">मधेस प्रदेश</Link>
+                    <Link to="/province/madhesh" target="_blank" rel="noopener noreferrer">मधेस प्रदेश</Link>
                   </li>
                   <li>
-                    <Link to="/province/bagmati">बागमती प्रदेश</Link>
+                    <Link to="/province/bagmati" target="_blank" rel="noopener noreferrer">बागमती प्रदेश</Link>
                   </li>
                   <li>
-                    <Link to="/province/gandaki">गण्डकी प्रदेश</Link>
+                    <Link to="/province/gandaki" target="_blank" rel="noopener noreferrer">गण्डकी प्रदेश</Link>
                   </li>
                   <li>
-                    <Link to="/province/lumbini">लुम्बिनी प्रदेश</Link>
+                    <Link to="/province/lumbini" target="_blank" rel="noopener noreferrer">लुम्बिनी प्रदेश</Link>
                   </li>
                   <li>
-                    <Link to="/province/karnali">कर्णाली प्रदेश</Link>
+                    <Link to="/province/karnali" target="_blank" rel="noopener noreferrer">कर्णाली प्रदेश</Link>
                   </li>
                   <li>
-                    <Link to="/province/sudurpaschim">सुदूरपश्चिम प्रदेश</Link>
+                    <Link to="/province/sudurpaschim" target="_blank" rel="noopener noreferrer">सुदूरपश्चिम प्रदेश</Link>
                   </li>
                 </ul>
               </li>
               <li>
-                <Link to="/parties">राजनीतिक दल</Link>
+                <Link to="/parties" target="_blank" rel="noopener noreferrer">राजनीतिक दल</Link>
               </li>
               <li>
-                <Link to="/hot-seats">हट सिटहरु</Link>
+                <Link to="/hot-seats" target="_blank" rel="noopener noreferrer">हट सिटहरु</Link>
               </li>
               <li>
-                <Link to="/vote-difference">मतान्तर</Link>
+                <Link to="/vote-difference" target="_blank" rel="noopener noreferrer">मतान्तर</Link>
               </li>
               <li>
-                <Link to="/popular-candidates">चर्चित उम्मेदवारहरु</Link>
+                <Link to="/popular-candidates" target="_blank" rel="noopener noreferrer">चर्चित उम्मेदवारहरु</Link>
               </li>
               <li>
-                <Link to="/manifesto">घोषणा पत्र</Link>
+                <Link to="/manifesto" target="_blank" rel="noopener noreferrer">घोषणा पत्र</Link>
               </li>
             </ul>
             <div className="nav-right">
@@ -129,7 +129,7 @@ export function MainLayout({
             <div className="elc-container">
               <div className="backward flex flex-wrap flex-between flex-middle">
                 <div className="breadcrumb">
-                  <Link to="/">प्रतिनिधि सभा निर्वाचन २०८२</Link>
+                  <Link to="/" target="_blank" rel="noopener noreferrer">प्रतिनिधि सभा निर्वाचन २०८२</Link>
                   <span className="sep">/</span>
                   <span>{title}</span>
                 </div>

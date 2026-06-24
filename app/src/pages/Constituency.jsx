@@ -49,9 +49,9 @@ export default function Constituency() {
               </div>
             )}
             <div style={{ fontSize: "14px", color: "#666" }}>
-              <strong>जिल्ला:</strong> <Link to={`/district/${constituency.district_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>{constituency.district_name}</Link>
+              <strong>जिल्ला:</strong> <Link to={`/district/${constituency.district_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">{constituency.district_name}</Link>
               <span style={{ margin: "0 10px" }}>|</span>
-              <strong>प्रदेश:</strong> <Link to={`/province/${constituency.province_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>{constituency.province_name}</Link>
+              <strong>प्रदेश:</strong> <Link to={`/province/${constituency.province_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">{constituency.province_name}</Link>
             </div>
           </div>
           
@@ -109,7 +109,7 @@ export default function Constituency() {
                 }}
               >
                 <div className="party-logo" style={{ display: "flex", alignItems: "center" }}>
-                  <Link to={`/candidate/${candidate.slug}`}>
+                  <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                     <img 
                       className="candidate-photo" 
                       src={candidateInfo?.image || "/assets/images/placeholder.png"} 
@@ -119,12 +119,12 @@ export default function Constituency() {
                   </Link>
                   <div>
                     <h3 className="party-name" style={{ margin: 0, fontSize: "16px", fontWeight: "bold" }}>
-                      <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }}>
+                      <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }} target="_blank" rel="noopener noreferrer">
                         {candidate.name}
                       </Link>
                     </h3>
                     {partyInfo ? (
-                      <Link to={`/party/${partyInfo.slug}`} style={{ fontSize: "13px", color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>
+                      <Link to={`/party/${partyInfo.slug}`} style={{ fontSize: "13px", color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">
                         {candidateInfo?.party}
                       </Link>
                     ) : (
