@@ -12,20 +12,27 @@ const LumbiniMap = () => {
 	};
 
 	return (
-		<svg width="680px" height="480px" y="0px" viewBox="0 0 498.9 290.3">
-    <style type="text/css">
-       {` g text {
-        font-size: 8px;
-        font-weight: 500;
-        }
+		<svg width="680px" height="480px" y="0px" viewBox="0 0 498.9 290.3" onClick={handleMapClick}>
+	    <style type="text/css">
+	       {`g text {
+	       font-size: 8px;
+	       font-weight: 500;
+	       }
 
-        g path,
-        polygon {
-        stroke-width: 0.3px;
-        stroke: #000;
+	       g path,
+	       polygon {
+	       stroke-width: 0.3px;
+	         stroke: #000;
+	       }
 
-        }`}
-    </style>
+	       g[id] {
+	         cursor: pointer;
+	         transition: all 0.3s ease;
+	       }
+	       g[id]:hover path {
+	         fill: #bf1e2e;
+	       }`}
+	    </style>
     <g id="sunsari">
         <path fill="#AC1B2A1C" class="st0" d="M1035,296.1c8,3.2,16.4-0.5,24.6,0.5c5.5,1.6,10.6,3.9,15.9,5.8c-0.6,7.6-6.9,12.6-10.1,19.2
         c-0.6,5.2,0.5,10.4,0.3,15.8c0.2,5.2-5.4,9-3.9,14.3c1.1,6.3-0.3,12.6-1.1,18.7c-2.4,4.7-7.7,7.9-8.3,13.4
