@@ -1,13 +1,13 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
-import candidatesData from "../../public/data/candidates.json";
-import provinceData from "../../public/data/province.json";
-import districtData from "../../public/data/district.json";
-import constituencyData from "../../public/data/constituency.json";
-import partyData from "../../public/data/party.json";
-import manifestoData from "../../public/data/manifesto.json";
-import hotSeatsData from "../../public/data/hot-seats.json";
-import voteDifferenceData from "../../public/data/vote-difference.json";
+import candidatesData from "../data/candidates.json";
+import provinceData from "../data/province.json";
+import districtData from "../data/district.json";
+import constituencyData from "../data/constituency.json";
+import partyData from "../data/party.json";
+import manifestoData from "../data/manifesto.json";
+import hotSeatsData from "../data/hot-seats.json";
+import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
@@ -33,6 +33,16 @@ export default function District() {
     (c) => c.district_slug === district.slug
   );
 
+  const candidatesBySlug = useMemo(
+    () => new Map(candidatesData.map((c) => [c.slug, c])),
+    []
+  );
+
+  const partyByName = useMemo(
+    () => new Map(partyData.map((p) => [p.name, p])),
+    []
+  );
+
   return (
     <MainLayout title={district.name}>
       <div className="district-detail" style={{ marginBottom: "30px" }}>
@@ -51,7 +61,7 @@ export default function District() {
               <p style={{ fontSize: "16px", lineHeight: "1.6" }}>{district.description}</p>
             </div>
             <div style={{ marginTop: "15px", fontSize: "14px", color: "#666" }}>
-              <strong>प्रदेश:</strong> <Link to={`/province/${district.province_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>{district.province_name}</Link>
+              <strong>प्रदेश:</strong> <Link to={`/province/${district.province_slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">{district.province_name}</Link>
             </div>
           </div>
           
@@ -88,54 +98,15 @@ export default function District() {
           निर्वाचन क्षेत्रहरू
         </h3>
         <div className="candidate--lists dn-grid dn-grid-small" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "20px" }}>
-          {districtConstituencies.map((constituency) => {
-            const winner = constituency.candidates.find(c => c.is_winner) || constituency.candidates[0];
-            const candidateInfo = candidatesData.find(c => c.slug === winner?.slug);
-            
-            return (
-              <div 
-                key={constituency.slug} 
-                className="election-card col4" 
-                style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "15px", backgroundColor: "#fff", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
-              >
-                <div className="candidate-card-header" style={{ marginBottom: "15px", borderBottom: "1px solid #eee", paddingBottom: "10px" }}>
-                  <h3 style={{ margin: 0 }}>
-                    <Link to={`/constituency/${constituency.slug}`} style={{ color: "#bf1e2e", fontWeight: "bold", textDecoration: "none", fontSize: "18px" }}>
-                      {constituency.name}
-                    </Link>
-                  </h3>
-                </div>
-                {winner && (
-                  <div className="candidate-row candidate-win" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div className="candidate-media" style={{ display: "flex", alignItems: "center" }}>
-                      <Link to={`/candidate/${winner.slug}`}>
-                        <img 
-                          className="candidate-photo" 
-                          src={candidateInfo?.image || "/assets/images/placeholder.png"} 
-                          alt={winner.name} 
-                          style={{ width: "50px", height: "50px", borderRadius: "50%", marginRight: "10px", objectFit: "cover", border: "1px solid #ccc" }}
-                        />
-                      </Link>
-                      <div>
-                        <h3 className="title" style={{ fontSize: "14px", fontWeight: "bold", margin: 0 }}>
-                          <Link to={`/candidate/${winner.slug}`} style={{ color: "#333", textDecoration: "none" }}>
-                            {winner.name}
-                          </Link>
-                        </h3>
-                        <span style={{ fontSize: "12px", color: "#777" }}>{candidateInfo?.party || ""}</span>
-                      </div>
-                    </div>
-                    <div className="candidate-detail" style={{ textAlign: "right" }}>
-                      <div className="votes" style={{ fontWeight: "bold", color: "#bf1e2e", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                        {winner.votes?.toLocaleString() || "०"}
-                        <img src="/assets/img/win-tick.png" alt="win-tick" style={{ width: "16px", marginLeft: "5px" }} />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {districtConstituencies.map((constituency) => (
+            <ConstituencyElectionCard
+              key={constituency.slug}
+              constituency={constituency}
+              candidatesBySlug={candidatesBySlug}
+              partyByName={partyByName}
+              limit={3}
+            />
+          ))}
         </div>
       </div>
     </MainLayout>

@@ -1,13 +1,13 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
-import candidatesData from "../../public/data/candidates.json";
-import provinceData from "../../public/data/province.json";
-import districtData from "../../public/data/district.json";
-import constituencyData from "../../public/data/constituency.json";
-import partyData from "../../public/data/party.json";
-import manifestoData from "../../public/data/manifesto.json";
-import hotSeatsData from "../../public/data/hot-seats.json";
-import voteDifferenceData from "../../public/data/vote-difference.json";
+import candidatesData from "../data/candidates.json";
+import provinceData from "../data/province.json";
+import districtData from "../data/district.json";
+import constituencyData from "../data/constituency.json";
+import partyData from "../data/party.json";
+import manifestoData from "../data/manifesto.json";
+import hotSeatsData from "../data/hot-seats.json";
+import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
@@ -115,7 +115,7 @@ export default function Party() {
               }}
             >
               <div className="party-logo" style={{ display: "flex", alignItems: "center" }}>
-                <Link to={`/candidate/${candidate.slug}`}>
+                <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                   <img 
                     className="candidate-photo" 
                     src={candidate.image || "/assets/images/placeholder.png"} 
@@ -125,7 +125,7 @@ export default function Party() {
                 </Link>
                 <div>
                   <h3 className="party-name" style={{ margin: 0, fontSize: "16px", fontWeight: "bold" }}>
-                    <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }}>
+                    <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }} target="_blank" rel="noopener noreferrer">
                       {candidate.name}
                     </Link>
                   </h3>

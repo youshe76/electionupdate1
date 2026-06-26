@@ -1,19 +1,27 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
-import candidatesData from "../../public/data/candidates.json";
-import provinceData from "../../public/data/province.json";
-import districtData from "../../public/data/district.json";
-import constituencyData from "../../public/data/constituency.json";
-import partyData from "../../public/data/party.json";
-import manifestoData from "../../public/data/manifesto.json";
-import hotSeatsData from "../../public/data/hot-seats.json";
-import voteDifferenceData from "../../public/data/vote-difference.json";
+import candidatesData from "../data/candidates.json";
+import provinceData from "../data/province.json";
+import districtData from "../data/district.json";
+import constituencyData from "../data/constituency.json";
+import partyData from "../data/party.json";
+import manifestoData from "../data/manifesto.json";
+import hotSeatsData from "../data/hot-seats.json";
+import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
 import { districtsForProvince, provinceRouteSlug, cleanRouteSlug } from "../utils/geoUtils";
 import { fixImageUrl } from "../utils/imageUtils";
 import { getManifestoImage } from "../app/config/constants";
+
+import KoshiMap from "../components/map/KoshiMap";
+import MadeshMap from "../components/map/MadeshMap";
+import BagmatiMap from "../components/map/BagmatiMap";
+import GandakiMap from "../components/map/GandakiMap";
+import LumbiniMap from "../components/map/LumbiniMap";
+import KarnaliMap from "../components/map/KarnaliMap";
+import SudhurPaschimMap from "../components/map/SudhurPaschimMap";
 
 export default function Province() {
   const { slug } = useParams();
@@ -105,28 +113,14 @@ export default function Province() {
               <h4 style={{ fontSize: "18px", marginBottom: "10px", fontWeight: "bold", color: "#333" }}>
                 यस प्रदेशका जिल्लाहरू:
               </h4>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                {province.districts?.map((d) => {
-                  const districtInfo = districtData.find((item) => item.slug === d.slug);
-                  return (
-                    <Link
-                      key={d.slug}
-                      to={`/district/${d.slug}`}
-                      style={{
-                        display: "inline-block",
-                        padding: "8px 16px",
-                        backgroundColor: "#f5f5f5",
-                        borderRadius: "20px",
-                        color: "#bf1e2e",
-                        textDecoration: "none",
-                        fontWeight: "bold",
-                        border: "1px solid #ddd",
-                      }}
-                    >
-                      {districtInfo?.name || d.slug}
-                    </Link>
-                  );
-                })}
+              <div style={{ display: "flex", justifyContent: "center", width: "100%", overflow: "hidden" }}>
+                {province.slug === "koshi-province" && <KoshiMap />}
+                {province.slug === "madhesh-province" && <MadeshMap />}
+                {province.slug === "bagmati-province" && <BagmatiMap />}
+                {province.slug === "gandaki-province" && <GandakiMap />}
+                {province.slug === "lumbini-province" && <LumbiniMap />}
+                {province.slug === "karnali-province" && <KarnaliMap />}
+                {province.slug === "sudurpaschim-province" && <SudhurPaschimMap />}
               </div>
             </div>
           </div>

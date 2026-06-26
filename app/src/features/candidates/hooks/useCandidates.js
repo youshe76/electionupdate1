@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import candidatesData from "../../../../public/data/candidates.json";
-import partyData from "../../../../public/data/party.json";
+import candidatesData from "../../../data/candidates.json";
+import partyData from "../../../data/party.json";
 
 /**
  * Custom hook to get candidates indexed by slug

@@ -1,13 +1,13 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
-import candidatesData from "../../public/data/candidates.json";
-import provinceData from "../../public/data/province.json";
-import districtData from "../../public/data/district.json";
-import constituencyData from "../../public/data/constituency.json";
-import partyData from "../../public/data/party.json";
-import manifestoData from "../../public/data/manifesto.json";
-import hotSeatsData from "../../public/data/hot-seats.json";
-import voteDifferenceData from "../../public/data/vote-difference.json";
+import candidatesData from "../data/candidates.json";
+import provinceData from "../data/province.json";
+import districtData from "../data/district.json";
+import constituencyData from "../data/constituency.json";
+import partyData from "../data/party.json";
+import manifestoData from "../data/manifesto.json";
+import hotSeatsData from "../data/hot-seats.json";
+import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
@@ -25,7 +25,7 @@ export default function Candidate() {
       <MainLayout title="उम्मेदवार फेला परेन">
         <p>
           दुःख है, यो उम्मेदवार फेला परेन। कृपया{" "}
-          <Link to="/candidates">उम्मेदवार सूची</Link> पर वापस जाएं।
+          <Link to="/candidates" target="_blank" rel="noopener noreferrer">उम्मेदवार सूची</Link> पर वापस जाएं।
         </p>
       </MainLayout>
     );
@@ -64,7 +64,7 @@ export default function Candidate() {
           <div style={{ marginBottom: "15px" }}>
             <strong>पार्टी:</strong>{" "}
             {partyInfo ? (
-              <Link to={`/party/${partyInfo.slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }}>
+              <Link to={`/party/${partyInfo.slug}`} style={{ color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">
                 {candidate.party}
               </Link>
             ) : (
@@ -76,7 +76,7 @@ export default function Candidate() {
             <Link 
               to={`/constituency/${candidate.constituency?.replace(/\s+/g, "").toLowerCase()}`}
               style={{ color: "#0066cc", textDecoration: "none", fontWeight: "bold" }}
-            >
+             target="_blank" rel="noopener noreferrer">
               {candidate.constituency}
             </Link>
           </div>
@@ -112,7 +112,7 @@ export default function Candidate() {
                 textDecoration: "none",
                 borderRadius: "4px",
               }}
-            >
+             target="_blank" rel="noopener noreferrer">
               सभी उम्मेदवार देखें
             </Link>
           </div>
