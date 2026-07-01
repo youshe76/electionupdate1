@@ -6,7 +6,7 @@ export default function About() {
       <h1>About</h1>
       <p>This is a minimal React Router setup.</p>
       <p>
-        <Link to="/">Back home</Link>
+        <Link to="/" target="_blank" rel="noopener noreferrer">Back home</Link>
       </p>
     </main>
   );

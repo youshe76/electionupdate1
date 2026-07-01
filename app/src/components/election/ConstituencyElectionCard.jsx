@@ -5,10 +5,14 @@ export default function ConstituencyElectionCard({
   constituency,
   candidatesBySlug,
   partyByName,
+  limit,
 }) {
-  const sortedCandidates = [...constituency.candidates].sort(
+  let sortedCandidates = [...constituency.candidates].sort(
     (a, b) => (b.votes || 0) - (a.votes || 0),
   );
+  if (limit) {
+    sortedCandidates = sortedCandidates.slice(0, limit);
+  }
   const shareUrl = `${window.location.origin}/constituency/${constituency.slug}`;
   const shareText = encodeURIComponent(
     `${constituency.name} को ताजा मत परिणाम`,
@@ -18,11 +22,11 @@ export default function ConstituencyElectionCard({
     <div className="election-card col4">
       <div className="candidate-card-header">
         <h3>
-          <Link to={`/constituency/${constituency.slug}`}>
+          <Link to={`/constituency/${constituency.slug}`} target="_blank" rel="noopener noreferrer">
             {constituency.name}
           </Link>
         </h3>
-        <Link to={`/district/${constituency.district_slug}`}>
+        <Link to={`/district/${constituency.district_slug}`} target="_blank" rel="noopener noreferrer">
           <span className="small">{constituency.district_name}</span>
         </Link>
       </div>
@@ -38,16 +42,18 @@ export default function ConstituencyElectionCard({
               className={`candidate-row${candidate.is_winner ? " candidate-win" : ""}`}
             >
               <div className="candidate-media">
-                <Link to={`/candidate/${candidate.slug}`}>
+                <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                   <img
                     className="candidate-photo"
                     src={info?.image || "/assets/images/placeholder.png"}
                     alt={candidate.name}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </Link>
                 <div>
                   <h3 className="title">
-                    <Link to={`/candidate/${candidate.slug}`}>
+                    <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                       {candidate.name}
                     </Link>
                   </h3>
@@ -62,11 +68,13 @@ export default function ConstituencyElectionCard({
                   ) : null}
                 </div>
                 {party && partyLogo && partyLogo !== "#" ? (
-                  <Link className="party" to={`/party/${party.slug}`}>
+                  <Link className="party" to={`/party/${party.slug}`} target="_blank" rel="noopener noreferrer">
                     <img
                       className="party-flag"
                       src={partyLogo}
                       alt={info?.party}
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.style.display = "none";
@@ -80,8 +88,8 @@ export default function ConstituencyElectionCard({
         })}
       </div>
       <div className="load-more">
-        <Link className="more" to={`/constituency/${constituency.slug}`}>
-          विस्तृत विवरण
+        <Link className="more" to={`/constituency/${constituency.slug}`} target="_blank" rel="noopener noreferrer">
+          विस्तृत
         </Link>
         <div className="share-links">
           <a
@@ -92,6 +100,8 @@ export default function ConstituencyElectionCard({
             <img
               src="https://www.ratopati.com/build/img/facebook.svg"
               alt="facebook"
+              loading="lazy"
+              decoding="async"
             />
           </a>
           <a
@@ -102,6 +112,8 @@ export default function ConstituencyElectionCard({
             <img
               src="https://www.ratopati.com/build/img/twitter-x.svg"
               alt="twitter"
+              loading="lazy"
+              decoding="async"
             />
           </a>
         </div>

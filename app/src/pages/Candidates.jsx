@@ -1,29 +1,25 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useState, useMemo, useEffect } from "react";
-import candidatesData from "../../public/data/candidates.json";
-import provinceData from "../../public/data/province.json";
-import districtData from "../../public/data/district.json";
-import constituencyData from "../../public/data/constituency.json";
-import partyData from "../../public/data/party.json";
-import manifestoData from "../../public/data/manifesto.json";
-import hotSeatsData from "../../public/data/hot-seats.json";
-import voteDifferenceData from "../../public/data/vote-difference.json";
+import { useState, useMemo, useEffect, useRef } from "react";
+import provinceData from "../data/province.json";
+import constituencyData from "../data/constituency.json";
+import partyData from "../data/party.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
-import { toNepaliNumber } from "../utils";
-import { districtsForProvince, provinceRouteSlug, cleanRouteSlug } from "../utils/geoUtils";
-import { fixImageUrl } from "../utils/imageUtils";
-import { getManifestoImage } from "../app/config/constants";
+import { districtsForProvince } from "../utils/geoUtils";
+
+const CARD_BATCH_SIZE = 20;
 
 export default function Candidates() {
   const [provinceFilter, setProvinceFilter] = useState("");
   const [districtFilter, setDistrictFilter] = useState("");
   const [appliedProvince, setAppliedProvince] = useState("");
   const [appliedDistrict, setAppliedDistrict] = useState("");
+  const [visibleCount, setVisibleCount] = useState(CARD_BATCH_SIZE);
+  const [candidatesData, setCandidatesData] = useState([]);
+  const loadMoreRef = useRef(null);
 
   const candidatesBySlug = useMemo(
     () => new Map(candidatesData.map((c) => [c.slug, c])),
-    [],
+    [candidatesData],
   );
 
   const partyByName = useMemo(
@@ -58,6 +54,78 @@ export default function Candidates() {
       return true;
     });
   }, [appliedProvinceDistrictSlugs, appliedDistrict]);
+
+  const visibleConstituencies = useMemo(
+    () => filteredConstituencies.slice(0, visibleCount),
+    [filteredConstituencies, visibleCount],
+  );
+
+  const hasMoreConstituencies = visibleCount < filteredConstituencies.length;
+
+  useEffect(() => {
+    setVisibleCount(CARD_BATCH_SIZE);
+  }, [appliedProvince, appliedDistrict]);
+
+  useEffect(() => {
+    let ignore = false;
+
+    const loadCandidates = () => {
+      fetch("/data/candidates.json")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Failed to load candidates: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (!ignore) {
+            setCandidatesData(data);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(loadCandidates, { timeout: 1000 });
+
+      return () => {
+        ignore = true;
+        window.cancelIdleCallback(idleId);
+      };
+    }
+
+    const timerId = window.setTimeout(loadCandidates, 0);
+
+    return () => {
+      ignore = true;
+      window.clearTimeout(timerId);
+    };
+  }, []);
+
+  useEffect(() => {
+    const loadMoreElement = loadMoreRef.current;
+
+    if (!loadMoreElement || !hasMoreConstituencies) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisibleCount((count) =>
+            Math.min(count + CARD_BATCH_SIZE, filteredConstituencies.length),
+          );
+        }
+      },
+      { rootMargin: "600px 0px" },
+    );
+
+    observer.observe(loadMoreElement);
+
+    return () => observer.disconnect();
+  }, [filteredConstituencies.length, hasMoreConstituencies]);
 
   const handleProvinceChange = (value) => {
     setProvinceFilter(value);
@@ -121,7 +189,7 @@ export default function Candidates() {
       <div className="local__election">
         <div className="candidate--lists dn-grid dn-grid-small">
           {filteredConstituencies.length > 0 ? (
-            filteredConstituencies.map((constituency) => (
+            visibleConstituencies.map((constituency) => (
               <ConstituencyElectionCard
                 key={constituency.slug}
                 constituency={constituency}
@@ -133,6 +201,9 @@ export default function Candidates() {
             <p>कुनै निर्वाचन क्षेत्र फेला परेन</p>
           )}
         </div>
+        {hasMoreConstituencies ? (
+          <div ref={loadMoreRef} className="load-more-trigger" aria-hidden="true" />
+        ) : null}
       </div>
     </MainLayout>
   );

@@ -1,13 +1,13 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
-import candidatesData from "../../public/data/candidates.json";
-import provinceData from "../../public/data/province.json";
-import districtData from "../../public/data/district.json";
-import constituencyData from "../../public/data/constituency.json";
-import partyData from "../../public/data/party.json";
-import manifestoData from "../../public/data/manifesto.json";
-import hotSeatsData from "../../public/data/hot-seats.json";
-import voteDifferenceData from "../../public/data/vote-difference.json";
+import candidatesData from "../data/candidates.json";
+import provinceData from "../data/province.json";
+import districtData from "../data/district.json";
+import constituencyData from "../data/constituency.json";
+import partyData from "../data/party.json";
+import manifestoData from "../data/manifesto.json";
+import hotSeatsData from "../data/hot-seats.json";
+import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
@@ -31,7 +31,7 @@ export default function PopularCandidates() {
           <div key={candidate.slug} className="popular-card">
             <div className="popular-card-inner">
               <div className="photo-wrap">
-                <Link to={`/candidate/${candidate.slug}`}>
+                <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                   <div className="photo-circle">
                     <img
                       src={candidate.image || "/assets/images/placeholder.png"}
@@ -44,7 +44,7 @@ export default function PopularCandidates() {
 
               <div className="card-body">
                 <h4 className="candidate-name">
-                  <Link to={`/candidate/${candidate.slug}`}>{candidate.name}</Link>
+                  <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">{candidate.name}</Link>
                 </h4>
                 <div className="candidate-meta">{candidate.party}</div>
                 <div className="constituency-pill">{candidate.constituency}</div>

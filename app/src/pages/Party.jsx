@@ -1,8 +1,13 @@
-import { Link, useParams } from "react-router-dom";
-import { useMemo } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { useState, useMemo, useEffect } from "react";
 import candidatesData from "../../public/data/candidates.json";
+import provinceData from "../../public/data/province.json";
+import districtData from "../../public/data/district.json";
 import constituencyData from "../../public/data/constituency.json";
 import partyData from "../../public/data/party.json";
+import manifestoData from "../../public/data/manifesto.json";
+import hotSeatsData from "../../public/data/hot-seats.json";
+import voteDifferenceData from "../../public/data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import { toNepaliNumber } from "../utils";
 import { fixImageUrl } from "../utils/imageUtils";

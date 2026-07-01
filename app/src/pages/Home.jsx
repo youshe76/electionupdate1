@@ -1,14 +1,32 @@
-import { useState, useEffect } from "react";
-import NepalMap from "../components/map/map";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import NepalMap from "../components/map/NepalMap.jsx";
 import { MainLayout } from "../layouts/MainLayout";
+import ProportionalResultsSection from "../components/home/ProportionalResultsSection.jsx";
+import ProvinceResultsSection from "../components/home/ProvinceResultsSection.jsx";
+import HotSeatsPreviewSection from "../components/home/HotSeatsPreviewSection.jsx";
+import PopularCandidatesPreviewSection from "../components/home/PopularCandidatesPreviewSection.jsx";
+import AllCandidatesPreviewSection from "../components/home/AllCandidatesPreviewSection.jsx";
+import constituencyData from "../data/constituency.json";
+import provinceData from "../data/province.json";
+import { toNepaliNumber } from "../utils";
+import { districtsForProvince, provinceRouteSlug } from "../utils/geoUtils";
+import { BadgeCheck } from "lucide-react";
 
 export default function Home() {
+	const navigate = useNavigate();
+	const idleTimerRef = useRef(null);
+
+	const isMapHoveredRef = useRef(false);
+	const isPopupHoveredRef = useRef(false);
+
 	const [selectedProvince, setSelectedProvince] = useState("");
 	const [selectedDistrict, setSelectedDistrict] = useState("");
 	const [selectedConstituency, setSelectedConstituency] = useState("");
 	const [hoveredConstituency, setHoveredConstituency] = useState(null);
 	const [constituenciesData, setConstituenciesData] = useState([]);
 	const [candidatesData, setCandidatesData] = useState([]);
+	const [selectedLegendParty, setSelectedLegendParty] = useState("");
 
 	// Load constituency data on mount
 	useEffect(() => {
@@ -25,19 +43,24 @@ export default function Home() {
 			.catch((err) => console.error("Error loading candidates data:", err));
 	}, []);
 
-	const provinces = [
-		{ id: 1, name: "कोशी प्रदेश" },
-		{ id: 2, name: "मधेस प्रदेश" },
-		{ id: 3, name: "बागमती प्रदेश" },
-		{ id: 4, name: "गण्डकी प्रदेश" },
-		{ id: 5, name: "लुम्बिनी प्रदेश" },
-		{ id: 6, name: "कर्णाली प्रदेश" },
-		{ id: 7, name: "सुदूरपश्चिम प्रदेश" },
-	];
+	const availableDistricts = useMemo(
+		() => districtsForProvince(selectedProvince),
+		[selectedProvince],
+	);
+
+	const availableConstituencies = useMemo(() => {
+		if (!selectedDistrict) {
+			return [];
+		}
+
+		return constituencyData.filter(
+			(constituency) => constituency.district_slug === selectedDistrict,
+		);
+	}, [selectedDistrict]);
 
 	const parties = [
 		{
-			id: "rsp",
+			slug: "rastriya-swatantra-party",
 			name: "राष्ट्रिय स्वतन्त्र पार्टी",
 			image: "/assets/images/rsp_AiC1qh2xlI.jpg",
 			direct: 125,
@@ -47,7 +70,7 @@ export default function Home() {
 			color: "#07a4f2",
 		},
 		{
-			id: "congress",
+			slug: "nepali-congress",
 			name: "नेपाली कांग्रेस",
 			image: "/assets/images/congress-logo_zVeY3un3Hj.jpg",
 			direct: 18,
@@ -57,7 +80,7 @@ export default function Home() {
 			color: "#2e7a05",
 		},
 		{
-			id: "uml",
+			slug: "cpn-uml",
 			name: "नेकपा (एमाले)",
 			image: "/assets/images/uml-1_zfT0bMAJFO.jpg",
 			direct: 9,
@@ -67,7 +90,7 @@ export default function Home() {
 			color: "#910808",
 		},
 		{
-			id: "ncp",
+			slug: "nepali-communist-party",
 			name: "नेपाली कम्युनिष्ट पार्टी",
 			image: "/assets/images/nepali-communist_uVwmNizOSk.jpg",
 			direct: 8,
@@ -77,7 +100,7 @@ export default function Home() {
 			color: "#f50f0f",
 		},
 		{
-			id: "shram",
+			slug: "shram-samskriti-party",
 			name: "श्रम संस्कृति पार्टी",
 			image: "/assets/images/shram-sanskriti-party_jrxdNsjzjb.jpg",
 			direct: 3,
@@ -87,7 +110,7 @@ export default function Home() {
 			color: "#d54b10",
 		},
 		{
-			id: "rpp",
+			slug: "rastriya-prajatantra-party",
 			name: "राष्ट्रिय प्रजातन्त्र पार्टी",
 			image: "/assets/images/raprapa_RPVSZDsBPg.jpg",
 			direct: 1,
@@ -98,13 +121,102 @@ export default function Home() {
 		},
 	];
 
+	const handleConstituencyHover = (data) => {
+		isMapHoveredRef.current = true;
+
+		if (idleTimerRef.current) {
+			clearTimeout(idleTimerRef.current);
+			idleTimerRef.current = null;
+		}
+
+		setHoveredConstituency(data);
+	};
+
+	const handleConstituencyLeave = () => {
+		isMapHoveredRef.current = false;
+
+		startIdleCheck();
+	};
+
+	const handlePopupEnter = () => {
+		isPopupHoveredRef.current = true;
+
+		if (idleTimerRef.current) {
+			clearTimeout(idleTimerRef.current);
+		}
+	};
+
+	const handlePopupLeave = () => {
+		isPopupHoveredRef.current = false;
+
+		startIdleCheck();
+	};
+
+	const startIdleCheck = () => {
+		// only hide if BOTH are inactive
+		if (isMapHoveredRef.current || isPopupHoveredRef.current) {
+			return;
+		}
+
+		if (idleTimerRef.current) {
+			clearTimeout(idleTimerRef.current);
+		}
+
+		idleTimerRef.current = setTimeout(() => {
+			// re-check before hiding (safety)
+			if (!isMapHoveredRef.current && !isPopupHoveredRef.current) {
+				setHoveredConstituency(null);
+			}
+		}, 10000); // ⬅️ adjust time (3–6 sec recommended)
+	};
+
+	const legendItems = [{ name: "सबै", color: "#ddd", value: "" }]
+		.concat(
+			parties.map((p) => ({
+				name: p.name,
+				color: p.color,
+				value: p.name,
+			})),
+		)
+		.concat([
+			{ name: "स्वतन्त्र", color: "#043e62", value: "स्वतन्त्र" },
+			{ name: "निकुञ्ज तथा आरक्ष", color: "#55e5a5", value: "निकुञ्ज तथा आरक्ष" },
+		]);
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// TODO: Handle search submission
+
+		let url = "";
+
+		if (selectedConstituency) {
+			url = `/constituency/${selectedConstituency}`;
+		} else if (selectedDistrict) {
+			url = `/district/${selectedDistrict}`;
+		} else if (selectedProvince) {
+			url = `/province/${provinceRouteSlug(selectedProvince)}`;
+		}
+
+		if (url) {
+			window.open(url, "_blank", "noopener,noreferrer");
+		}
+	};
+
+	const handleProvinceChange = (value) => {
+		setSelectedProvince(value);
+		setSelectedDistrict("");
+		setSelectedConstituency("");
+	};
+
+	const handleDistrictChange = (value) => {
+		setSelectedDistrict(value);
+		setSelectedConstituency("");
 	};
 
 	const candidateMap = new Map(
 		candidatesData.map((candidate) => [candidate.slug, candidate]),
+	);
+	const partyColorMap = Object.fromEntries(
+		legendItems.map((item) => [item.value || item.name, item.color]),
 	);
 
 	return (
@@ -170,13 +282,13 @@ export default function Home() {
 									name="province_id"
 									className="form-control"
 									value={selectedProvince}
-									onChange={(e) => setSelectedProvince(e.target.value)}
+									onChange={(e) => handleProvinceChange(e.target.value)}
 								>
 									<option value="">प्रदेश</option>
-									{provinces.map((province) => (
+									{provinceData.map((province) => (
 										<option
-											key={province.id}
-											value={province.id}
+											key={province.slug}
+											value={province.slug}
 										>
 											{province.name}
 										</option>
@@ -191,9 +303,17 @@ export default function Home() {
 									className="form-control"
 									disabled={!selectedProvince}
 									value={selectedDistrict}
-									onChange={(e) => setSelectedDistrict(e.target.value)}
+									onChange={(e) => handleDistrictChange(e.target.value)}
 								>
 									<option value="">जिल्ला</option>
+									{availableDistricts.map((district) => (
+										<option
+											key={district.slug}
+											value={district.slug}
+										>
+											{district.name}
+										</option>
+									))}
 								</select>
 							</div>
 
@@ -207,6 +327,14 @@ export default function Home() {
 									onChange={(e) => setSelectedConstituency(e.target.value)}
 								>
 									<option value="">निर्वाचन क्षेत्र छान्नुहोस्</option>
+									{availableConstituencies.map((constituency) => (
+										<option
+											key={constituency.slug}
+											value={constituency.slug}
+										>
+											{constituency.name}
+										</option>
+									))}
 								</select>
 							</div>
 
@@ -239,21 +367,71 @@ export default function Home() {
 							>
 								<div className="spinner-wrapper flex flex-middle flex-center">
 									<NepalMap
-										onConstituencyHover={setHoveredConstituency}
+										onConstituencyHover={handleConstituencyHover}
+										onConstituencyLeave={handleConstituencyLeave}
 										constituenciesData={constituenciesData}
+										candidatesData={candidatesData}
+										selectedParty={selectedLegendParty}
+										partyColorMap={partyColorMap}
 									/>
+									<div
+										style={{
+											position: "absolute",
+											bottom: "20px",
+											left: "20px",
+											background: "rgba(255,255,255,0.95)",
+											padding: "10px 14px",
+											borderRadius: "8px",
+											boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+											zIndex: 200,
+											fontSize: "13px",
+											maxWidth: "260px",
+										}}
+									>
+										{legendItems.map((item, idx) => (
+											<div
+												key={idx}
+												onClick={() => setSelectedLegendParty(item.value)}
+												style={{
+													display: "flex",
+													alignItems: "center",
+													gap: "8px",
+													marginBottom: "6px",
+													cursor: "pointer",
+													fontWeight: selectedLegendParty === item.value ? 700 : 400,
+													opacity:
+														!selectedLegendParty || selectedLegendParty === item.value
+															? 1
+															: 0.65,
+												}}
+											>
+												<span
+													style={{
+														width: "12px",
+														height: "12px",
+														backgroundColor: item.color,
+														borderRadius: "2px",
+														display: "inline-block",
+													}}
+												/>
+												<span>{item.name}</span>
+											</div>
+										))}
+									</div>
 								</div>
 							</div>
 							{/* Hovered Constituency Candidates Card */}
 							{hoveredConstituency && (
 								<div
+									onMouseEnter={handlePopupEnter}
+									onMouseLeave={handlePopupLeave}
 									style={{
 										position: "absolute",
-										right: "20px",
+										right: "50px",
 										top: "250px",
 										transform: "translateY(-50%)",
-										width: "320px",
-                    height: "auto",
+										width: "350px",
+										height: "auto",
 										background: "#fff",
 										borderRadius: "6px",
 										overflow: "hidden",
@@ -356,6 +534,9 @@ export default function Home() {
 												{/* Votes */}
 												<div
 													style={{
+														display: "flex",
+														flexDirection: "row",
+														alignItems: "flex-end",
 														textAlign: "right",
 														minWidth: "90px",
 													}}
@@ -367,7 +548,7 @@ export default function Home() {
 															fontSize: "24px",
 														}}
 													>
-														{candidate.votes.toLocaleString()}
+														{toNepaliNumber(candidate.votes)}
 													</div>
 
 													{idx === 0 && (
@@ -376,9 +557,10 @@ export default function Home() {
 																color: "#43a047",
 																fontSize: "14px",
 																fontWeight: 700,
+																paddingLeft: "4px",
 															}}
 														>
-															विजेता
+															<BadgeCheck />
 														</div>
 													)}
 												</div>
@@ -417,26 +599,32 @@ export default function Home() {
 						<div className="elc-container">
 							<div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
 								<h3 className="heading-title">प्रतिनिधिसभा परिणाम</h3>
-								<a
+								<Link
 									className="btn"
-									href="/result"
+									to="/parties"
+									target="_blank"
+									rel="noopener noreferrer"
 								>
 									विस्तृत
-								</a>
+								</Link>
 							</div>
 							<div className="dn-grid dn-grid-small">
 								{parties.map((party) => (
 									<div
-										key={party.id}
+										key={party.slug}
 										className="col2 parties-card is-border"
 									>
-										<a href={`/party/${party.id}`}>
+										<Link
+											to={`/party/${party.slug}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
 											<img
 												src={party.image}
 												alt={party.name}
 											/>
 											<span className="title">{party.name}</span>
-										</a>
+										</Link>
 										<table>
 											<thead>
 												<tr>
@@ -447,7 +635,13 @@ export default function Home() {
 											<tbody>
 												<tr>
 													<td>
-														<a href={`/winners?party_id=${party.id}`}>{party.direct}</a>
+														<Link
+															to={`/party/${party.slug}`}
+															target="_blank"
+															rel="noopener noreferrer"
+														>
+															{party.direct}
+														</Link>
 													</td>
 													<td>{party.proportional}</td>
 												</tr>
@@ -469,65 +663,11 @@ export default function Home() {
 						</div>
 					</section>
 
-					{/* Province Results Section */}
-					<section className="section pradesh-result">
-						<div className="elc-container">
-							<div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
-								<h3 className="heading-title">प्रदेशअनुसार परिणाम</h3>
-							</div>
-							<div className="candidate--lists dn-grid dn-grid-small">
-								{provinces.map((province) => (
-									<div
-										key={province.id}
-										className="election-card col3"
-									>
-										<div className="candidate-card-header">
-											<h3>
-												<a href={`/province/${province.id}`}>{province.name}</a>
-											</h3>
-										</div>
-										<div className="mx-height">
-											<a
-												href={`/province/${province.id}`}
-												className="candidate-row pradesh-row"
-											>
-												<div className="candidate-media">
-													<img
-														className="candidate-photo"
-														src="/assets/images/rsp_AiC1qh2xlI.jpg"
-														alt="राष्ट्रिय स्वतन्त्र पार्टी"
-													/>
-													<div>
-														<h3 className="title">राष्ट्रिय स्वतन्त्र पार्टी</h3>
-														<div className="progress-bar">
-															<div
-																style={{
-																	background: "#07a4f2",
-																	width: "45%",
-																}}
-																className="progress-fill"
-															></div>
-														</div>
-													</div>
-												</div>
-												<div className="candidate-detail">
-													<div className="votes">—</div>
-												</div>
-											</a>
-										</div>
-										<div className="load-more">
-											<a
-												className="more"
-												href={`/province/${province.id}`}
-											>
-												विस्तृत विवरण
-											</a>
-										</div>
-									</div>
-								))}
-							</div>
-						</div>
-					</section>
+					<ProvinceResultsSection />
+					<ProportionalResultsSection />
+					<HotSeatsPreviewSection />
+					<PopularCandidatesPreviewSection />
+					<AllCandidatesPreviewSection />
 				</div>
 			</MainLayout>
 		</div>

@@ -1,5 +1,5 @@
-import provinceData from "../../public/data/province.json";
-import districtData from "../../public/data/district.json";
+import provinceData from "../data/province.json";
+import districtData from "../data/district.json";
 
 export const cleanRouteSlug = (slug = "") => slug?.replace(/\.html$/i, "") ?? "";
 

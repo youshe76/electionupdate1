@@ -1,0 +1,185 @@
+.footer {
+  background: #001d4c;
+  color: white;
+  padding: 48px 20px;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-logo {
+  width: 200px;
+  height: auto;
+}
+
+.footer-description {
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.footer-title {
+  color: #f9c439;
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin-bottom: 16px;
+}
+
+.footer-list a,
+.extra-links a,
+.download-app a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-list a:hover,
+.extra-links a:hover,
+.download-app a:hover {
+  color: #09a223;
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-btn {
+  width: 36px;
+  height: 36px;
+  background: #22c55e;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.social-btn:hover {
+  background: #2563eb;
+}
+
+.social-btn i {
+  font-size: 18px;
+}
+
+.video-wrapper {
+  margin-top: 20px;
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.extra-links {
+  margin-top: 15px;
+}
+
+.extra-links p {
+  margin-bottom: 10px;
+}
+
+.info-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.contact-title {
+  margin-top: 30px;
+}
+
+.download-app {
+  margin-top: 20px;
+}
+
+.download-app h2 {
+  color: #f9c439;
+  margin-bottom: 12px;
+}
+
+.store-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.store-buttons img {
+  height: 48px;
+  width: auto;
+}
+
+.footer-bottom {
+  background: white;
+  border-top: 1px solid #ddd;
+  padding: 12px 20px;
+}
+
+.footer-bottom-container {
+  max-width: 1280px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.developer-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.glove-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.footer-bottom {
+  color: #444;
+}
+
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom-container {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
