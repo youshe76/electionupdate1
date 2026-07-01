@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import partyData from "../../public/data/party.json";
-import manifestoData from "../../public/data/manifesto.json";
+import partyData from "../data/party.json";
+import manifestoData from "../data/manifesto.json";
 import { MainLayout } from "../layouts/MainLayout";
 import { fixImageUrl } from "../utils/imageUtils";
 import { getManifestoImage } from "../app/config/constants";
@@ -10,7 +10,9 @@ function getPartyLogo(party) {
   if (!party?.logo || party.logo === "#") {
     return "/assets/images/placeholder.png";
   }
-  return fixImageUrl(party.logo.startsWith("/") ? party.logo : `/${party.logo}`);
+  return fixImageUrl(
+    party.logo.startsWith("/") ? party.logo : `/${party.logo}`,
+  );
 }
 
 export default function Manifesto() {
@@ -34,7 +36,9 @@ export default function Manifesto() {
             ? partyBySlug.get(manifesto.party_slug)
             : null;
           const coverImage = getManifestoImage(manifesto.id);
-          const partyLogo = party ? getPartyLogo(party) : "/assets/images/placeholder.png";
+          const partyLogo = party
+            ? getPartyLogo(party)
+            : "/assets/images/placeholder.png";
 
           return (
             <article key={manifesto.id} className="manifesto-card">
@@ -57,7 +61,10 @@ export default function Manifesto() {
                 <h3 className="manifesto-card-title">{manifesto.party_name}</h3>
 
                 <div className="manifesto-card-actions">
-                  <Link to={`/manifesto/${manifesto.id}`} className="manifesto-btn manifesto-btn-primary">
+                  <Link
+                    to={`/manifesto/${manifesto.id}`}
+                    className="manifesto-btn manifesto-btn-primary"
+                  >
                     हेर्नुहोस्
                   </Link>
                   <a

@@ -2993,7 +2993,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "सिराहा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 41
   },
   {
     "name": "बब्लु कुमार यादव",
@@ -3763,7 +3765,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "झापा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 20
   },
   {
     "name": "बालजी प्रसाद यादव",
@@ -3889,7 +3893,9 @@
     "provinces": "लुम्बिनी प्रदेश",
     "district": "रोल्पा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 37
   },
   {
     "name": "बर्त्‍ये बहादुर राई",
@@ -4477,7 +4483,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "तेह्रथुम",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 4
   },
   {
     "name": "भानु भक्त फियाक",
@@ -5079,7 +5087,9 @@
     "provinces": "सुदूरपश्चिम प्रदेश",
     "district": "अछाम",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 29
   },
   {
     "name": "भिम बहादुर श्रीस राना",
@@ -5681,7 +5691,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "सुनसरी",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 27
   },
   {
     "name": "बिजय कुमार मंडल",
@@ -6213,7 +6225,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "धनुषा",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 55
   },
   {
     "name": "बिमर्श मिश्र",
@@ -6535,7 +6549,9 @@
     "provinces": "लुम्बिनी प्रदेश",
     "district": "नवलपरासी",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 59
   },
   {
     "name": "विनोद कुमार गुरुङ",
@@ -7767,7 +7783,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "ओखलढुंगा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 9
   },
   {
     "name": "विश्‍वनाथ महतो",
@@ -8355,7 +8373,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "सप्तरी",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 50
   },
   {
     "name": "चन्द्र कुमार बढई",
@@ -12219,7 +12239,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "काठमाडौं",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 49
   },
   {
     "name": "डोलेन्द्र राज भट्टराई",
@@ -12331,7 +12353,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "मोरङ",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 21
   },
   {
     "name": "द‍ृग नरायण पाण्‍डेय",
@@ -12807,7 +12831,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "सर्लाही",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 12
   },
   {
     "name": "गगन ठगुन्ना",
@@ -13619,7 +13645,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "महोत्तरी",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 24
   },
   {
     "name": "गिता कुमारी लामिछाने",
@@ -13731,7 +13759,9 @@
     "provinces": "लुम्बिनी प्रदेश",
     "district": "गुल्मी",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 36
   },
   {
     "name": "गोकुल बहादुर राई",
@@ -14263,7 +14293,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "मोरङ",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 10
   },
   {
     "name": "ज्ञान बहादुर शाही",
@@ -14277,7 +14309,9 @@
     "provinces": "कर्णाली प्रदेश",
     "district": "जुम्ला",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 15
   },
   {
     "name": "ज्ञान कुमार यादब",
@@ -14361,7 +14395,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "सुनसरी",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 40
   },
   {
     "name": "ज्ञानेन्द्र घले",
@@ -15887,7 +15923,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "झापा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 7
   },
   {
     "name": "इन्दिरा थापा",
@@ -16433,7 +16471,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "ललितपुर",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 28
   },
   {
     "name": "जगदीश खरेल",
@@ -17021,7 +17061,9 @@
     "provinces": "कर्णाली प्रदेश",
     "district": "रूकुम पश्चिम",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 38
   },
   {
     "name": "जंग बहादुर लामा",
@@ -17889,7 +17931,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "धनुषा",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 52
   },
   {
     "name": "जुमराती धुनिया मुसलमान",
@@ -19065,7 +19109,9 @@
     "provinces": "गण्डकी प्रदेश",
     "district": "गोरखा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 5
   },
   {
     "name": "केवलराम राई",
@@ -20465,7 +20511,9 @@
     "provinces": "सुदूरपश्चिम प्रदेश",
     "district": "कैलाली",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 32
   },
   {
     "name": "केपी शर्मा ओली",
@@ -20479,7 +20527,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "झापा",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 44
   },
   {
     "name": "कृष्‍ण बहादुर वि क",
@@ -21179,7 +21229,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "ताप्लेजुङ",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 45
   },
   {
     "name": "कुल बहादुर बस्नेत",
@@ -21263,7 +21315,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "काठमाडौं",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 47
   },
   {
     "name": "कुलमणि देवकोटा",
@@ -22383,7 +22437,9 @@
     "provinces": "सुदूरपश्चिम प्रदेश",
     "district": "कैलाली",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 14
   },
   {
     "name": "लेखनाथ खरेल",
@@ -22425,7 +22481,9 @@
     "provinces": "गण्डकी प्रदेश",
     "district": "गोरखा",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 46
   },
   {
     "name": "लेनिन  विष्‍ट ",
@@ -23041,7 +23099,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "रौतहट",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 17
   },
   {
     "name": "माधव प्रसाद आचार्य",
@@ -23307,7 +23367,9 @@
     "provinces": "गण्डकी प्रदेश",
     "district": "म्याग्दी",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 18
   },
   {
     "name": "महाविर स्याङतान तामाङ",
@@ -23545,7 +23607,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "भक्तपुर",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 48
   },
   {
     "name": "महेश चौधरि",
@@ -23587,7 +23651,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "मकवानपुर",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 16
   },
   {
     "name": "महेश कुमार पासवान",
@@ -24329,7 +24395,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "धनुषा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 13
   },
   {
     "name": "मनिष खनाल",
@@ -24931,7 +24999,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "धनुषा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 31
   },
   {
     "name": "मो. अस्‍फाक",
@@ -26695,7 +26765,9 @@
     "provinces": "सुदूरपश्चिम प्रदेश",
     "district": "डडेलधुरा",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 11
   },
   {
     "name": "नक्‍कले मगर",
@@ -26933,7 +27005,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "सर्लाही",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 23
   },
   {
     "name": "नारायण कुमार कोइराला",
@@ -29327,7 +29401,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "रौतहट",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 25
   },
   {
     "name": "प्रदीप कुमार झा",
@@ -29425,7 +29501,9 @@
     "provinces": "लुम्बिनी प्रदेश",
     "district": "गुल्मी",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 19
   },
   {
     "name": "प्रदिप कुमार कटुवाल क्षेत्री (के सी)",
@@ -29509,7 +29587,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "काठमाडौं",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 54
   },
   {
     "name": "प्रदिप यादव",
@@ -29523,7 +29603,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "पर्सा",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 34
   },
   {
     "name": "प्रहलाद प्रसाद साह कलवार",
@@ -30783,7 +30865,9 @@
     "provinces": "गण्डकी प्रदेश",
     "district": "लमजुङ",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 8
   },
   {
     "name": "प्रिती झा",
@@ -31189,7 +31273,9 @@
     "provinces": "लुम्बिनी प्रदेश",
     "district": "रूकुम पूर्व",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 42
   },
   {
     "name": "पुष्प कोईराला",
@@ -31329,7 +31415,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "चितवन",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 56
   },
   {
     "name": "रवि मोहन ढकाल",
@@ -31525,7 +31613,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "काठमाडौं",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 33
   },
   {
     "name": "रविन्द्र नखोला",
@@ -31735,7 +31825,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "धनुषा",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 22
   },
   {
     "name": "रहबर अन्सारी",
@@ -31749,7 +31841,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "बारा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 1
   },
   {
     "name": "राज गुरु यादव",
@@ -32631,7 +32725,9 @@
     "provinces": "मधेस प्रदेश",
     "district": "सर्लाही",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 39
   },
   {
     "name": "राजेन्‍द्र मण्‍डल खतबे",
@@ -32729,7 +32825,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "धादिङ",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 53
   },
   {
     "name": "राजेन्द्र प्रसाद शाह",
@@ -33289,7 +33387,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "काठमाडौं",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 60
   },
   {
     "name": "राजु पौडेल",
@@ -36677,7 +36777,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "चितवन",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 30
   },
   {
     "name": "रेणु श्रेष्ठ",
@@ -37699,7 +37801,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "काठमाडौं",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 6
   },
   {
     "name": "साधना  दास ",
@@ -40289,7 +40393,9 @@
     "provinces": "लुम्बिनी प्रदेश",
     "district": "दाङ",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 3
   },
   {
     "name": "शंकर प्रसाद ज्ञवाली",
@@ -40835,7 +40941,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "भोजपुर",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 57
   },
   {
     "name": "शेष नारायण शुक्ल",
@@ -42193,7 +42301,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "चितवन",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 2
   },
   {
     "name": "सोचिन्दर यादव",
@@ -42683,7 +42793,9 @@
     "provinces": "गण्डकी प्रदेश",
     "district": "गोरखा",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 58
   },
   {
     "name": "सुधान्सु कोइराला",
@@ -43341,7 +43453,9 @@
     "provinces": "कोशी प्रदेश",
     "district": "मोरङ",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 35
   },
   {
     "name": "सुनिल कुमार सिंह",
@@ -44643,7 +44757,9 @@
     "provinces": "गण्डकी प्रदेश",
     "district": "तनहुँ",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 43
   },
   {
     "name": "सिरीया पासमान",
@@ -45315,7 +45431,9 @@
     "provinces": "लुम्बिनी प्रदेश",
     "district": "पाल्पा",
     "manifesto": "/manifesto",
-    "isWinner": false
+    "isWinner": false,
+    "popular": true,
+    "popularRank": 26
   },
   {
     "name": "ठाकुर सिंह थारु",
@@ -45833,7 +45951,9 @@
     "provinces": "बागमती प्रदेश",
     "district": "ललितपुर",
     "manifesto": "/manifesto",
-    "isWinner": true
+    "isWinner": true,
+    "popular": true,
+    "popularRank": 51
   },
   {
     "name": "तवरेज अखतर आलम ",

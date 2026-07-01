@@ -1,13 +1,13 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
-import candidatesData from "../../public/data/candidates.json";
-import provinceData from "../../public/data/province.json";
-import districtData from "../../public/data/district.json";
-import constituencyData from "../../public/data/constituency.json";
-import partyData from "../../public/data/party.json";
-import manifestoData from "../../public/data/manifesto.json";
-import hotSeatsData from "../../public/data/hot-seats.json";
-import voteDifferenceData from "../../public/data/vote-difference.json";
+import candidatesData from "../data/candidates.json";
+import provinceData from "../data/province.json";
+import districtData from "../data/district.json";
+import constituencyData from "../data/constituency.json";
+import partyData from "../data/party.json";
+import manifestoData from "../data/manifesto.json";
+import hotSeatsData from "../data/hot-seats.json";
+import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import { toNepaliNumber } from "../utils";
 import { fixImageUrl } from "../utils/imageUtils";
@@ -16,7 +16,9 @@ function getPartyLogo(party) {
   if (!party?.logo || party.logo === "#") {
     return "/assets/images/placeholder.png";
   }
-  return fixImageUrl(party.logo.startsWith("/") ? party.logo : `/${party.logo}`);
+  return fixImageUrl(
+    party.logo.startsWith("/") ? party.logo : `/${party.logo}`,
+  );
 }
 
 export default function Party() {
@@ -38,11 +40,15 @@ export default function Party() {
     );
   }
 
-  const partyCandidates = candidatesData.filter((candidate) => candidate.party === party.name);
+  const partyCandidates = candidatesData.filter(
+    (candidate) => candidate.party === party.name,
+  );
   const sortedPartyCandidates = [...partyCandidates].sort(
     (a, b) => (b.votes || 0) - (a.votes || 0),
   );
-  const featuredCandidates = sortedPartyCandidates.filter((candidate) => candidate.isWinner).slice(0, 5);
+  const featuredCandidates = sortedPartyCandidates
+    .filter((candidate) => candidate.isWinner)
+    .slice(0, 5);
   const logoUrl = getPartyLogo(party);
 
   const breadcrumb = (
@@ -65,39 +71,52 @@ export default function Party() {
           <div className="elc-container">
             <div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
               <h3 className="heading-title">{party.name}का उम्मेदवारहरु</h3>
-              <span className="counter">{toNepaliNumber(sortedPartyCandidates.length)}</span>
+              <span className="counter">
+                {toNepaliNumber(sortedPartyCandidates.length)}
+              </span>
             </div>
 
             <div className="candidate-wrapper active">
               <div className="result-container">
                 <h3 className="title">
                   प्रतिनिधि सभा निर्वाचन २०८२
-                  <span className="counter">{toNepaliNumber(sortedPartyCandidates.length)}</span>
+                  <span className="counter">
+                    {toNepaliNumber(sortedPartyCandidates.length)}
+                  </span>
                 </h3>
                 <div className="party-container-wrap dn-grid">
                   {sortedPartyCandidates.length > 0 ? (
                     sortedPartyCandidates.map((candidate) => {
-                      const constituencySlug = constituencySlugByName.get(candidate.constituency);
+                      const constituencySlug = constituencySlugByName.get(
+                        candidate.constituency,
+                      );
 
                       return (
                         <div
                           key={candidate.slug}
                           className={`party-container col12${candidate.isWinner ? " candidate-win" : ""}`}
                         >
-                          <Link to={`/candidate/${candidate.slug}`} className="party-logo">
+                          <Link
+                            to={`/candidate/${candidate.slug}`}
+                            className="party-logo"
+                          >
                             <img
                               src={fixImageUrl(candidate.image)}
                               alt={candidate.name}
                               onError={(event) => {
                                 event.currentTarget.onerror = null;
-                                event.currentTarget.src = "/assets/images/placeholder.png";
+                                event.currentTarget.src =
+                                  "/assets/images/placeholder.png";
                               }}
                             />
                             <span className="party-name">{candidate.name}</span>
                           </Link>
                           <div className="party-wrap">
                             <div className="party-info">
-                              <Link to={`/party/${party.slug}`} className="party-sign">
+                              <Link
+                                to={`/party/${party.slug}`}
+                                className="party-sign"
+                              >
                                 <img src={logoUrl} alt={party.name} />
                                 {party.name}
                               </Link>
@@ -112,7 +131,10 @@ export default function Party() {
                             <div className="votes">
                               {toNepaliNumber(candidate.votes || 0)}
                               {candidate.isWinner ? (
-                                <img src="/assets/img/win-tick.png" alt="win-tick" />
+                                <img
+                                  src="/assets/img/win-tick.png"
+                                  alt="win-tick"
+                                />
                               ) : null}
                             </div>
                           </div>
@@ -148,7 +170,10 @@ export default function Party() {
                   <h3 className="page-title">{party.name}</h3>
                   {party.leader ? (
                     <span>
-                      <Link to={`/party/${party.slug}`} onClick={(event) => event.preventDefault()}>
+                      <Link
+                        to={`/party/${party.slug}`}
+                        onClick={(event) => event.preventDefault()}
+                      >
                         सभापति : {party.leader}
                       </Link>
                     </span>
@@ -164,7 +189,8 @@ export default function Party() {
                         <span>समानुपातिक सिट</span>
                       </div>
                     ) : null}
-                    {party.proportional_votes && party.proportional_votes !== "०" ? (
+                    {party.proportional_votes &&
+                    party.proportional_votes !== "०" ? (
                       <div className="result-vote">
                         <h5>{party.proportional_votes}</h5>
                         <span>समानुपातिक मत</span>
@@ -206,13 +232,16 @@ export default function Party() {
                           alt={candidate.name}
                           onError={(event) => {
                             event.currentTarget.onerror = null;
-                            event.currentTarget.src = "/assets/images/placeholder.png";
+                            event.currentTarget.src =
+                              "/assets/images/placeholder.png";
                           }}
                         />
                       </Link>
                       <div>
                         <h3 className="title">
-                          <Link to={`/candidate/${candidate.slug}`}>{candidate.name}</Link>
+                          <Link to={`/candidate/${candidate.slug}`}>
+                            {candidate.name}
+                          </Link>
                         </h3>
                         <Link to={`/party/${party.slug}`}>{party.name}</Link>
                       </div>
@@ -225,7 +254,11 @@ export default function Party() {
                         ) : null}
                       </div>
                       <Link className="party" to={`/party/${party.slug}`}>
-                        <img className="party-flag" src={logoUrl} alt={party.name} />
+                        <img
+                          className="party-flag"
+                          src={logoUrl}
+                          alt={party.name}
+                        />
                       </Link>
                     </div>
                   </div>

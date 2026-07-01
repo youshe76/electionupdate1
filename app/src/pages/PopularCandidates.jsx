@@ -1,65 +1,166 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useState, useMemo, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useMemo } from "react";
 import candidatesData from "../data/candidates.json";
-import provinceData from "../data/province.json";
-import districtData from "../data/district.json";
 import constituencyData from "../data/constituency.json";
 import partyData from "../data/party.json";
-import manifestoData from "../data/manifesto.json";
-import hotSeatsData from "../data/hot-seats.json";
-import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
-import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
-import { districtsForProvince, provinceRouteSlug, cleanRouteSlug } from "../utils/geoUtils";
 import { fixImageUrl } from "../utils/imageUtils";
-import { getManifestoImage } from "../app/config/constants";
+
+function normalizeName(value) {
+  return String(value || "")
+    .normalize("NFKC")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[()]/g, "")
+    .replace(/[\s\u00A0]+/g, " ")
+    .trim();
+}
 
 export default function PopularCandidates() {
-  // Select some candidates with high votes
-  const popularCandidates = [...candidatesData]
-    .sort((a, b) => (b.votes || 0) - (a.votes || 0))
-    .slice(0, 15);
+  const constituencySlugByName = useMemo(() => {
+    const map = new Map();
+
+    constituencyData.forEach((constituency) => {
+      map.set(normalizeName(constituency.name), constituency.slug);
+    });
+
+    return map;
+  }, []);
+
+  const partySlugByName = useMemo(() => {
+    const map = new Map();
+
+    partyData.forEach((party) => {
+      map.set(normalizeName(party.name), party.slug);
+    });
+
+    return map;
+  }, []);
+
+  const popularCandidates = useMemo(
+    () =>
+      [...candidatesData]
+        .filter((candidate) => candidate.popular)
+        .sort((a, b) => {
+          const rankA = a.popularRank ?? Number.POSITIVE_INFINITY;
+          const rankB = b.popularRank ?? Number.POSITIVE_INFINITY;
+
+          if (rankA !== rankB) {
+            return rankA - rankB;
+          }
+
+          return (b.votes || 0) - (a.votes || 0);
+        }),
+    [],
+  );
+
+  const getCandidateHref = (candidate) => `/candidate/${candidate.slug}`;
+
+  const getConstituencyHref = (candidate) => {
+    const constituencySlug = constituencySlugByName.get(
+      normalizeName(candidate.constituency),
+    );
+
+    return constituencySlug ? `/constituency/${constituencySlug}` : null;
+  };
+
+  const getPartyHref = (candidate) => {
+    const partySlug = partySlugByName.get(normalizeName(candidate.party));
+
+    return partySlug ? `/party/${partySlug}` : null;
+  };
 
   return (
     <MainLayout
       title="चर्चित उम्मेदवारहरु"
-      description="See the most popular candidates from the 2082 election."
+      contentClassName="popular-candidates-page"
     >
-      <div className="popular-grid" style={{ marginTop: "20px" }}>
+      <div className="popular-candidates-grid popular-grid">
         {popularCandidates.map((candidate) => (
-          <div key={candidate.slug} className="popular-card">
+          <article
+            key={candidate.slug}
+            className={`popular-card${candidate.isWinner ? " popular-card-winner" : ""}`}
+          >
+            <Link
+              to={getCandidateHref(candidate)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="popular-card-overlay"
+              aria-label={`${candidate.name} candidate profile`}
+            />
+
             <div className="popular-card-inner">
+              {candidate.isWinner ? (
+                <span className="popular-card-check" aria-hidden="true">
+                  <img src="/assets/img/win-tick.png" alt="" />
+                </span>
+              ) : null}
+
               <div className="photo-wrap">
-                <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
-                  <div className="photo-circle">
+                <div className="photo-circle">
+                  <img
+                    src={
+                      fixImageUrl(candidate.image) ||
+                      "/assets/images/placeholder.png"
+                    }
+                    alt={candidate.name}
+                    loading="lazy"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src =
+                        "/assets/images/placeholder.png";
+                    }}
+                  />
+                </div>
+                {candidate.partyLogo ? (
+                  <Link
+                    to={getPartyHref(candidate) || getCandidateHref(candidate)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="party-emblem"
+                    aria-label={`${candidate.party} party page`}
+                  >
                     <img
-                      src={candidate.image || "/assets/images/placeholder.png"}
-                      alt={candidate.name}
-                      onError={(e) => { e.target.onerror = null; e.target.src = "/assets/images/placeholder.png"; }}
+                      src={fixImageUrl(candidate.partyLogo)}
+                      alt=""
+                      loading="lazy"
+                      onError={(event) => {
+                        event.currentTarget.style.display = "none";
+                      }}
                     />
-                  </div>
-                </Link>
+                  </Link>
+                ) : null}
               </div>
 
               <div className="card-body">
-                <h4 className="candidate-name">
-                  <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">{candidate.name}</Link>
-                </h4>
-                <div className="candidate-meta">{candidate.party}</div>
-                <div className="constituency-pill">{candidate.constituency}</div>
+                <h4 className="candidate-name">{candidate.name}</h4>
+                <Link
+                  to={getPartyHref(candidate) || getCandidateHref(candidate)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="candidate-meta candidate-meta-link"
+                >
+                  {candidate.party}
+                </Link>
+                <Link
+                  to={getConstituencyHref(candidate) || getCandidateHref(candidate)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="constituency-pill constituency-pill-link"
+                >
+                  {candidate.constituency}
+                </Link>
               </div>
 
               <div className="card-footer">
-                <div className="votes">{toNepaliNumber(candidate.votes || 0)}</div>
-                {candidate.isWinner ? (
-                  <img src="/assets/img/win-tick.png" alt="winner" className="winner-badge" style={{ width: "30px", height: "30px" }} />
-                ) : candidate.partyLogo ? (
-                  <img src={candidate.partyLogo} alt={candidate.party} className="party-badge" onError={(e)=>{e.target.style.display='none'}} />
-                ) : null}
+                <div
+                  className={`votes${candidate.isWinner ? " votes-winner" : ""}`}
+                >
+                  {toNepaliNumber(candidate.votes || 0)}
+                </div>
               </div>
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </MainLayout>

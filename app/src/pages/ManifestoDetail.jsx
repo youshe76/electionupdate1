@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import manifestoData from "../../public/data/manifesto.json";
+import manifestoData from "../data/manifesto.json";
 import { MainLayout } from "../layouts/MainLayout";
 
 function getPdfViewerUrl(pdfUrl) {
@@ -47,7 +47,10 @@ export default function ManifestoDetail() {
           >
             PDF डाउनलोड
           </a>
-          <Link to="/manifesto" className="manifesto-btn manifesto-btn-secondary">
+          <Link
+            to="/manifesto"
+            className="manifesto-btn manifesto-btn-secondary"
+          >
             सूचीमा फर्कनुहोस्
           </Link>
         </div>
