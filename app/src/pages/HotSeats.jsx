@@ -134,6 +134,7 @@ export default function HotSeats() {
 									const candidateData = candidatesData.find(
 										(c) => c.name === candidate.name,
 									);
+									console.log(candidateData)
 									const votes = candidateData?.votes || candidate.votes || 0;
 									// Fix image URL if it has the malformed ../npcdn prefix
 									const fixedImageUrl =
@@ -156,50 +157,55 @@ export default function HotSeats() {
 											}}
 										>
 											<div
-												style={{
-													width: "90px",
-													height: "90px",
-													margin: "0 auto 10px",
-													borderRadius: "50%",
-													background: "linear-gradient(180deg, #ffeef0, #f8dfe0)",
-													display: "flex",
-													alignItems: "center",
-													justifyContent: "center",
-													overflow: "hidden",
-													border: "1px solid rgba(0,0,0,0.04)",
-													position: "relative",
-												}}
-											>
-												<img
-													src={fixedImageUrl}
-													alt={candidate.name}
-													style={{
-														width: "76px",
-														height: "76px",
-														borderRadius: "50%",
-														objectFit: "cover",
-														border: "4px solid #fff",
-													}}
-													onError={(e) => {
-														e.target.onerror = null;
-														e.target.src = "/assets/images/placeholder.png";
-													}}
-												/>
+											style={{
+												width: "90px",
+												height: "90px",
+												margin: "0 auto 10px",
+												borderRadius: "50%",
+												background: "linear-gradient(180deg, #ffeef0, #f8dfe0)",
 												
+												border: "1px solid rgba(0,0,0,0.04)",
+												position: "relative",
+											}}
+											>
+											
+											<img
+												src={fixedImageUrl}
+												alt={candidate.name}
+												style={{
+												width: "90px",
+												height: "90px",
+												borderRadius: "50%",
+												objectFit: "cover",
+												border: "4px solid #fff",
+												position: "absolute",
+												left: "0",
+												top: "0",
+												}}
+												onError={(e) => {
+												e.target.onerror = null;
+												e.target.src = "/assets/images/placeholder.png";
+												}}
+											/>
+											
+											
+											<img
+												src={candidateData?.partyLogo}
+												alt="Center overlay"
+												style={{
+												position: "absolute",
+												top: "100%",
+												left: "50%",
+												transform: "translate(-50%, -50%)",
+												width: "20px", 
+												height: "20px", 
+												borderRadius: "50%", 
+												objectFit: "cover",
+												zIndex: 1, 
+												}}
+											/>
 											</div>
-                      							{candidate.winner && (
-													<img
-														src="/assets/img/win-tick.png"
-														alt="winner"
-														style={{
-															position: "absolute",
-															bottom: "100px",
-															right: "16px",
-															width: "30px",
-															height: "30px",
-														}}
-													/>
-												)}
+                      							
 
 											<h4
 												style={{
@@ -220,15 +226,33 @@ export default function HotSeats() {
 											>
 												{candidate.party}
 											</p>
-											<div
-												style={{
-													fontSize: "16px",
-													fontWeight: "700",
-													color: "#2c9a6b",
-													marginTop: "6px",
-												}}
-											>
-												{toNepaliNumber(votes)}
+											<div className="flex">
+												<div
+													style={{
+														fontSize: "16px",
+														fontWeight: "700",
+														color: candidate.winner? "#2c9a6b": "#000000",
+														marginTop: "6px",
+														textAlign: "center",
+														marginLeft:"10px"
+													}}
+												>
+													{toNepaliNumber(votes)}
+												</div>
+												{candidate.winner && (
+													<img
+														src="/assets/img/win-tick.png"
+														alt="winner"
+														
+														style={{
+															position: "absolute",
+															bottom: "12px",
+															right: "16px",
+															objectFit: "contain",
+															
+														}}
+													/>
+												)}
 											</div>
 										</div>
 										</Link>
