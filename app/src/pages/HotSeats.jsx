@@ -41,6 +41,8 @@ export default function HotSeats() {
 		if (!districtFilter) return hotseatConstituencies;
 		return hotseatConstituencies.filter((hs) => hs.district === districtFilter);
 	}, [districtFilter, hotseatConstituencies]);
+	
+	
 
 	const filterBar = (
 		<div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
@@ -139,8 +141,12 @@ export default function HotSeats() {
 											/^\.\.\/npcdn\.ratopati\.com/,
 											"https://npcdn.ratopati.com",
 										) || "/assets/images/placeholder.png";
+									
+									
+									
 
 									return (
+										<Link to={`/candidate/${candidateData.slug}`}>
 										<div
 											key={idx}
 											style={{
@@ -181,7 +187,7 @@ export default function HotSeats() {
 												/>
 												
 											</div>
-                      {candidate.winner && (
+                      							{candidate.winner && (
 													<img
 														src="/assets/img/win-tick.png"
 														alt="winner"
@@ -225,6 +231,7 @@ export default function HotSeats() {
 												{toNepaliNumber(votes)}
 											</div>
 										</div>
+										</Link>
 									);
 								})}
 							</div>
