@@ -184,7 +184,7 @@ export default function VoteDifference() {
                     gap: "10px",
                   }}
                 >
-                  <div>
+                  <div style={{display:"flex",width:"100%", justifyContent:"space-between", flexDirection:"row"}}>
                     <div
                       style={{
                         fontSize: "15px",
@@ -193,13 +193,13 @@ export default function VoteDifference() {
                         marginBottom: "6px",
                       }}
                     >
-                      {item.constituency}
+                      {item.constituency }
                     </div>
-                    <div style={{ fontSize: "13px", color: "#666" }}>
-                      {item.province}
+                    <div style={{ fontSize: "13px", color: "#666", textDecoration: "underline" }}>
+                      {item.province }
                     </div>
                   </div>
-                  <div style={{ textAlign: "right" }}>
+                  {/* <div style={{ textAlign: "right" }}>
                     <div
                       style={{
                         fontSize: "22px",
@@ -212,7 +212,7 @@ export default function VoteDifference() {
                     <div style={{ fontSize: "12px", color: "#999" }}>
                       {item.voteDifferencePercent}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -221,6 +221,10 @@ export default function VoteDifference() {
                   const fixedImageUrl =
                     candidate.image?.replace(/^\.\.\/npcdn\.ratopati\.com/, "https://npcdn.ratopati.com") ||
                     "/assets/images/placeholder.png";
+                    
+                    const candidateData = candidatesData.find((c) => c.name === candidate.name);
+                    console.log(candidateData)
+                    const partyLogo = candidateData?.partyLogo || "/assets/images/placeholder.png";
                   return (
                     <div
                       key={index}
@@ -232,6 +236,7 @@ export default function VoteDifference() {
                         borderRadius: "12px",
                         background: candidate.winner ? "#edf9f0" : "#fff",
                         border: candidate.winner ? "1px solid #cdecd4" : "1px solid #f0f0f0",
+                        borderLeft: candidate.winner ? "5px solid #cdecd4" : "1px solid #f0f0f0",
                       }}
                     >
                       <div
@@ -264,25 +269,60 @@ export default function VoteDifference() {
                         >
                           {candidate.name}
                         </div>
-                        <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
-                          {candidate.party}
+                        <div style={{display:"flex", gap:"5px", alignItems:"center"}}>
+                          <div style={{height:"15px", width:"15px", borderRadius:"50%"}}>
+                            <img src={partyLogo} style={{height:"100%", width:"100%", objectFit: "contain", transform: "translateY(-2px)"}} />
+                          </div>
+                          <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
+                            {candidate.party}
+                          </div>
+
                         </div>
                       </div>
-                      <div style={{ textAlign: "right" }}>
-                        <div
-                          style={{
-                            fontSize: "16px",
-                            fontWeight: "700",
-                            color: "#2c9a6b",
-                          }}
-                        >
-                          {candidate.votes}
+                      <div  style={{ textAlign: "right" }}>
+                        <div style={{display:"flex", gap:"5px"}}>
+                          <div
+                            style={{
+                              fontSize: "16px",
+                              fontWeight: "700",
+                              color: candidate?.winner? "#2c9a6b": "#000000",
+                            }}
+                          >
+                            {candidate.votes}
+                          </div>
+                          {candidate?.winner && <img
+														src="/assets/img/win-tick.png"
+														alt="winner"
+														
+														style={{
+															height: "20px",
+                              width:"20px",
+                              transform: "translateY(3px)",
+															objectFit: "contain",
+															
+														}}
+													/>}
                         </div>
-                        <div style={{ fontSize: "11px", color: "#888" }}>मत</div>
+                        
                       </div>
                     </div>
                   );
                 })}
+                <div style={{ display:"flex",borderTop:"2px solid rgb(172, 27, 42)", background:"rgba(191, 30, 46, 0.03)", borderRadius:"8px" , padding:"10px" , gap:"2px", justifyContent:"center"}}>
+                    <div
+                      style={{
+                        fontSize: "12px",
+                        fontWeight: "800",
+                        color: "rgba(17, 17, 17, 0.6588235294)",
+                        
+                      }}
+                    >
+                      {"मतान्तर : " }
+                    </div>
+                    <div style={{ fontSize: "12px", color: "#bf1e2e" }}>
+                      <strong>{item.voteDifference + " (" + item.voteDifferencePercent + ")"}</strong>
+                    </div>
+                  </div>
               </div>
             </div>
           ))
