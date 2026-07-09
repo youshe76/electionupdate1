@@ -1,7 +1,11 @@
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, Search, X } from "lucide-react";
 import Header from "../components/ui/Header/Header";
 import Footer from "../components/ui/Footer/Footer";
+import candidatesData from "../data/candidates.json";
+import constituencyData from "../data/constituency.json";
+import partyData from "../data/party.json";
 
 /**
  * MainLayout Component
@@ -19,10 +23,152 @@ export function MainLayout({
   contentClassName = "",
   bare = false,
 }) {
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchResults = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    if (query.length < 2) {
+      return [];
+    }
+
+    const matches = (values) =>
+      values
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(query));
+
+    const candidateResults = candidatesData
+      .filter((candidate) =>
+        matches([
+          candidate.name,
+          candidate.slug,
+          candidate.party,
+          candidate.constituency,
+          candidate.district,
+          candidate.provinces,
+        ]),
+      )
+      .slice(0, 5)
+      .map((candidate) => ({
+        type: "Candidate",
+        title: candidate.name,
+        subtitle: [candidate.party, candidate.constituency].filter(Boolean).join(" - "),
+        image: candidate.image,
+        url: `/candidate/${candidate.slug}`,
+      }));
+
+    const partyResults = partyData
+      .filter((party) => matches([party.name, party.slug, party.leader]))
+      .slice(0, 4)
+      .map((party) => ({
+        type: "Party",
+        title: party.name,
+        subtitle: party.leader ? `Leader: ${party.leader}` : "",
+        image: party.logo,
+        url: `/party/${party.slug}`,
+      }));
+
+    const constituencyResults = constituencyData
+      .filter((constituency) =>
+        matches([
+          constituency.name,
+          constituency.slug,
+          constituency.district_name,
+          constituency.province_name,
+        ]),
+      )
+      .slice(0, 4)
+      .map((constituency) => ({
+        type: "Constituency",
+        title: constituency.name,
+        subtitle: [constituency.district_name, constituency.province_name].filter(Boolean).join(" - "),
+        image: constituency.map_image,
+        url: `/constituency/${constituency.slug}`,
+      }));
+
+    return [...candidateResults, ...partyResults, ...constituencyResults].slice(0, 10);
+  }, [searchQuery]);
+
+  const closeSearch = () => {
+    setSearchQuery("");
+    document.body.classList.remove("show__search--modal");
+  };
+
+  const openSearch = () => {
+    document.body.classList.add("show__search--modal");
+    window.setTimeout(() => {
+      document.querySelector(".global-search-form input")?.focus();
+    }, 0);
+  };
+
   return (
     <>
     <Header/>
-      <nav className="navigation">
+      <div className="candidate-search-form global-search-form">
+        <div className="search-overlay" onClick={closeSearch}></div>
+        <div className="flex">
+          <div className="elc-container">
+            <div className="form-label">
+              Search candidates, parties or constituencies
+              <button className="trigger-close" type="button" onClick={closeSearch} aria-label="Close search">
+                <X size={30} strokeWidth={1.5} />
+              </button>
+            </div>
+            <form className="input-wrap" onSubmit={(event) => event.preventDefault()}>
+              <input
+                type="search"
+                name="query"
+                autoComplete="off"
+                placeholder="Type at least 2 letters..."
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+              />
+              <div className="form-autocomplete">
+                {searchQuery.trim().length < 2 ? (
+                  <span className="counter search-counter">
+                    Type at least 2 letters...
+                  </span>
+                ) : searchResults.length > 0 ? (
+                  <div className="search-result-list">
+                    {searchResults.map((result) => (
+                      <Link
+                        key={`${result.type}-${result.url}`}
+                        to={result.url}
+                        className="search-result-item"
+                        onClick={closeSearch}
+                      >
+                        <span className="search-result-image">
+                          {result.image ? <img src={result.image} alt="" /> : null}
+                        </span>
+                        <span className="search-result-content">
+                          <span className="search-result-type">{result.type}</span>
+                          <strong>{result.title}</strong>
+                          {result.subtitle ? <small>{result.subtitle}</small> : null}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="counter search-counter">No results found</span>
+                )}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div className="mobile-nav-bar">
+        <button
+          className="mobile-nav-toggle"
+          type="button"
+          aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMobileNavOpen}
+          onClick={() => setIsMobileNavOpen((open) => !open)}
+        >
+          {isMobileNavOpen ? <X size={16} /> : <Menu size={16} />}
+        </button>
+      </div>
+      <nav className={`navigation${isMobileNavOpen ? " is-mobile-open" : ""}`}>
         <div className="elc-container">
           <div className="menu-container">
             <ul>
@@ -77,7 +223,14 @@ export function MainLayout({
               </li>
             </ul>
             <div className="nav-right">
-              <span className="btn-search fa fa-search btn-trigger"></span>
+              <button
+                className="btn-search btn-trigger"
+                type="button"
+                aria-label="Open search"
+                onClick={openSearch}
+              >
+                <Search size={18} strokeWidth={2.4} />
+              </button>
               <a
                 className="button"
                 href="https://www.jointwithus.com.np/"
