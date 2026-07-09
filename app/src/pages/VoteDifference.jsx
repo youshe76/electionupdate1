@@ -15,6 +15,20 @@ import { districtsForProvince, provinceRouteSlug, cleanRouteSlug } from "../util
 import { fixImageUrl } from "../utils/imageUtils";
 import { getManifestoImage } from "../app/config/constants";
 
+
+const nepalProvinces = {
+  "कोशी प्रदेश": "koshi province",
+  "मधेस प्रदेश": "madhesh province",
+  "बागमती प्रदेश": "bagmati province",
+  "गण्डकी प्रदेश": "gandaki province",
+  "लुम्बिनी प्रदेश": "lumbini province",
+  "कर्णाली प्रदेश": "karnali province",
+  "सुदूरपश्चिम प्रदेश": "sudurpashchim province"
+};
+
+
+
+
 export default function VoteDifference() {
   const [partyFilter, setPartyFilter] = useState("");
   const [provinceFilter, setProvinceFilter] = useState("");
@@ -60,6 +74,8 @@ export default function VoteDifference() {
       return partyMatch && provinceMatch && districtMatch;
     });
   }, [partyFilter, provinceFilter, districtFilter, voteItems]);
+  
+  
 
   return (
     <MainLayout
@@ -195,9 +211,9 @@ export default function VoteDifference() {
                     >
                       {item.constituency }
                     </div>
-                    <div style={{ fontSize: "13px", color: "#666", textDecoration: "underline" }}>
+                   <Link to={`/province/${nepalProvinces[item.province]?.split(" ").join("-")}`}> <div style={{ fontSize: "13px", color: "#666", textDecoration: "underline" }}>
                       {item.province }
-                    </div>
+                    </div> </Link>
                   </div>
                   {/* <div style={{ textAlign: "right" }}>
                     <div
@@ -223,7 +239,7 @@ export default function VoteDifference() {
                     "/assets/images/placeholder.png";
                     
                     const candidateData = candidatesData.find((c) => c.name === candidate.name);
-                    console.log(candidateData)
+                    
                     const partyLogo = candidateData?.partyLogo || "/assets/images/placeholder.png";
                   return (
                     <div
