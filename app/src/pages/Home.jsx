@@ -167,7 +167,7 @@ export default function Home() {
 			if (!isMapHoveredRef.current && !isPopupHoveredRef.current) {
 				setHoveredConstituency(null);
 			}
-		}, 10000); // ⬅️ adjust time (3–6 sec recommended)
+		}, 3000); // ⬅️ adjust time (3–6 sec recommended)
 	};
 
 	const legendItems = [{ name: "सबै", color: "#ddd", value: "" }]
@@ -363,9 +363,9 @@ export default function Home() {
 							<div
 								className="mapcontainer"
 								id="constituency-map"
-								style={{ flex: 1 }}
+								style={{ flex: 1, display: "flex", flexDirection: "column" }}
 							>
-								<div className="spinner-wrapper flex flex-middle flex-center">
+								<div className="spinner-wrapper flex flex-middle flex-center" style={{ width: "100%", position: "relative" }}>
 									<NepalMap
 										onConstituencyHover={handleConstituencyHover}
 										onConstituencyLeave={handleConstituencyLeave}
@@ -374,50 +374,49 @@ export default function Home() {
 										selectedParty={selectedLegendParty}
 										partyColorMap={partyColorMap}
 									/>
-									<div
-										style={{
-											position: "absolute",
-											bottom: "20px",
-											left: "20px",
-											background: "rgba(255,255,255,0.95)",
-											padding: "10px 14px",
-											borderRadius: "8px",
-											boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
-											zIndex: 200,
-											fontSize: "13px",
-											maxWidth: "260px",
-										}}
-									>
-										{legendItems.map((item, idx) => (
-											<div
-												key={idx}
-												onClick={() => setSelectedLegendParty(item.value)}
+								</div>
+								{/* Horizontal Legend */}
+								<div
+									style={{
+										display: "flex",
+										flexWrap: "wrap",
+										justifyContent: "center",
+										gap: "16px",
+										padding: "16px 10px",
+										marginTop: "10px",
+										zIndex: 10,
+										fontSize: "14px",
+										fontFamily: "'Noto Sans Devanagari', sans-serif",
+									}}
+								>
+									{legendItems.map((item, idx) => (
+										<div
+											key={idx}
+											onClick={() => setSelectedLegendParty(item.value)}
+											style={{
+												display: "flex",
+												alignItems: "center",
+												gap: "6px",
+												cursor: "pointer",
+												fontWeight: selectedLegendParty === item.value ? 700 : 400,
+												opacity:
+													!selectedLegendParty || selectedLegendParty === item.value
+														? 1
+														: 0.65,
+											}}
+										>
+											<span
 												style={{
-													display: "flex",
-													alignItems: "center",
-													gap: "8px",
-													marginBottom: "6px",
-													cursor: "pointer",
-													fontWeight: selectedLegendParty === item.value ? 700 : 400,
-													opacity:
-														!selectedLegendParty || selectedLegendParty === item.value
-															? 1
-															: 0.65,
+													width: "12px",
+													height: "12px",
+													backgroundColor: item.color,
+													borderRadius: "50%",
+													display: "inline-block",
 												}}
-											>
-												<span
-													style={{
-														width: "12px",
-														height: "12px",
-														backgroundColor: item.color,
-														borderRadius: "2px",
-														display: "inline-block",
-													}}
-												/>
-												<span>{item.name}</span>
-											</div>
-										))}
-									</div>
+											/>
+											<span>{item.name}</span>
+										</div>
+									))}
 								</div>
 							</div>
 							{/* Hovered Constituency Candidates Card */}
@@ -430,12 +429,13 @@ export default function Home() {
 										right: "50px",
 										top: "250px",
 										transform: "translateY(-50%)",
-										width: "350px",
+										width: "290px",
 										height: "auto",
 										background: "#fff",
-										borderRadius: "6px",
+										borderRadius: "10px",
 										overflow: "hidden",
-										boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+										boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
+										border: "1px solid #e2e8f0",
 										zIndex: 100,
 										fontFamily: "'Noto Sans Devanagari', sans-serif",
 									}}
@@ -446,16 +446,16 @@ export default function Home() {
 											display: "flex",
 											justifyContent: "space-between",
 											alignItems: "center",
-											padding: "12px 16px",
-											background: "#f5f5f5",
-											borderBottom: "2px solid #d32f2f",
+											padding: "8px 12px",
+											background: "#fff",
+											borderBottom: "1.5px solid #d32f2f",
 										}}
 									>
 										<div
 											style={{
-												color: "#d32f2f",
+												color: "#b30e2f",
 												fontWeight: 700,
-												fontSize: "22px",
+												fontSize: "17px",
 											}}
 										>
 											{hoveredConstituency.name}
@@ -463,9 +463,10 @@ export default function Home() {
 
 										<div
 											style={{
-												color: "#d32f2f",
-												fontSize: "18px",
+												color: "#b30e2f",
+												fontSize: "12px",
 												fontWeight: 500,
+												textDecoration: "underline",
 											}}
 										>
 											{hoveredConstituency.province_name}
@@ -486,11 +487,11 @@ export default function Home() {
 												style={{
 													display: "flex",
 													alignItems: "center",
-													padding: "10px 12px",
-													borderBottom: "1px solid #ddd",
-													background: idx === 0 ? "#eef6ee" : "#fff",
+													padding: "6px 10px",
+													borderBottom: "1px solid #f1f5f9",
+													background: idx === 0 ? "#f8fafc" : "#fff",
 													borderLeft:
-														idx === 0 ? "4px solid #43a047" : "4px solid transparent",
+														idx === 0 ? "3px solid #43a047" : "3px solid transparent",
 												}}
 											>
 												{/* Candidate Image */}
@@ -498,12 +499,12 @@ export default function Home() {
 													src={candidate.image || "/placeholder-user.jpg"}
 													alt={candidate.name}
 													style={{
-														width: "52px",
-														height: "52px",
+														width: "36px",
+														height: "36px",
 														borderRadius: "50%",
 														objectFit: "cover",
-														marginRight: "12px",
-														border: "1px solid #ccc",
+														marginRight: "8px",
+														border: idx === 0 ? "1.5px solid #43a047" : "1px solid #cbd5e1",
 													}}
 												/>
 
@@ -511,9 +512,9 @@ export default function Home() {
 												<div style={{ flex: 1 }}>
 													<div
 														style={{
-															fontSize: "16px",
+															fontSize: "13px",
 															fontWeight: 700,
-															color: "#222",
+															color: "#1e293b",
 															lineHeight: 1.2,
 														}}
 													>
@@ -522,9 +523,9 @@ export default function Home() {
 
 													<div
 														style={{
-															fontSize: "14px",
-															color: "#444",
-															marginTop: "3px",
+															fontSize: "11px",
+															color: "#64748b",
+															marginTop: "2px",
 														}}
 													>
 														{candidate.party}
@@ -536,16 +537,17 @@ export default function Home() {
 													style={{
 														display: "flex",
 														flexDirection: "row",
-														alignItems: "flex-end",
+														alignItems: "center",
 														textAlign: "right",
-														minWidth: "90px",
+														minWidth: "75px",
+														justifyContent: "flex-end",
 													}}
 												>
 													<div
 														style={{
-															color: idx === 0 ? "#43a047" : "#222",
+															color: idx === 0 ? "#43a047" : "#334155",
 															fontWeight: 700,
-															fontSize: "24px",
+															fontSize: "16px",
 														}}
 													>
 														{toNepaliNumber(candidate.votes)}
@@ -555,12 +557,12 @@ export default function Home() {
 														<div
 															style={{
 																color: "#43a047",
-																fontSize: "14px",
-																fontWeight: 700,
-																paddingLeft: "4px",
+																display: "flex",
+																alignItems: "center",
+																paddingLeft: "3px",
 															}}
 														>
-															<BadgeCheck />
+															<BadgeCheck size={14} />
 														</div>
 													)}
 												</div>
@@ -568,18 +570,19 @@ export default function Home() {
 												{/* Party Symbol */}
 												<div
 													style={{
-														marginLeft: "10px",
-														width: "34px",
-														textAlign: "center",
-														fontSize: "24px",
+														marginLeft: "6px",
+														width: "22px",
+														display: "flex",
+														alignItems: "center",
+														justifyContent: "center",
 													}}
 												>
 													<img
 														src={candidate.partyLogo}
 														alt={candidate.party}
 														style={{
-															width: "30px",
-															height: "30px",
+															width: "18px",
+															height: "18px",
 															objectFit: "contain",
 														}}
 														onError={(e) => {

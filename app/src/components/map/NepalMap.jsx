@@ -38,12 +38,23 @@ export default function NepalMap({
 	};
 
 	const colorShapes = (group, fill) => {
+		let resolvedColor = "";
 		group.querySelectorAll("path, polygon").forEach((shape) => {
 			if (!shape.dataset.originalFill) {
 				shape.dataset.originalFill = shape.getAttribute("fill") || "";
 			}
+			const shapeFill = fill || shape.dataset.originalFill;
+			shape.setAttribute("fill", shapeFill);
+			if (!resolvedColor) {
+				resolvedColor = shapeFill;
+			}
+		});
 
-			shape.setAttribute("fill", fill || shape.dataset.originalFill);
+		const darkColors = ["#910808", "#f50f0f", "#043e62"];
+		const isDark = resolvedColor && darkColors.some(c => resolvedColor.toLowerCase() === c.toLowerCase());
+
+		group.querySelectorAll("text").forEach((textNode) => {
+			textNode.setAttribute("fill", isDark ? "#ffffff" : "#000000");
 		});
 	};
 
