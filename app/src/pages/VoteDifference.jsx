@@ -201,16 +201,19 @@ export default function VoteDifference() {
                   }}
                 >
                   <div style={{display:"flex",width:"100%", justifyContent:"space-between", flexDirection:"row"}}>
-                    <div
-                      style={{
-                        fontSize: "15px",
-                        fontWeight: "700",
-                        color: "#222",
-                        marginBottom: "6px",
-                      }}
-                    >
-                      {item.constituency }
-                    </div>
+                    
+                    <Link to={"/"+item.link}>
+                      <div
+                        style={{
+                          fontSize: "15px",
+                          fontWeight: "700",
+                          color: "#222",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        {item.constituency}
+                      </div>
+                    </Link>
                    <Link to={`/province/${nepalProvinces[item.province]?.split(" ").join("-")}`}> <div style={{ fontSize: "13px", color: "#666", textDecoration: "underline" }}>
                       {item.province }
                     </div> </Link>
@@ -239,6 +242,8 @@ export default function VoteDifference() {
                     "/assets/images/placeholder.png";
                     
                     const candidateData = candidatesData.find((c) => c.name === candidate.name);
+                    const party = partyData.find((c)=> c.name === candidateData?.party)?.slug;
+                    
                     
                     const partyLogo = candidateData?.partyLogo || "/assets/images/placeholder.png";
                   return (
@@ -265,30 +270,36 @@ export default function VoteDifference() {
                           flexShrink: 0,
                         }}
                       >
-                        <img
-                          src={fixedImageUrl}
-                          alt={candidate.name}
-                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = "/assets/images/placeholder.png";
-                          }}
-                        />
+                        <Link to={`/candidate/${candidateData?.slug}`}>
+                          <img
+                            src={fixedImageUrl}
+                            alt={candidate.name}
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "/assets/images/placeholder.png";
+                            }}
+                          />
+                        </Link>
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "700",
-                            color: "#212121",
-                          }}
-                        >
-                          {candidate.name}
-                        </div>
+                        <Link to={`/candidate/${candidateData?.slug}`}>
+                          <div
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: "700",
+                              color: "#212121",
+                            }}
+                          >
+                            {candidate.name}
+                          </div>
+                        </Link>
                         <div style={{display:"flex", gap:"5px", alignItems:"center"}}>
+                          <Link to={`/party/${party}`}>
                           <div style={{height:"15px", width:"15px", borderRadius:"50%"}}>
                             <img src={partyLogo} style={{height:"100%", width:"100%", objectFit: "contain", transform: "translateY(-2px)"}} />
                           </div>
+                          </Link>
                           <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
                             {candidate.party}
                           </div>
