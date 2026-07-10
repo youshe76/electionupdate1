@@ -98,19 +98,21 @@ export default function PopularCandidates() {
 
               <div className="photo-wrap">
                 <div className="photo-circle">
-                  <img
-                    src={
-                      fixImageUrl(candidate.image) ||
-                      "/assets/images/placeholder.png"
-                    }
-                    alt={candidate.name}
-                    loading="lazy"
-                    onError={(event) => {
-                      event.currentTarget.onerror = null;
-                      event.currentTarget.src =
-                        "/assets/images/placeholder.png";
-                    }}
-                  />
+                  <Link to={`/candidate/${candidate?.slug}`} >
+                    <img
+                      src={
+                        fixImageUrl(candidate.image) ||
+                        "/assets/images/placeholder.png"
+                      }
+                      alt={candidate.name}
+                      loading="lazy"
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src =
+                          "/assets/images/placeholder.png";
+                      }}
+                    />
+                  </Link>
                 </div>
                 {candidate.partyLogo ? (
                   <Link
@@ -133,7 +135,7 @@ export default function PopularCandidates() {
               </div>
 
               <div className="card-body">
-                <h4 className="candidate-name">{candidate.name}</h4>
+                <Link to={"/candidate/"+candidate?.slug}><h4 className="candidate-name" style={{color: "black"}}>{candidate.name}</h4></Link>
                 <Link
                   to={getPartyHref(candidate) || getCandidateHref(candidate)}
                   target="_blank"

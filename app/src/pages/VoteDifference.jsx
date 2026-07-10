@@ -300,9 +300,11 @@ export default function VoteDifference() {
                             <img src={partyLogo} style={{height:"100%", width:"100%", objectFit: "contain", transform: "translateY(-2px)"}} />
                           </div>
                           </Link>
+                          <Link to={`/party/${party}`}>
                           <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
                             {candidate.party}
                           </div>
+                          </Link>
 
                         </div>
                       </div>
