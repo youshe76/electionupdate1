@@ -108,16 +108,20 @@ export default function HotSeats() {
 									marginBottom: "15px",
 								}}
 							>
-								<h3
-									style={{
-										margin: 0,
-										fontSize: "16px",
-										fontWeight: "bold",
-										color: "#bf1e2e",
-									}}
-								>
-									{hotSeat.constituency}
-								</h3>
+								<Link to={`/constituency/${constituencyData.find(e=> e?.name === hotSeat?.constituency)?.slug}`}>
+									<h3
+										
+										style={{
+											margin: 0,
+											fontSize: "16px",
+											fontWeight: "bold",
+											color: "#bf1e2e",
+										}}
+									>
+										{hotSeat.constituency }
+									</h3>
+								</Link>
+								
 							</div>
 
 							<div
@@ -134,7 +138,7 @@ export default function HotSeats() {
 									const candidateData = candidatesData.find(
 										(c) => c.name === candidate.name,
 									);
-									console.log(candidateData)
+									
 									const votes = candidateData?.votes || candidate.votes || 0;
 									// Fix image URL if it has the malformed ../npcdn prefix
 									const fixedImageUrl =
