@@ -57,7 +57,7 @@ export default function ConstituencyElectionCard({
                       {candidate.name}
                     </Link>
                   </h3>
-                  <Link to={`/party/${party.slug}`} style={{color:"black"}}>{info?.party || ""}</Link>
+                  <Link to={`/party/${party?.slug}`} style={{color:"black"}}>{info?.party || ""}</Link>
                 </div>
               </div>
               <div className="candidate-detail">
