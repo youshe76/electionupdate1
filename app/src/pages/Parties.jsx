@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import partyData from "../data/party.json";
+import candidateData from "../data/candidates.json"
 import { MainLayout } from "../layouts/MainLayout";
 import { toNepaliNumber } from "../utils";
 
@@ -19,7 +20,7 @@ export default function Parties() {
     if (totalSeatsA !== totalSeatsB) return totalSeatsB - totalSeatsA;
     return parseVoteCount(b.proportional_votes) - parseVoteCount(a.proportional_votes);
   });
-
+  
   return (
     <MainLayout title="राजनीतिक दलहरु" description="Review participating political parties and their results.">
       <div 
@@ -71,7 +72,8 @@ export default function Parties() {
                 <>
                   {party.leader_title || "अध्यक्ष"}:{" "}
                   <Link
-                    to={`/candidate/${party.leader_slug}`}
+                    
+                    to={`/party/${party.slug}`}
                     onClick={(e) => e.stopPropagation()}
                     style={{ color: "#991d2b", textDecoration: "underline", fontWeight: "600" }}
                   >
