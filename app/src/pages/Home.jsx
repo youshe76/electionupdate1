@@ -9,6 +9,7 @@ import PopularCandidatesPreviewSection from "../components/home/PopularCandidate
 import AllCandidatesPreviewSection from "../components/home/AllCandidatesPreviewSection.jsx";
 import constituencyData from "../data/constituency.json";
 import provinceData from "../data/province.json";
+import partyData from "../data/party.json";
 import { toNepaliNumber } from "../utils";
 import { districtsForProvince, provinceRouteSlug } from "../utils/geoUtils";
 import { BadgeCheck } from "lucide-react";
@@ -27,6 +28,7 @@ export default function Home() {
 	const [constituenciesData, setConstituenciesData] = useState([]);
 	const [candidatesData, setCandidatesData] = useState([]);
 	const [selectedLegendParty, setSelectedLegendParty] = useState("");
+	const [searchQuery, setSearchQuery] = useState("");
 
 	// Load constituency data on mount
 	useEffect(() => {
@@ -57,6 +59,70 @@ export default function Home() {
 			(constituency) => constituency.district_slug === selectedDistrict,
 		);
 	}, [selectedDistrict]);
+
+	const searchResults = useMemo(() => {
+		const query = searchQuery.trim().toLowerCase();
+
+		if (query.length < 2) {
+			return [];
+		}
+
+		const matches = (values) =>
+			values
+				.filter(Boolean)
+				.some((value) => String(value).toLowerCase().includes(query));
+
+		const candidateResults = candidatesData
+			.filter((candidate) =>
+				matches([
+					candidate.name,
+					candidate.slug,
+					candidate.party,
+					candidate.constituency,
+					candidate.district,
+					candidate.provinces,
+				]),
+			)
+			.slice(0, 5)
+			.map((candidate) => ({
+				type: "उम्मेदवार",
+				title: candidate.name,
+				subtitle: [candidate.party, candidate.constituency].filter(Boolean).join(" • "),
+				image: candidate.image,
+				url: `/candidate/${candidate.slug}`,
+			}));
+
+		const partyResults = partyData
+			.filter((party) => matches([party.name, party.slug, party.leader]))
+			.slice(0, 4)
+			.map((party) => ({
+				type: "दल",
+				title: party.name,
+				subtitle: party.leader ? `नेता: ${party.leader}` : "",
+				image: party.logo,
+				url: `/party/${party.slug}`,
+			}));
+
+		const constituencyResults = constituencyData
+			.filter((constituency) =>
+				matches([
+					constituency.name,
+					constituency.slug,
+					constituency.district_name,
+					constituency.province_name,
+				]),
+			)
+			.slice(0, 4)
+			.map((constituency) => ({
+				type: "निर्वाचन क्षेत्र",
+				title: constituency.name,
+				subtitle: [constituency.district_name, constituency.province_name].filter(Boolean).join(" • "),
+				image: constituency.map_image,
+				url: `/constituency/${constituency.slug}`,
+			}));
+
+		return [...candidateResults, ...partyResults, ...constituencyResults].slice(0, 10);
+	}, [searchQuery, candidatesData]);
 
 	const parties = [
 		{
@@ -212,6 +278,11 @@ export default function Home() {
 		setSelectedConstituency("");
 	};
 
+	const closeSearch = () => {
+		setSearchQuery("");
+		document.body.classList.remove("show__search--modal");
+	};
+
 	const candidateMap = new Map(
 		candidatesData.map((candidate) => [candidate.slug, candidate]),
 	);
@@ -226,12 +297,12 @@ export default function Home() {
 				className="candidate-search-form"
 				data-search-url="search.json"
 			>
-				<div className="search-overlay"></div>
+				<div className="search-overlay" onClick={closeSearch}></div>
 				<div className="flex">
 					<div className="elc-container">
 						<div className="form-label">
 							उम्मेदवार, दल वा निर्वाचन क्षेत्र खोज्नुहोस्
-							<button className="trigger-close">
+							<button className="trigger-close" type="button" onClick={closeSearch}>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="30"
@@ -254,13 +325,41 @@ export default function Home() {
 								type="search"
 								name="query"
 								autoComplete="off"
+								value={searchQuery}
+								onChange={(event) => setSearchQuery(event.target.value)}
 								placeholder="कम्तिमा ३ अक्षर टाइप गर्नुहोस्..."
 							/>
 							<div className="form-autocomplete">
+								{searchQuery.trim().length < 2 ? (
 								<span className="counter search-counter">
 									कम्तिमा ३ अक्षर टाइप गर्नुहोस्...
 								</span>
-								<div className="search-result-list"></div>
+								) : null}
+								{searchQuery.trim().length >= 2 ? (
+									searchResults.length > 0 ? (
+										<div className="search-result-list">
+											{searchResults.map((result) => (
+												<Link
+													key={`${result.type}-${result.url}`}
+													to={result.url}
+													className="search-result-item"
+													onClick={closeSearch}
+												>
+													<span className="search-result-image">
+														{result.image ? <img src={result.image} alt="" /> : null}
+													</span>
+													<span className="search-result-content">
+														<span className="search-result-type">{result.type}</span>
+														<strong>{result.title}</strong>
+														{result.subtitle ? <small>{result.subtitle}</small> : null}
+													</span>
+												</Link>
+											))}
+										</div>
+									) : (
+										<span className="counter search-counter">कुनै परिणाम भेटिएन</span>
+									)
+								) : null}
 							</div>
 						</form>
 					</div>

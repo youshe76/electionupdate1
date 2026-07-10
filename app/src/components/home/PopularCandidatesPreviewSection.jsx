@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import candidatesData from "../../data/candidates.json";
 import { toNepaliNumber } from "../../utils";
 
-const PREVIEW_COUNT = 8;
+const PREVIEW_COUNT = 10;
 
 export default function PopularCandidatesPreviewSection() {
   const popularCandidates = useMemo(
