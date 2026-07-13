@@ -11,6 +11,7 @@ import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import { toNepaliNumber } from "../utils";
 import { fixImageUrl } from "../utils/imageUtils";
+import getPersonLink from "../utils/getPersonLink";
 
 function getPartyLogo(party) {
   if (!party?.logo || party.logo === "#") {
@@ -49,6 +50,10 @@ export default function Party() {
   const featuredCandidates = sortedPartyCandidates
     .filter((candidate) => candidate.isWinner)
     .slice(0, 5);
+  let popularCandidates = sortedPartyCandidates.filter(c=> c.popular).slice(0,5)
+  if(popularCandidates.length <5){
+    popularCandidates = sortedPartyCandidates.slice(0,5)
+  }
   const logoUrl = getPartyLogo(party);
 
   const breadcrumb = (
@@ -103,13 +108,14 @@ export default function Party() {
                             <img
                               src={fixImageUrl(candidate.image)}
                               alt={candidate.name}
+                              
                               onError={(event) => {
                                 event.currentTarget.onerror = null;
                                 event.currentTarget.src =
-                                  "/assets/images/placeholder.png";
+                                  getPersonLink(parseInt(1000 * Math.random()))
                               }}
                             />
-                            <span className="party-name">{candidate.name}</span>
+                            <span className="party-name">{candidate.name }</span>
                           </Link>
                           <div className="party-wrap">
                             <div className="party-info">
@@ -161,7 +167,7 @@ export default function Party() {
                   alt={party.name}
                   onError={(event) => {
                     event.currentTarget.onerror = null;
-                    event.currentTarget.src = "/assets/images/placeholder.png";
+                    event.currentTarget.src = getPersonLink(parseInt(1000 * Math.random()))
                   }}
                 />
               </div>
@@ -211,62 +217,118 @@ export default function Party() {
             ) : null}
           </div>
         </div>
-
-        {featuredCandidates.length > 0 ? (
-          <aside className="candidate-sidebar">
-            <div className="sidebar">
-              <div className="sidebar-candidate">
-                <h2 className="heading-title">
-                  <span>विजयी उम्मेदवारहरु</span>
-                </h2>
-                {featuredCandidates.map((candidate) => (
-                  <div
-                    key={candidate.slug}
-                    className={`candidate-row${candidate.isWinner ? " candidate-win" : ""}`}
-                  >
-                    <div className="candidate-media">
-                      <Link to={`/candidate/${candidate.slug}`}>
-                        <img
-                          className="candidate-photo"
-                          src={fixImageUrl(candidate.image)}
-                          alt={candidate.name}
-                          onError={(event) => {
-                            event.currentTarget.onerror = null;
-                            event.currentTarget.src =
-                              "/assets/images/placeholder.png";
-                          }}
-                        />
-                      </Link>
-                      <div>
-                        <h3 className="title">
-                          <Link to={`/candidate/${candidate.slug}`}>
-                            {candidate.name}
-                          </Link>
-                        </h3>
-                        <Link to={`/party/${party.slug}`}>{party.name}</Link>
+        <div>
+          {featuredCandidates.length > 0 ? (
+            <aside className="candidate-sidebar">
+              <div className="sidebar">
+                <div className="sidebar-candidate">
+                  <h2 className="heading-title">
+                    <span>विजयी उम्मेदवारहरु</span>
+                  </h2>
+                  {featuredCandidates.map((candidate) => (
+                    <div
+                      key={candidate.slug}
+                      className={`candidate-row${candidate.isWinner ? " candidate-win" : ""}`}
+                    >
+                      <div className="candidate-media">
+                        <Link to={`/candidate/${candidate.slug}`}>
+                          <img
+                            className="candidate-photo"
+                            src={fixImageUrl(candidate.image)}
+                            alt={candidate.name}
+                            onError={(event) => {
+                              event.currentTarget.onerror = null;
+                              event.currentTarget.src = getPersonLink((1000 * Math.random()))
+                                
+                            }}
+                          />
+                        </Link>
+                        <div>
+                          <h3 className="title">
+                            <Link to={`/candidate/${candidate.slug}`}>
+                              {candidate.name }
+                            </Link>
+                          </h3>
+                          <Link to={`/party/${party.slug}`}>{party.name}</Link>
+                        </div>
+                      </div>
+                      <div className="candidate-detail">
+                        <div className="votes">
+                          {toNepaliNumber(candidate.votes || 0)}
+                          {candidate.isWinner ? (
+                            <img src="/assets/img/win-tick.png" alt="win-tick" />
+                          ) : null}
+                        </div>
+                        <Link className="party" to={`/party/${party.slug}`}>
+                          <img
+                            className="party-flag"
+                            src={logoUrl}
+                            alt={party.name}
+                          />
+                        </Link>
                       </div>
                     </div>
-                    <div className="candidate-detail">
-                      <div className="votes">
-                        {toNepaliNumber(candidate.votes || 0)}
-                        {candidate.isWinner ? (
-                          <img src="/assets/img/win-tick.png" alt="win-tick" />
-                        ) : null}
-                      </div>
-                      <Link className="party" to={`/party/${party.slug}`}>
-                        <img
-                          className="party-flag"
-                          src={logoUrl}
-                          alt={party.name}
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          </aside>
-        ) : null}
+            </aside>
+          ) : null}
+          {popularCandidates.length > 0 ? (
+            <aside className="candidate-sidebar">
+              <div className="sidebar">
+                <div className="sidebar-candidate">
+                  <h2 className="heading-title">
+                    <span>चर्चित उम्मेदवारहरु</span>
+                  </h2>
+                  {popularCandidates.map((candidate) => (
+                    <div
+                      key={candidate.slug}
+                      className={`candidate-row${candidate.isWinner ? " candidate-win" : ""}`}
+                    >
+                      <div className="candidate-media">
+                        <Link to={`/candidate/${candidate.slug}`}>
+                          <img
+                            className="candidate-photo"
+                            src={fixImageUrl(candidate.image)}
+                            alt={candidate.name}
+                            onError={(event) => {
+                              event.currentTarget.onerror = null;
+                              event.currentTarget.src = getPersonLink((1000 * Math.random()))
+                                
+                            }}
+                          />
+                        </Link>
+                        <div>
+                          <h3 className="title">
+                            <Link to={`/candidate/${candidate.slug}`}>
+                              {candidate.name }
+                            </Link>
+                          </h3>
+                          <Link to={`/party/${party.slug}`}>{party.name}</Link>
+                        </div>
+                      </div>
+                      <div className="candidate-detail">
+                        <div className="votes">
+                          {toNepaliNumber(candidate.votes || 0)}
+                          {candidate.isWinner ? (
+                            <img src="/assets/img/win-tick.png" alt="win-tick" />
+                          ) : null}
+                        </div>
+                        <Link className="party" to={`/party/${party.slug}`}>
+                          <img
+                            className="party-flag"
+                            src={logoUrl}
+                            alt={party.name}
+                          />
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          ) : null}
+        </div>
       </div>
     </MainLayout>
   );

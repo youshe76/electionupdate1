@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { toNepaliNumber } from "../../utils";
+import getPersonLink from "../../utils/getPersonLink";
 
 export default function ConstituencyElectionCard({
   constituency,
@@ -45,8 +46,18 @@ export default function ConstituencyElectionCard({
                 <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
                   <img
                     className="candidate-photo"
-                    src={info?.image || "/assets/images/placeholder.png"}
+                    src={info?.image}
                     alt={candidate.name}
+                    onError={(e)=>
+                    {
+                     let total =0 ; 
+                     for(let ch of candidate.slug){
+                      total += ch.charCodeAt(0);
+                     }
+                     if(!total){ total = parseInt(Math.random() * 1000)}
+                      e.target.src = getPersonLink(total + parseInt(candidate?.vote) || candidate?.vote || parseInt(1000 * Math.random()))
+                    }
+                    }
                     loading="lazy"
                     decoding="async"
                   />

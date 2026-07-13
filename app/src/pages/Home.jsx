@@ -196,6 +196,7 @@ export default function Home() {
 		}
 
 		setHoveredConstituency(data);
+		
 	};
 
 	const handleConstituencyLeave = () => {
@@ -568,6 +569,7 @@ export default function Home() {
 												textDecoration: "underline",
 											}}
 										>
+											
 											{hoveredConstituency.province_name}
 										</div>
 									</div>
