@@ -130,7 +130,7 @@ export default function Constituency() {
                       className="party-sign"
                     >
                       <img src={partyInfo?.logo} alt={partyInfo?.name} />
-                      {partyInfo.name + "  |  " }
+                      {partyInfo.name }
                     </Link>
                     <Link to={`/constituency/${cleanSlug}`}>
                     <p style={{fontSize: "12px" , color: "rgba(1, 8, 20, 0.568627451)", fontWeight: "700"}}>{candidateInfo?.constituency}</p>
