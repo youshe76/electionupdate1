@@ -1,4 +1,5 @@
 export default function getPersonLink(value){
+    value = parseInt(value)
     const placeHolderPhotoArray = [
     "https://tse1.explicit.bing.net/th/id/OIP.UbXdry_H6pAzrO4qAF-WDAHaLH?r=0&pid=ImgDet&w=178&h=267&c=7&dpr=1.5&isAdult=true&o=7&rm=3",
     "https://th.bing.com/th/id/OIP.iO1fk4v6DRgbwY5cLu9I8wAAAA?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",

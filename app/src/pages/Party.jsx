@@ -11,6 +11,7 @@ import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import { toNepaliNumber } from "../utils";
 import { fixImageUrl } from "../utils/imageUtils";
+import getPersonLink from "../utils/getPersonLink";
 
 function getPartyLogo(party) {
   if (!party?.logo || party.logo === "#") {
@@ -49,7 +50,10 @@ export default function Party() {
   const featuredCandidates = sortedPartyCandidates
     .filter((candidate) => candidate.isWinner)
     .slice(0, 5);
-  const popularCandidates = sortedPartyCandidates.filter(c=> c.popular).slice(0,5)
+  let popularCandidates = sortedPartyCandidates.filter(c=> c.popular).slice(0,5)
+  if(popularCandidates.length <5){
+    popularCandidates = sortedPartyCandidates.slice(0,5)
+  }
   const logoUrl = getPartyLogo(party);
 
   const breadcrumb = (
@@ -104,10 +108,11 @@ export default function Party() {
                             <img
                               src={fixImageUrl(candidate.image)}
                               alt={candidate.name}
+                              
                               onError={(event) => {
                                 event.currentTarget.onerror = null;
                                 event.currentTarget.src =
-                                  "/assets/images/placeholder.png";
+                                  getPersonLink(parseInt(1000 * Math.random()))
                               }}
                             />
                             <span className="party-name">{candidate.name }</span>
@@ -162,7 +167,7 @@ export default function Party() {
                   alt={party.name}
                   onError={(event) => {
                     event.currentTarget.onerror = null;
-                    event.currentTarget.src = "/assets/images/placeholder.png";
+                    event.currentTarget.src = getPersonLink(parseInt(1000 * Math.random()))
                   }}
                 />
               </div>
@@ -233,8 +238,8 @@ export default function Party() {
                             alt={candidate.name}
                             onError={(event) => {
                               event.currentTarget.onerror = null;
-                              event.currentTarget.src =
-                                "/assets/images/placeholder.png";
+                              event.currentTarget.src = getPersonLink((1000 * Math.random()))
+                                
                             }}
                           />
                         </Link>
@@ -288,8 +293,8 @@ export default function Party() {
                             alt={candidate.name}
                             onError={(event) => {
                               event.currentTarget.onerror = null;
-                              event.currentTarget.src =
-                                "/assets/images/placeholder.png";
+                              event.currentTarget.src = getPersonLink((1000 * Math.random()))
+                                
                             }}
                           />
                         </Link>
