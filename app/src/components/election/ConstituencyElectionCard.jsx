@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { toNepaliNumber } from "../../utils";
 import getPersonLink from "../../utils/getPersonLink";
-debugger;
+
 export default function ConstituencyElectionCard({
   constituency,
   candidatesBySlug,

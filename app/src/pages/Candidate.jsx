@@ -14,6 +14,7 @@ import { toNepaliNumber } from "../utils";
 import { districtsForProvince, provinceRouteSlug, cleanRouteSlug } from "../utils/geoUtils";
 import { fixImageUrl } from "../utils/imageUtils";
 import { getManifestoImage } from "../app/config/constants";
+import getPersonLink from "../utils/getPersonLink";
 
 
 export default function Candidate() {
@@ -80,8 +81,16 @@ export default function Candidate() {
           >
             <img
               src={candidate.image }
-              alt={candidate.name}
-              
+              alt={candidate.name }
+              onError={
+                (e)=>{
+                  let total = 0 ; 
+                  for(let ch of candidate?.slug){
+                    total += ch.charCodeAt(0)
+                  }
+                  e.target.src = getPersonLink(candidate.votes || total || parseInt(Math.random() * 1000))
+                }
+              }
               style={{
                 height: "100%",
                 borderRadius: "8px",
@@ -252,7 +261,7 @@ export default function Candidate() {
                             onError={(event) => {
                               event.currentTarget.onerror = null;
                               event.currentTarget.src =
-                                "/assets/images/placeholder.png";
+                                getPersonLink(parseInt(10000 * Math.random()))
                             }}
                           />
                         </Link>
