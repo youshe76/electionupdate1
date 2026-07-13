@@ -79,8 +79,9 @@ export default function Candidate() {
           }}
           >
             <img
-              src={candidate.image || "https://th.bing.com/th/id/OIP.GmQvbV6SUduu9mKUGJ5wOAHaLB?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3"}
+              src={candidate.image }
               alt={candidate.name}
+              
               style={{
                 height: "100%",
                 borderRadius: "8px",
