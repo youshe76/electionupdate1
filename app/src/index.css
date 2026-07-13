@@ -1051,6 +1051,23 @@ body.show__search--modal .global-search-form {
     font-size: 14px;
   }
 }
+.partyContainer{
+  height: "100%"
+}
+.partyCard{
+  transition: all 0.3s ease ;
+  cursor: pointer; 
+}
+.partyCard:hover{
+  transform: translateY(-3px);
+}
+.partyName{
+  color: "rgba(0,0,0,0.85)";
+  transition: all 0.3s ease;
+}
+.partyCard:hover .partyName{
+  color: #bf1e2e;
+}
 
 @media (max-width: 900px) {
   [style*="background-color: rgb(8, 162, 34)"],

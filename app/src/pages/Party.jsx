@@ -12,6 +12,7 @@ import { MainLayout } from "../layouts/MainLayout";
 import { toNepaliNumber } from "../utils";
 import { fixImageUrl } from "../utils/imageUtils";
 import getPersonLink from "../utils/getPersonLink";
+import { ChevronRight } from "lucide-react";
 
 function getPartyLogo(party) {
   if (!party?.logo || party.logo === "#") {
@@ -21,6 +22,7 @@ function getPartyLogo(party) {
     party.logo.startsWith("/") ? party.logo : `/${party.logo}`,
   );
 }
+
 
 export default function Party() {
   const { slug } = useParams();
@@ -157,8 +159,8 @@ export default function Party() {
         </section>
       }
     >
-      <div className="flex flex-wrap">
-        <div className="detail">
+      <div style={{display: "grid", gridTemplateColumns: "2.5fr 1fr", justifyContent: "center"}}>
+        <div  style={{width: "100%"}}>
           <div className="candidate-detail-wrapper">
             <div className="candidate-bio">
               <div className="candidate-featured-img">
@@ -217,7 +219,7 @@ export default function Party() {
             ) : null}
           </div>
         </div>
-        <div>
+        <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column",gap : "2px"}}>
           {featuredCandidates.length > 0 ? (
             <aside className="candidate-sidebar">
               <div className="sidebar">
@@ -273,7 +275,7 @@ export default function Party() {
               </div>
             </aside>
           ) : null}
-          {popularCandidates.length > 0 ? (
+          {/* {popularCandidates.length > 0 ? (
             <aside className="candidate-sidebar">
               <div className="sidebar">
                 <div className="sidebar-candidate">
@@ -327,7 +329,69 @@ export default function Party() {
                 </div>
               </div>
             </aside>
-          ) : null}
+          ) : null} */}
+          <div style={{ width: "100%", height: "max(100%, 10vh)"}}>
+            <div style={{
+              display: "flex", 
+              justifyContent: "space-between"
+            }}>
+
+              <h2 className="heading-title" style={{marginBottom: "15px", fontSize: "21px"}}>
+                <span >विजयी उम्मेदवारहरु</span>
+              </h2>
+              <Link to={"/parties"}>  <ChevronRight style={{
+                      background: "#bf1e2e",
+                      fontWeight: "800",
+                      height: "22px",
+                      width: "22px",
+                      color: "#fff",
+                      borderRadius: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      fontSize: "10px",
+                      alignItems: "center"
+                }} /></Link>
+            </div>
+          <div className="partyContainer" style={{display :"grid", gridTemplateColumns:"1fr 1fr 1fr", padding: "10px",gap: "10px", background: "rgba(0, 0, 0, 0.04)"}}>
+            {
+              partyData.filter(e=> e.wins).slice(0,6).map(e=>(
+                <Link to={"/party/"+ e.slug}><div style={{
+                  height: "100%", 
+                  width:"100%",
+                  flex: "0 0 30.5%",
+                  border: "3px rgba(18, 8, 8, 0.11)",
+                  borderRadius: "7px",
+                  display: "flex",
+                  flexDirection: "column", 
+                  gap: "1px", 
+                  padding: "10px",
+                  alignItems: "center",
+                  padding: "2px",
+                  background: "#ffffff"
+                  
+                }}
+                className="partyCard"
+                >
+                  <div style={{
+                    width: "58px",
+                    height: "58px",
+                    borderRadius: "50%", 
+                    border: "2px solid rgba(0,0,0,0.14)"
+                    
+                  }}>
+                    <img src={e.logo} style={{height: "100%", width: "100%", objectFit: "contain", borderRadius: "50%"}} />
+                  </div>
+                  <h1 style={{
+                    fontSize: "13px", 
+                    
+                  }}
+                  className="partyName">{e.name}</h1>
+                </div></Link>
+              ))
+            }
+          </div> 
+          </div>
+
         </div>
       </div>
     </MainLayout>
