@@ -22,7 +22,7 @@ export default function Constituency() {
   const cleanSlug = slug?.replace(/\.html$/i, "");
   
   const constituency = constituencyData.find((c) => c.slug === cleanSlug);
-
+  
   if (!constituency) {
     return (
       <MainLayout title="निर्वाचन क्षेत्र फेला परेन">
@@ -94,6 +94,7 @@ export default function Constituency() {
           {sortedCandidates.map((candidate) => {
             const candidateInfo = candidatesData.find((c) => c.slug === candidate.slug);
             const partyInfo = partyData.find((p) => p.name === candidateInfo?.party);
+            
             const isWinner = Boolean(
               candidate.isWinner ||
               candidate.is_winner ||
@@ -102,59 +103,7 @@ export default function Constituency() {
             );
             
             return (
-              // <div 
-              //   key={candidate.slug} 
-              //   className={`party-container ${candidate.is_winner ? "candidate-win" : ""}`}
-              //   style={{
-              //     border: "1px solid #ddd",
-              //     borderRadius: "8px",
-              //     padding: "15px",
-              //     backgroundColor: candidate.is_winner ? "#edf9f0" : "#fff",
-              //     borderColor: candidate.is_winner ? "1px solid #cdecd4" : "#ddd",
-              //     display: "flex",
-              //     justifyContent: "space-between",
-              //     alignItems: "center"
-              //   }}
-              // >
-              //   <div className="party-logo" style={{ display: "flex", alignItems: "center" }}>
-              //     <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
-              //       <img 
-              //         className="candidate-photo" 
-              //         src={candidateInfo?.image || "/assets/images/placeholder.png"} 
-              //         alt={candidate.name} 
-              //         style={{ width: "60px", height: "60px", borderRadius: "50%", marginRight: "15px", objectFit: "contain", border: "1px solid #ccc" }}
-              //       />
-              //     </Link>
-              //     <div style={{}}>
-              //       <h3 className="party-name" style={{ margin: 0, fontSize: "16px", fontWeight: "bold" , display:"inline-block"}}>
-              //         <Link to={`/candidate/${candidate.slug}`} style={{ color: "#333", textDecoration: "none" }} target="_blank" rel="noopener noreferrer">
-              //           {candidate.name }
-              //         </Link>
-              //       </h3>
-              //       <div style={{display:"flex", gap:"3px", border:"1px solid red"}}>
-              //         <div style={{width: "20px", height: "20px", borderRadius: "50%"}}>
-              //           <img src={partyInfo?.logo} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-              //         </div>
-              //         {partyInfo ? (
-              //           <Link to={`/party/${partyInfo.slug}`} style={{ fontSize: "13px", color: "#bf1e2e", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">
-              //             {candidateInfo?.party }
-              //           </Link>
-              //         ) : (
-              //           <span style={{ fontSize: "13px", color: "#666" }}>{candidateInfo?.party || "स्वतन्त्र"}</span>
-              //         )}
-              //       </div>
-              //     </div>
-              //   </div>
-                
-              //   <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-              //     <div className="votes" style={{ fontWeight: "bold", fontSize: "18px", color: "#bf1e2e", display: "flex", alignItems: "center" }}>
-              //       {candidate.votes?.toLocaleString() || "०"}
-              //       {candidate.is_winner && (
-              //         <img src="/assets/img/win-tick.png" alt="win-tick" style={{ width: "20px", marginLeft: "10px" }} />
-              //       )}
-              //     </div>
-              //   </div>
-              // </div>
+             
               <div
                 key={candidate.slug}
                 className={`party-container col12${candidate.isWinner ? " candidate-win" : ""}`}
@@ -181,7 +130,10 @@ export default function Constituency() {
                       className="party-sign"
                     >
                       <img src={partyInfo?.logo} alt={partyInfo?.name} />
-                      {partyInfo.name}
+                      {partyInfo.name + "  |  " }
+                    </Link>
+                    <Link to={`/constituency/${cleanSlug}`}>
+                    <p style={{fontSize: "12px" , color: "rgba(1, 8, 20, 0.568627451)", fontWeight: "700"}}>{candidateInfo?.constituency}</p>
                     </Link>
                     
                   </div>
