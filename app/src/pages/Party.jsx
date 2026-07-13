@@ -109,7 +109,7 @@ export default function Party() {
                                   "/assets/images/placeholder.png";
                               }}
                             />
-                            <span className="party-name">{candidate.name}</span>
+                            <span className="party-name">{candidate.name }</span>
                           </Link>
                           <div className="party-wrap">
                             <div className="party-info">
@@ -240,7 +240,7 @@ export default function Party() {
                       <div>
                         <h3 className="title">
                           <Link to={`/candidate/${candidate.slug}`}>
-                            {candidate.name}
+                            {candidate.name }
                           </Link>
                         </h3>
                         <Link to={`/party/${party.slug}`}>{party.name}</Link>

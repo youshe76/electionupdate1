@@ -257,7 +257,7 @@ export default function VoteDifference() {
                         borderRadius: "12px",
                         background: candidate.winner ? "#edf9f0" : "#fff",
                         border: candidate.winner ? "1px solid #cdecd4" : "1px solid #f0f0f0",
-                        borderLeft: candidate.winner ? "5px solid #cdecd4" : "1px solid #f0f0f0",
+                        borderLeft: candidate.winner ? "5px solid rgb(47, 161, 47)" : "1px solid #f0f0f0",
                       }}
                     >
                       <div

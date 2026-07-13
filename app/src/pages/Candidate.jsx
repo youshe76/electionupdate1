@@ -28,7 +28,7 @@ export default function Candidate() {
     }
   }
   for(let i =0; i<featuredCandidates.length; i++){
-    const x = Math.floor(Math.random() * featuredCandidates.length);
+    const x =i;
     const temp = featuredCandidates[x];
     const j = Math.floor(Math.random() * featuredCandidates.length);
     featuredCandidates[x]  = featuredCandidates[j];

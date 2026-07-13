@@ -18,6 +18,7 @@ export default function NepalMap({
 
 	const getConstituencyForGroupId = (groupId, districtToConstituenciesMap) => {
 		if (districtToConstituenciesMap[groupId]) {
+			
 			return districtToConstituenciesMap[groupId][0];
 		}
 
@@ -64,6 +65,7 @@ export default function NepalMap({
 		if (svg && constituenciesData.length > 0) {
 			// Build a map from district_slug to all constituencies in that district
 			const districtToConstituenciesMap = {};
+
 			constituenciesData.forEach((constituency) => {
 				const districtSlug = constituency.district_slug;
 				if (!districtToConstituenciesMap[districtSlug]) {
@@ -71,6 +73,7 @@ export default function NepalMap({
 				}
 				districtToConstituenciesMap[districtSlug].push(constituency);
 			});
+			
 
 			// Get all group elements in SVG (these represent constituencies)
 			const groups = svg.querySelectorAll("g[id]");
@@ -83,15 +86,17 @@ export default function NepalMap({
 				);
 
 				if (constituency) {
+					
 					attachEventListeners(group, constituency);
 				}
 			});
 
 			function attachEventListeners(group, constituency) {
 				group.style.cursor = "pointer";
-
+				
 				group.addEventListener("mouseenter", () => {
 					onConstituencyHover(constituency);
+					
 					group.style.opacity = "0.7";
 				});
 
