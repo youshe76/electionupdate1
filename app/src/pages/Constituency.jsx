@@ -14,7 +14,7 @@ import { toNepaliNumber } from "../utils";
 import { districtsForProvince, provinceRouteSlug, cleanRouteSlug } from "../utils/geoUtils";
 import { fixImageUrl } from "../utils/imageUtils";
 import { getManifestoImage } from "../app/config/constants";
-
+import getPersonLink from "../utils/getPersonLink";
 
 
 export default function Constituency() {
@@ -117,8 +117,7 @@ export default function Constituency() {
                     alt={candidate.name}
                     onError={(event) => {
                       event.currentTarget.onerror = null;
-                      event.currentTarget.src =
-                        "/assets/images/placeholder.png";
+                      event.currentTarget.src = getPersonLink((100 * Math.random()))
                     }}
                   />
                   <span className="party-name">{candidate.name }</span>
