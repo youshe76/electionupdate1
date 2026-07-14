@@ -2057,7 +2057,7 @@ export default function NepalMap({
 				c8.1,2.6,15.5,6.7,22.3,11.1c2.1,1.3,4.2,2.6,6.3,3.7L1235,1226.8L1235,1226.8z"
 					></path>
 				</g>
-				<text transform="matrix(0.8586 0.3305 -0.3593 0.9332 1213.1155 1209.6624)">
+				<text  transform="matrix(0.8586 0.3305 -0.3593 0.9332 1213.1155 1209.6624)">
 					नवलपरासी(प)
 				</text>
 			</g>
@@ -2097,7 +2097,7 @@ export default function NepalMap({
 			c5.9-2.6,8.7-6.4,7.9-12.9c-0.3-2.3,1.8-3.5,3-5.1c8-10.2,20.5-16.5,24.7-29.9c0.3-0.9,1.6-2.1,2.6-2.2c5.9-0.6,5.6-5.8,6-9.2
 			c0.9-7.5,3.1-15.8,2-22.3c-2.5-14.6,9-15.5,16.2-20.3C1231.8,626.8,1232.9,625.1,1230.8,623.2z"
 				></path>
-				<text transform="matrix(0.92 0 0 1 1046.8138 685.8904)">डोल्पा</text>
+				<text  transform="matrix(0.92 0 0 1 1046.8138 685.8904)"   style={{ fill: "#fff" }}>डोल्पा</text>
 			</g>
 			<g id="kanchanpur">
 				<g id="kanchanpur2">
@@ -2828,7 +2828,7 @@ export default function NepalMap({
 				999.3,821.1 999.3,820.7 		"
 				></polygon>
 			</g>
-			<text transform="matrix(1 0 0 1 908.8779 809.989)">रुकुम(पु)</text>
+			<text  fill="#ffff" transform="matrix(1 0 0 1 908.8779 809.989)   ">रुकुम(पु)</text>
 			<g id="rukum-west">
 				<polygon
 					fill="#f50f0f"
@@ -3159,7 +3159,7 @@ export default function NepalMap({
 				916.5,706.4 916.5,706.1 		"
 				></polygon>
 			</g>
-			<text transform="matrix(1 0 0 1 813.0206 767.132)">रुकुम(प)</text>
+			<text  fill="#ffff" transform="matrix(1 0 0 1 813.0206 767.132)">रुकुम(प)</text>
 		</svg>
 	);
 }
