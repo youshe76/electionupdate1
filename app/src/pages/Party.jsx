@@ -337,7 +337,7 @@ export default function Party() {
             }}>
 
               <h2 className="heading-title" style={{marginBottom: "15px", fontSize: "21px"}}>
-                <span >विजयी उम्मेदवारहरु</span>
+                <span >अन्य दलहरु</span>
               </h2>
               <Link to={"/parties"}>  <ChevronRight style={{
                       background: "#bf1e2e",
