@@ -60,7 +60,7 @@ export default function Candidate() {
       title={candidate.name}
       description={`Candidate profile page for ${candidate.name}.`}
     >
-      <div style={{display:"grid", gridTemplateColumns: "2fr 1fr", gap: "1%"}}>
+      <div className="candidatePageContainer" style={{display:"grid", gap: "1%"}}>
         <div
           style={{
             display: "grid",

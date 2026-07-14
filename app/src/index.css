@@ -1087,6 +1087,10 @@ body.show__search--modal .global-search-form {
   background: #bf1e2e;
   color: #fff;
 }
+
+.candidatePageContainer{
+  grid-template-columns: 2fr 1fr;
+}
 @media (max-width: 900px) {
   [style*="background-color: rgb(8, 162, 34)"],
   [style*="background-color:#08a222"],
@@ -1352,6 +1356,11 @@ body.show__search--modal .global-search-form {
 
   .section-bottom {
     margin-bottom: 24px;
+  }
+  
+  .candidatePageContainer{
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
   }
 
   .smart-filter-form,
