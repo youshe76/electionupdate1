@@ -172,7 +172,7 @@ export default function VoteDifference() {
         </button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: " repeat(auto-fit, minmax(200px, 1fr))", gap: "20px" }}>
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => (
             <div
