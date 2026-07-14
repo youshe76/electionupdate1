@@ -1303,6 +1303,7 @@ body.show__search--modal .global-search-form {
     padding-left: 14px;
     padding-right: 14px;
   }
+  
 
   [style*="background-color: rgb(8, 162, 34)"],
   [style*="background-color:#08a222"],
@@ -1413,6 +1414,11 @@ body.show__search--modal .global-search-form {
   .navigation .menu-container > ul > li > a {
     font-size: 14px !important;
   }
+  .dn-grid{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 25px;
+}
 
   .navigation .menu-container .nav-right .button {
     font-size: 13px !important;
