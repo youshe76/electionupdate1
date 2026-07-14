@@ -17,6 +17,26 @@ import { getManifestoImage } from "../app/config/constants";
 import getPersonLink from "../utils/getPersonLink";
 
 
+
+function normalizeName(value) {
+  return String(value || "")
+    .normalize("NFKC")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[()]/g, "")
+    .replace(/[\s\u00A0]+/g, " ")
+    .trim();
+}
+
+const getConstituencyHref = (constituencyName) => {
+  const constituency = constituencyData.find(
+    (c) => normalizeName(c.name) === normalizeName(constituencyName)
+  );
+
+  return constituency
+    ? `/constituency/${constituency.slug}`
+    : "/constituencies";
+};
+
 export default function Candidate() {
   const { slug } = useParams();
   const cleanSlug = slug?.replace(/\.html$/i, "");
@@ -134,11 +154,16 @@ export default function Candidate() {
                   candidate.party
                 )}
               </div>
+          
               <div style={{borderRadius: "20px", background:"#fff" , padding:"0 15px"}}>
                 
-                <Link 
-                  to={`/constituency/${candidate.constituency?.replace(/\s+/g, "").toLowerCase()}`}
-                  style={{ color: "rgba(0,0,0,0.6)", textDecoration: "none", fontWeight: "bold" }}
+                <Link
+  to={getConstituencyHref(candidate.constituency)}
+  style={{
+    color: "rgba(0,0,0,0.6)",
+    textDecoration: "none",
+    fontWeight: "bold",
+  }}
                 target="_blank" rel="noopener noreferrer">
                   {candidate.constituency}
                 </Link>

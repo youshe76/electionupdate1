@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import candidatesData from "../data/candidates.json";
 import constituencyData from "../data/constituency.json";
@@ -17,6 +17,8 @@ function normalizeName(value) {
 }
 
 export default function PopularCandidates() {
+  const navigate = useNavigate();
+
   const constituencySlugByName = useMemo(() => {
     const map = new Map();
 
@@ -51,14 +53,14 @@ export default function PopularCandidates() {
 
           return (b.votes || 0) - (a.votes || 0);
         }),
-    [],
+    []
   );
 
   const getCandidateHref = (candidate) => `/candidate/${candidate.slug}`;
 
   const getConstituencyHref = (candidate) => {
     const constituencySlug = constituencySlugByName.get(
-      normalizeName(candidate.constituency),
+      normalizeName(candidate.constituency)
     );
 
     return constituencySlug ? `/constituency/${constituencySlug}` : null;
@@ -79,44 +81,40 @@ export default function PopularCandidates() {
         {popularCandidates.map((candidate) => (
           <article
             key={candidate.slug}
-            className={`popular-card${candidate.isWinner ? " popular-card-winner" : ""}`}
+            className={`popular-card${
+              candidate.isWinner ? " popular-card-winner" : ""
+            }`}
+            onClick={() => navigate(getCandidateHref(candidate))}
+            style={{ cursor: "pointer" }}
           >
-            <Link
-              to={getCandidateHref(candidate)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="popular-card-overlay"
-              aria-label={`${candidate.name} candidate profile`}
-            />
-
             <div className="popular-card-inner">
-              {candidate.isWinner ? (
+              {candidate.isWinner && (
                 <span className="popular-card-check" aria-hidden="true">
                   <img src="/assets/img/win-tick.png" alt="" />
                 </span>
-              ) : null}
+              )}
 
               <div className="photo-wrap">
                 <div className="photo-circle">
-                  <Link to={`/candidate/${candidate?.slug}`} >
-                    <img
-                      src={
-                        fixImageUrl(candidate.image) ||
-                        "/assets/images/placeholder.png"
-                      }
-                      alt={candidate.name}
-                      loading="lazy"
-                      onError={(event) => {
-                        event.currentTarget.onerror = null;
-                        event.currentTarget.src =
-                          "/assets/images/placeholder.png";
-                      }}
-                    />
-                  </Link>
+                  <img
+                    src={
+                      fixImageUrl(candidate.image) ||
+                      "/assets/images/placeholder.png"
+                    }
+                    alt={candidate.name}
+                    loading="lazy"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src =
+                        "/assets/images/placeholder.png";
+                    }}
+                  />
                 </div>
-                {candidate.partyLogo ? (
+
+                {candidate.partyLogo && (
                   <Link
                     to={getPartyHref(candidate) || getCandidateHref(candidate)}
+                    onClick={(e) => e.stopPropagation()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="party-emblem"
@@ -131,21 +129,33 @@ export default function PopularCandidates() {
                       }}
                     />
                   </Link>
-                ) : null}
+                )}
               </div>
 
               <div className="card-body">
-                <Link to={"/candidate/"+candidate?.slug}><h4 className="candidate-name" style={{color: "black"}}>{candidate.name}</h4></Link>
+                <h4
+                  className="candidate-name"
+                  style={{ color: "black" }}
+                >
+                  {candidate.name}
+                </h4>
+
                 <Link
                   to={getPartyHref(candidate) || getCandidateHref(candidate)}
+                  onClick={(e) => e.stopPropagation()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="candidate-meta candidate-meta-link"
                 >
                   {candidate.party}
                 </Link>
+
                 <Link
-                  to={getConstituencyHref(candidate) || getCandidateHref(candidate)}
+                  to={
+                    getConstituencyHref(candidate) ||
+                    getCandidateHref(candidate)
+                  }
+                  onClick={(e) => e.stopPropagation()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="constituency-pill constituency-pill-link"
@@ -156,7 +166,9 @@ export default function PopularCandidates() {
 
               <div className="card-footer">
                 <div
-                  className={`votes${candidate.isWinner ? " votes-winner" : ""}`}
+                  className={`votes${
+                    candidate.isWinner ? " votes-winner" : ""
+                  }`}
                 >
                   {toNepaliNumber(candidate.votes || 0)}
                 </div>
