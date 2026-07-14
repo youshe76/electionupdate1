@@ -76,11 +76,16 @@ export default function Party() {
       secondaryChildren={
         <section className="all-parties-candidates section">
           <div className="elc-container">
-            <div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
+            <div  className="heading-title-wrap flex flex-between flex-wrap flex-middle">
               <h3 className="heading-title">{party.name}का उम्मेदवारहरु</h3>
-              <span className="counter">
-                {toNepaliNumber(sortedPartyCandidates.length)}
-              </span>
+              <div style={{padding: "10px", display : "flex", gap: "2px", width: "40%", justifyContent: "space-between"}}>
+                <button className="partyPageBtn" style={{
+                  background: "#bf1e2e",
+                  color: "#fff"
+                }}>प्रत्यक्ष २०८२</button>
+                <a href={"https://election.ratopati.com/party/"+party.slug}><button className="partyPageBtn" >समानुपातिक २०८२</button> </a>
+                <a href={"https://election.ratopati.com/party/"+party.slug}><button className="partyPageBtn">प्रत्यक्ष २०७९</button></a>
+              </div>
             </div>
 
             <div className="candidate-wrapper active">

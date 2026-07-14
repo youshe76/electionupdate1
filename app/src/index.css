@@ -1072,6 +1072,21 @@ body.show__search--modal .global-search-form {
   grid-template-columns: 2.5fr 1fr;
 }
 
+.partyPageBtn{
+  font-size: 13px;
+  padding: 10px 12px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 7px 15px rgba(0, 0, 0, 0.04);
+  font-weight: 700;
+  cursor: pointer;
+  color:rgba(51, 51, 51, 0.9411764706);
+  border: none;
+  border-radius: 3px;
+}
+.partyPageBtn:hover{
+  background: #bf1e2e;
+  color: #fff;
+}
 @media (max-width: 900px) {
   [style*="background-color: rgb(8, 162, 34)"],
   [style*="background-color:#08a222"],
@@ -1354,6 +1369,8 @@ body.show__search--modal .global-search-form {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
   }
+  
+  
 
   .section-lead-table .parties-card,
   .section-candidates .col2.parties-card,
@@ -1369,7 +1386,9 @@ body.show__search--modal .global-search-form {
   .heading-title-wrap .heading-title {
     font-size: 22px !important;
     line-height: 1.25;
+    margin-bottom: 10px;
   }
+  
 
   .breadcrumb {
     line-height: 1.4;
