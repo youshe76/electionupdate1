@@ -1068,6 +1068,9 @@ body.show__search--modal .global-search-form {
 .partyCard:hover .partyName{
   color: #bf1e2e;
 }
+.partyPageGrid{
+  grid-template-columns: 2.5fr 1fr;
+}
 
 @media (max-width: 900px) {
   [style*="background-color: rgb(8, 162, 34)"],
@@ -1346,6 +1349,10 @@ body.show__search--modal .global-search-form {
 
   .dn-grid {
     grid-gap: 14px;
+  }
+  .partyPageGrid{
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
   }
 
   .section-lead-table .parties-card,

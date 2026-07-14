@@ -159,7 +159,7 @@ export default function Party() {
         </section>
       }
     >
-      <div style={{display: "grid", gridTemplateColumns: "2.5fr 1fr", justifyContent: "center"}}>
+      <div className={"partyPageGrid"} style={{display: "grid", justifyContent: "center"}}>
         <div  style={{width: "100%"}}>
           <div className="candidate-detail-wrapper">
             <div className="candidate-bio">
