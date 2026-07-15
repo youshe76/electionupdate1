@@ -234,7 +234,7 @@ export default function Home() {
 			if (!isMapHoveredRef.current && !isPopupHoveredRef.current) {
 				setHoveredConstituency(null);
 			}
-		}, 1100); // 1.1 seconds of inactivity
+		}, 1000); // 1.1 seconds of inactivity
 	};
 
 	const legendItems = [{ name: "सबै", color: "#ddd", value: "" }]
