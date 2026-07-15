@@ -14,6 +14,10 @@ import { fixImageUrl } from "../utils/imageUtils";
 import getPersonLink from "../utils/getPersonLink";
 import { ChevronRight } from "lucide-react";
 
+
+import samanupatik from "../data/samanupatik.json";
+console.log(samanupatik);
+
 function getPartyLogo(party) {
   if (!party?.logo || party.logo === "#") {
     return "/assets/images/placeholder.png";
@@ -23,12 +27,11 @@ function getPartyLogo(party) {
   );
 }
 
-
 export default function Party() {
   const { slug } = useParams();
   const cleanSlug = slug?.replace(/\.html$/i, "");
   const party = partyData.find((item) => item.slug === cleanSlug);
-
+  const [clicked, setClicked] = useState(false);
   const constituencySlugByName = useMemo(() => {
     const map = new Map();
     constituencyData.forEach((item) => map.set(item.name, item.slug));
@@ -52,9 +55,11 @@ export default function Party() {
   const featuredCandidates = sortedPartyCandidates
     .filter((candidate) => candidate.isWinner)
     .slice(0, 5);
-  let popularCandidates = sortedPartyCandidates.filter(c=> c.popular).slice(0,5)
-  if(popularCandidates.length <5){
-    popularCandidates = sortedPartyCandidates.slice(0,5)
+  let popularCandidates = sortedPartyCandidates
+    .filter((c) => c.popular)
+    .slice(0, 5);
+  if (popularCandidates.length < 5) {
+    popularCandidates = sortedPartyCandidates.slice(0, 5);
   }
   const logoUrl = getPartyLogo(party);
 
@@ -74,98 +79,195 @@ export default function Party() {
       breadcrumb={breadcrumb}
       contentClassName="party-detail-page"
       secondaryChildren={
-        <section className="all-parties-candidates section">
+        <section className="all-parties-candidates section" style={{
+          background:"rgba(253, 231, 230, 0.2196078431)"
+        }}>
           <div className="elc-container">
-            <div  className="heading-title-wrap flex flex-between flex-wrap flex-middle">
+            <div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
               <h3 className="heading-title">{party.name}का उम्मेदवारहरु</h3>
-              <div style={{padding: "10px", display : "flex", gap: "2px", width: "40%", justifyContent: "space-between"}}>
-                <button className="partyPageBtn" style={{
-                  background: "#bf1e2e",
-                  color: "#fff"
-                }}>प्रत्यक्ष २०८२</button>
-                <a href={"https://election.ratopati.com/party/"+party.slug}><button className="partyPageBtn" >समानुपातिक २०८२</button> </a>
-                <a href={"https://election.ratopati.com/party/"+party.slug}><button className="partyPageBtn">प्रत्यक्ष २०७९</button></a>
+              <div
+                style={{
+                  padding: "10px",
+                  display: "flex",
+                  gap: "2px",
+                  width: "28%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <button
+                  className="partyPageBtn"
+                  style={{
+                    background: !clicked && "#bf1e2e",
+                    color: !clicked && "#fff",
+                  }}
+                  onClick={() => setClicked(false)}
+                >
+                  प्रत्यक्ष २०८२
+                </button>
+                <button
+                  onClick={() => setClicked(true)}
+                  className="partyPageBtn"
+                  style={
+                    {
+                      background: clicked && "#bf1e2e",
+                      color: clicked && "#fff"
+                    }
+                  }
+                >
+                  समानुपातिक २०८२
+                </button>
+                <button className="partyPageBtn">प्रत्यक्ष २०७९</button>
               </div>
             </div>
 
             <div className="candidate-wrapper active">
               <div className="result-container">
                 <h3 className="title">
-                  प्रतिनिधि सभा निर्वाचन २०८२
-                  <span className="counter">
-                    {toNepaliNumber(sortedPartyCandidates.length)}
-                  </span>
+                  {!clicked ? "प्रतिनिधि सभा निर्वाचन २०८२" : "समानुपातिक मत"}
+                  {!clicked && (
+                    <span className="counter">
+                      {toNepaliNumber(sortedPartyCandidates.length)}
+                    </span>
+                  )}
                 </h3>
-                <div className="party-container-wrap dn-grid">
-                  {sortedPartyCandidates.length > 0 ? (
-                    sortedPartyCandidates.map((candidate) => {
-                      const constituencySlug = constituencySlugByName.get(
-                        candidate.constituency,
-                      );
+                {!clicked && (
+                  <div className="party-container-wrap dn-grid">
+                    {sortedPartyCandidates.length > 0 ? (
+                      sortedPartyCandidates.map((candidate) => {
+                        const constituencySlug = constituencySlugByName.get(
+                          candidate.constituency,
+                        );
 
-                      return (
-                        <div
-                          key={candidate.slug}
-                          className={`party-container col12${candidate.isWinner ? " candidate-win" : ""}`}
-                        >
-                          <Link
-                            to={`/candidate/${candidate.slug}`}
-                            className="party-logo"
+                        return (
+                          <div
+                            key={candidate.slug}
+                            className={`party-container col12${candidate.isWinner ? " candidate-win" : ""}`}
                           >
-                            <img
-                              src={fixImageUrl(candidate.image)}
-                              alt={candidate.name}
-                              
-                              onError={(event) => {
-                                event.currentTarget.onerror = null;
-                                event.currentTarget.src =
-                                  getPersonLink(parseInt(1000 * Math.random()))
-                              }}
-                            />
-                            <span className="party-name">{candidate.name }</span>
-                          </Link>
-                          <div className="party-wrap">
-                            <div className="party-info">
-                              <Link
-                                to={`/party/${party.slug}`}
-                                className="party-sign"
-                              >
-                                <img src={logoUrl} alt={party.name} />
-                                {party.name}
-                              </Link>
-                              {constituencySlug ? (
-                                <Link to={`/constituency/${constituencySlug}`}>
-                                  {candidate.constituency}
+                            <Link
+                              to={`/candidate/${candidate.slug}`}
+                              className="party-logo"
+                            >
+                              <img
+                                src={fixImageUrl(candidate.image)}
+                                alt={candidate.name}
+                                onError={(event) => {
+                                  event.currentTarget.onerror = null;
+                                  event.currentTarget.src = getPersonLink(
+                                    parseInt(1000 * Math.random()),
+                                  );
+                                }}
+                              />
+                              <span className="party-name">
+                                {candidate.name}
+                              </span>
+                            </Link>
+                            <div className="party-wrap">
+                              <div className="party-info">
+                                <Link
+                                  to={`/party/${party.slug}`}
+                                  className="party-sign"
+                                >
+                                  <img src={logoUrl} alt={party.name} />
+                                  {party.name}
                                 </Link>
-                              ) : (
-                                <span>{candidate.constituency}</span>
-                              )}
-                            </div>
-                            <div className="votes">
-                              {toNepaliNumber(candidate.votes || 0)}
-                              {candidate.isWinner ? (
-                                <img
-                                  src="/assets/img/win-tick.png"
-                                  alt="win-tick"
-                                />
-                              ) : null}
+                                {constituencySlug ? (
+                                  <Link
+                                    to={`/constituency/${constituencySlug}`}
+                                  >
+                                    {candidate.constituency}
+                                  </Link>
+                                ) : (
+                                  <span>{candidate.constituency}</span>
+                                )}
+                              </div>
+                              <div className="votes">
+                                {toNepaliNumber(candidate.votes || 0)}
+                                {candidate.isWinner ? (
+                                  <img
+                                    src="/assets/img/win-tick.png"
+                                    alt="win-tick"
+                                  />
+                                ) : null}
+                              </div>
                             </div>
                           </div>
+                        );
+                      })
+                    ) : (
+                      <p>यस दलका उम्मेदवार फेला परेनन्।</p>
+                    )}
+                  </div>
+                )}
+                {clicked && (
+                  <div
+                    style={{
+                      
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+                      width: "100%",
+                      height: "auto",
+                      minHeight: "100px",
+                      gap:"15px"
+                    }}
+                  >
+                    {samanupatik
+                      .filter((e) => e?.party === cleanSlug)
+                      ?.map((e) => (
+                        <div
+                          style={{
+                            display: "flex",
+                            padding: "2px 3px",
+                            justifyContent: "space-between",
+                            alignItems:"center",
+                            border: "1px solid rgba(0, 0, 0, 0.17)",
+                            borderRadius: "5px",
+                            padding:"5px 10px",
+                            alignItems: "center",
+                            background:"#fff"
+                            
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              
+                              gap: "10px",
+                              alignItems:"center"
+                            }}
+                          >
+                            <img
+                              src="https://election.ratopati.com/assets/img/constituency-icon.png"
+                              style={{
+                                height: "42px",
+                                width: "42px",
+                              }}
+                            />
+                            <p 
+                            style={{
+                              color:"rgba(0, 0, 0, 0.7882352941)",
+                              fontWeight:"700"
+                            }}>{e?.constituency}</p>
+                          </div>
+                          <p
+                          style={{
+                            fontSize:"20px",
+                            fontWeight:"900"
+                          }}>{toNepaliNumber(e?.votes)}</p>
                         </div>
-                      );
-                    })
-                  ) : (
-                    <p>यस दलका उम्मेदवार फेला परेनन्।</p>
-                  )}
-                </div>
+                      ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </section>
       }
     >
-      <div className={"partyPageGrid"} style={{display: "grid", justifyContent: "center"}}>
-        <div  style={{width: "100%"}}>
+      <div
+        className={"partyPageGrid"}
+        style={{ display: "grid", justifyContent: "center" }}
+      >
+        <div style={{ width: "100%" }}>
           <div className="candidate-detail-wrapper">
             <div className="candidate-bio">
               <div className="candidate-featured-img">
@@ -174,7 +276,9 @@ export default function Party() {
                   alt={party.name}
                   onError={(event) => {
                     event.currentTarget.onerror = null;
-                    event.currentTarget.src = getPersonLink(parseInt(1000 * Math.random()))
+                    event.currentTarget.src = getPersonLink(
+                      parseInt(1000 * Math.random()),
+                    );
                   }}
                 />
               </div>
@@ -224,7 +328,15 @@ export default function Party() {
             ) : null}
           </div>
         </div>
-        <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column",gap : "2px"}}>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "2px",
+          }}
+        >
           {featuredCandidates.length > 0 ? (
             <aside className="candidate-sidebar">
               <div className="sidebar">
@@ -245,15 +357,16 @@ export default function Party() {
                             alt={candidate.name}
                             onError={(event) => {
                               event.currentTarget.onerror = null;
-                              event.currentTarget.src = getPersonLink((1000 * Math.random()))
-                                
+                              event.currentTarget.src = getPersonLink(
+                                1000 * Math.random(),
+                              );
                             }}
                           />
                         </Link>
                         <div>
                           <h3 className="title">
                             <Link to={`/candidate/${candidate.slug}`}>
-                              {candidate.name }
+                              {candidate.name}
                             </Link>
                           </h3>
                           <Link to={`/party/${party.slug}`}>{party.name}</Link>
@@ -263,7 +376,10 @@ export default function Party() {
                         <div className="votes">
                           {toNepaliNumber(candidate.votes || 0)}
                           {candidate.isWinner ? (
-                            <img src="/assets/img/win-tick.png" alt="win-tick" />
+                            <img
+                              src="/assets/img/win-tick.png"
+                              alt="win-tick"
+                            />
                           ) : null}
                         </div>
                         <Link className="party" to={`/party/${party.slug}`}>
@@ -335,68 +451,100 @@ export default function Party() {
               </div>
             </aside>
           ) : null} */}
-          <div style={{ width: "100%", height: "max(100%, 10vh)"}}>
-            <div style={{
-              display: "flex", 
-              justifyContent: "space-between"
-            }}>
-
-              <h2 className="heading-title" style={{marginBottom: "15px", fontSize: "21px"}}>
-                <span >अन्य दलहरु  </span>
+          <div style={{ width: "100%", height: "max(100%, 10vh)" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <h2
+                className="heading-title"
+                style={{ marginBottom: "15px", fontSize: "21px" }}
+              >
+                <span>अन्य दलहरु </span>
               </h2>
-              <Link to={"/parties"}>  <ChevronRight style={{
-                      background: "#bf1e2e",
-                      fontWeight: "800",
-                      height: "22px",
-                      width: "22px",
-                      color: "#fff",
-                      borderRadius: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      fontSize: "10px",
-                      alignItems: "center"
-                }} /></Link>
-            </div>
-          <div className="partyContainer" style={{display :"grid", gridTemplateColumns:"1fr 1fr 1fr", padding: "10px",gap: "10px", background: "rgba(0, 0, 0, 0.04)"}}>
-            {
-              partyData.filter(e=> e.wins).slice(0,6).map(e=>(
-                <Link to={"/party/"+ e.slug}><div style={{
-                  height: "100%", 
-                  width:"100%",
-                  flex: "0 0 30.5%",
-                  border: "3px rgba(18, 8, 8, 0.11)",
-                  borderRadius: "7px",
-                  display: "flex",
-                  flexDirection: "column", 
-                  gap: "1px", 
-                  padding: "10px",
-                  alignItems: "center",
-                  padding: "2px",
-                  background: "#ffffff"
-                  
-                }}
-                className="partyCard"
-                >
-                  <div style={{
-                    width: "58px",
-                    height: "58px",
-                    borderRadius: "50%", 
-                    border: "2px solid rgba(0,0,0,0.14)"
-                    
-                  }}>
-                    <img src={e.logo} style={{height: "100%", width: "100%", objectFit: "contain", borderRadius: "50%"}} />
-                  </div>
-                  <h1 style={{
-                    fontSize: "13px", 
-                    
+              <Link to={"/parties"}>
+                {" "}
+                <ChevronRight
+                  style={{
+                    background: "#bf1e2e",
+                    fontWeight: "800",
+                    height: "22px",
+                    width: "22px",
+                    color: "#fff",
+                    borderRadius: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    fontSize: "10px",
+                    alignItems: "center",
                   }}
-                  className="partyName">{e.name}</h1>
-                </div></Link>
-              ))
-            }
-          </div> 
+                />
+              </Link>
+            </div>
+            <div
+              className="partyContainer"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                padding: "10px",
+                gap: "10px",
+                background: "rgba(0, 0, 0, 0.04)",
+              }}
+            >
+              {partyData
+                .filter((e) => e.wins)
+                .slice(0, 6)
+                .map((e) => (
+                  <Link to={"/party/" + e.slug}>
+                    <div
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        flex: "0 0 30.5%",
+                        border: "3px rgba(18, 8, 8, 0.11)",
+                        borderRadius: "7px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1px",
+                        padding: "10px",
+                        alignItems: "center",
+                        padding: "2px",
+                        background: "#ffffff",
+                      }}
+                      className="partyCard"
+                    >
+                      <div
+                        style={{
+                          width: "58px",
+                          height: "58px",
+                          borderRadius: "50%",
+                          border: "2px solid rgba(0,0,0,0.14)",
+                        }}
+                      >
+                        <img
+                          src={e.logo}
+                          style={{
+                            height: "100%",
+                            width: "100%",
+                            objectFit: "contain",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      </div>
+                      <h1
+                        style={{
+                          fontSize: "13px",
+                        }}
+                        className="partyName"
+                      >
+                        {e.name}
+                      </h1>
+                    </div>
+                  </Link>
+                ))}
+            </div>
           </div>
-
         </div>
       </div>
     </MainLayout>
