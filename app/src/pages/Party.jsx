@@ -116,7 +116,7 @@ export default function Party() {
                 >
                   समानुपातिक २०८२
                 </button>
-                <button className="partyPageBtn">प्रत्यक्ष २०७९</button>
+                <a href={"https://election.ratopati.com/party/"+party?.slug}><button className="partyPageBtn">प्रत्यक्ष २०७९</button></a>
               </div>
             </div>
 
