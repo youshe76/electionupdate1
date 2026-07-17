@@ -213,47 +213,49 @@ export default function Party() {
                     {samanupatik
                       .filter((e) => e?.party === cleanSlug)
                       ?.map((e) => (
-                        <div
-                          style={{
-                            display: "flex",
-                            padding: "2px 3px",
-                            justifyContent: "space-between",
-                            alignItems:"center",
-                            border: "1px solid rgba(0, 0, 0, 0.17)",
-                            borderRadius: "5px",
-                            padding:"5px 10px",
-                            alignItems: "center",
-                            background:"#fff"
-                            
-                          }}
-                        >
-                          <div
+                          <Link to={"/party/"+cleanSlug}>
+                            <div
                             style={{
                               display: "flex",
+                              padding: "2px 3px",
+                              justifyContent: "space-between",
+                              alignItems:"center",
+                              border: "1px solid rgba(0, 0, 0, 0.17)",
+                              borderRadius: "5px",
+                              padding:"5px 10px",
+                              alignItems: "center",
+                              background:"#fff"
                               
-                              gap: "10px",
-                              alignItems:"center"
                             }}
                           >
-                            <img
-                              src="https://election.ratopati.com/assets/img/constituency-icon.png"
+                            <div
                               style={{
-                                height: "42px",
-                                width: "42px",
+                                display: "flex",
+                                
+                                gap: "10px",
+                                alignItems:"center"
                               }}
-                            />
-                            <p 
+                            >
+                              <img
+                                src="https://election.ratopati.com/assets/img/constituency-icon.png"
+                                style={{
+                                  height: "42px",
+                                  width: "42px",
+                                }}
+                              />
+                              <p 
+                              style={{
+                                color:"rgba(0, 0, 0, 0.7882352941)",
+                                fontWeight:"700"
+                              }}>{e?.constituency}</p>
+                            </div>
+                            <p
                             style={{
-                              color:"rgba(0, 0, 0, 0.7882352941)",
-                              fontWeight:"700"
-                            }}>{e?.constituency}</p>
+                              fontSize:"20px",
+                              fontWeight:"900"
+                            }}>{toNepaliNumber(e?.votes)}</p>
                           </div>
-                          <p
-                          style={{
-                            fontSize:"20px",
-                            fontWeight:"900"
-                          }}>{toNepaliNumber(e?.votes)}</p>
-                        </div>
+                          </Link>
                       ))}
                   </div>
                 )}
