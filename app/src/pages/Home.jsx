@@ -30,6 +30,7 @@ export default function Home() {
 	const [selectedLegendParty, setSelectedLegendParty] = useState("");
 	const [searchQuery, setSearchQuery] = useState("");
 
+	const [width, setWidth] = useState(window.innerWidth);
 	// Load constituency data on mount
 	useEffect(() => {
 		fetch("/data/constituency.json")
@@ -291,8 +292,11 @@ export default function Home() {
 		legendItems.map((item) => [item.value || item.name, item.color]),
 	);
 
+	window.onresize = ()=>{
+		setWidth(window.innerWidth)
+	}
 	return (
-		<div className="home-page">
+		<div className="home-page" >
 			{/* Candidate Search Form */}
 			<div
 				className="candidate-search-form"
@@ -465,7 +469,7 @@ export default function Home() {
 								id="constituency-map"
 								style={{ flex: 1, display: "flex", flexDirection: "column" }}
 							>
-								{window.innerWidth > 768  && <div className=" spinner-wrapper flex flex-middle flex-center" style={{ width: "100%", position: "relative" }}>
+								{width > 768  &&<div className=" spinner-wrapper flex flex-middle flex-center" style={{ width: "100%", position: "relative" }}>
 									<NepalMap
 										onConstituencyHover={handleConstituencyHover}
 										onConstituencyLeave={handleConstituencyLeave}
@@ -476,7 +480,7 @@ export default function Home() {
 									/>
 								</div>}
 								{/* Horizontal Legend */}
-								<div
+								{width > 768 && <div
 									style={{
 										display: "flex",
 										flexWrap: "wrap",
@@ -517,7 +521,7 @@ export default function Home() {
 											<span>{item.name}</span>
 										</div>
 									))}
-								</div>
+								</div>}
 							</div>
 							{/* Hovered Constituency Candidates Card */}
 							{hoveredConstituency && (
