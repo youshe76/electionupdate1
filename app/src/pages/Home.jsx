@@ -465,7 +465,7 @@ export default function Home() {
 								id="constituency-map"
 								style={{ flex: 1, display: "flex", flexDirection: "column" }}
 							>
-								<div className="spinner-wrapper flex flex-middle flex-center" style={{ width: "100%", position: "relative" }}>
+								{window.innerWidth > 768  && <div className=" spinner-wrapper flex flex-middle flex-center" style={{ width: "100%", position: "relative" }}>
 									<NepalMap
 										onConstituencyHover={handleConstituencyHover}
 										onConstituencyLeave={handleConstituencyLeave}
@@ -474,7 +474,7 @@ export default function Home() {
 										selectedParty={selectedLegendParty}
 										partyColorMap={partyColorMap}
 									/>
-								</div>
+								</div>}
 								{/* Horizontal Legend */}
 								<div
 									style={{

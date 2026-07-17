@@ -493,6 +493,11 @@
     color: #20a43c;
 }
 
+.homePageUniquePartyCard{
+  width: auto;
+}
+
+
 /* ================= Desktop ================= */
 
 @media (max-width:1600px){
@@ -514,7 +519,9 @@
 }
 
 @media (max-width:992px){
-
+  .homePageUniquePartyCard{
+    width: 33%;
+  }
     .popular-candidates-grid,
     .popular-grid{
         grid-template-columns:repeat(3,minmax(180px,1fr));
@@ -530,7 +537,7 @@
 /* ================= Mobile ================= */
 
 @media (max-width:768px){
-
+    
     .popular-candidates-grid,
     .popular-grid{
         grid-template-columns:repeat(2,1fr) !important;
@@ -592,7 +599,9 @@
 }
 
 @media (max-width:480px){
-
+  .homePageUniquePartyCard{
+    width: 48%;
+  }
     .popular-candidates-grid,
     .popular-grid{
         grid-template-columns:repeat(2,1fr) !important;
@@ -959,6 +968,7 @@ body.show__search--modal .global-search-form {
 .spinner-wrapper {
   max-width: 100%;
 }
+
 
 .np-map svg,
 .province-map svg,

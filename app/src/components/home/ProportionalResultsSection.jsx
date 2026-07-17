@@ -81,16 +81,23 @@ export default function ProportionalResultsSection() {
           </div>
           <div className="samaupatik-parties-result">
             <div
-              className="dn-grid"
+              style={{
+				display : "flex",
+				flexWrap: "wrap",
+				justifyContent:"space-evenly",
+				gap: "10px 0",
+				alignItems: "center"
+			  }}
             >
               {parties.map((party) => (
                 <div
                   key={party.slug}
-                  className="col2"
+				  className="homePageUniquePartyCard"
                   style={{
                     background: "#fff",
                     borderRadius: "10px",
                     padding: "10px 0px",
+					
 					
                   }}
                 >
