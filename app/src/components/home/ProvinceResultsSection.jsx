@@ -131,8 +131,8 @@ export default function ProvinceResultsSection() {
     });
   };
 
-  const firstRowCards = provinceCards.slice(0, 4);
-  const secondRowCards = provinceCards.slice(4);
+  const firstRowCards = provinceCards //.slice(0, 4);
+  const secondRowCards =[] // provinceCards.slice(4);
 
   return (
     <section className="section province-results" style={{ backgroundColor: "#fff", padding: "40px 0" }}>
@@ -142,7 +142,7 @@ export default function ProvinceResultsSection() {
 
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, minmax(220px, 300px))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
           gap: "20px",
           marginBottom: "20px",
           width: "100%",
@@ -200,7 +200,7 @@ export default function ProvinceResultsSection() {
 
         <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, minmax(220px, 300px))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
           gap: "20px",
         }}>
           {secondRowCards.map(({ province, results }) => (
@@ -214,6 +214,7 @@ export default function ProvinceResultsSection() {
                 border: "1px solid rgba(0,0,0,0.08)",
                 borderRadius: "12px",
                 overflow: "hidden",
+                width: "100%"
               }}>
                 <div style={{
                   padding: "14px 16px",

@@ -1305,9 +1305,6 @@ body.show__search--modal .global-search-form {
     grid-template-columns: 1fr;
   }
 
-  .dn-grid {
-    grid-gap: 14px;
-  }
   .partyPageGrid{
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
