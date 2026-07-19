@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-
+import { Link, redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const TOTAL_VOTES = "१,०८,३५,०२५";
 
 const parties = [
@@ -48,57 +48,61 @@ const parties = [
 ];
 
 export default function ProportionalResultsSection() {
+  const navigate = useNavigate();
   return (
     <section className="section section-samaupatik-result">
-      
       <div className="elc-container">
-		<div style={{
-			width: "100%",
-			display :"flex",
-			justifyContent: "space-between", 
-			marginBottom: "10px"
-		}}>
-			<div></div>
-			<Link
-			className="btn"
-			to="/parties"
-			target="_blank"
-			rel="noopener noreferrer"
-			style={{
-				
-			}}
-		
-		>
-			विस्तृत
-		</Link>
-		</div>
-        <div className="flex" style={{
-			
-		}}>
-          <div className="samaupatik-result-heading">
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "10px",
+          }}
+        >
+          <div></div>
+          <Link
+            className="btn"
+            to="/parties"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{}}
+          >
+            विस्तृत
+          </Link>
+        </div>
+        <div className="flex" style={{}}>
+          <div
+            className="samaupatik-result-heading"
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              navigate("/parties");
+            }}
+          >
             <span className="title">समानुपातिक मतगणना</span>
             <p>कुल मत: {TOTAL_VOTES}</p>
           </div>
+
           <div className="samaupatik-parties-result">
             <div
               style={{
-				display : "flex",
-				flexWrap: "wrap",
-				justifyContent:"space-evenly",
-				gap: "10px 0",
-				alignItems: "center"
-			  }}
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly",
+                gap: "10px 0",
+                alignItems: "center",
+              }}
             >
               {parties.map((party) => (
                 <div
                   key={party.slug}
-				  className="homePageUniquePartyCard"
+                  className="homePageUniquePartyCard"
                   style={{
                     background: "#fff",
                     borderRadius: "10px",
                     padding: "10px 0px",
-					
-					
                   }}
                 >
                   <div
@@ -166,6 +170,7 @@ export default function ProportionalResultsSection() {
                         style={{
                           justifyContent: "space-between",
                           alignItems: "center",
+                          flexWrap: "wrap",
                         }}
                       >
                         <h3
@@ -179,7 +184,11 @@ export default function ProportionalResultsSection() {
                           प्रतिशतमा:
                         </h3>
                         <span
-                          style={{ textAlign: "center", fontWeight: "700" }}
+                          style={{
+                            textAlign: "center",
+                            fontWeight: "700",
+                            color: "rgba(0,0,0,0.7)",
+                          }}
                         >
                           {" "}
                           {party.percent}%
@@ -191,6 +200,7 @@ export default function ProportionalResultsSection() {
                         style={{
                           justifyContent: "space-between",
                           alignItems: "center",
+                          flexWrap: "wrap",
                         }}
                       >
                         <h3
@@ -204,7 +214,12 @@ export default function ProportionalResultsSection() {
                           कुल मत:
                         </h3>
                         <span
-                          style={{ textAlign: "center", fontWeight: "700" }}
+                          style={{
+                            textAlign: "center",
+                            fontWeight: "700",
+                            fontSize: "14px",
+                            color: "rgba(0,0,0,0.7)",
+                          }}
                           className="value"
                         >
                           {party.votes}

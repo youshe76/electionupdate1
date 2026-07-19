@@ -349,293 +349,276 @@
 }
 .popular-candidates-grid,
 .popular-grid {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(200px, 1fr));
-    gap: 24px;
-    margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 10px;
 }
 
 .popular-card {
-    position: relative;
-    overflow: hidden;
-    min-height: 300px;
-    background: #fff;
-    border: 1px solid #efd8cc;
-    border-radius: 14px;
-    transition: 0.25s;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-     background: linear-gradient(
-        180deg,
-        #fff3ed 0%,
-        #fff8f5 40%,
-        #ffffff 100%
-    )
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  background: #fff;
+  border: 1px solid #efd8cc;
+  border-radius: 14px;
+  transition: 0.25s;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  background: linear-gradient(180deg, #fff3ed 0%, #fff8f5 40%, #ffffff 100%);
 }
 
 .popular-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
 .popular-card-inner {
-    height: 100%;
-    padding: 18px 16px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  height: 100%;
+  padding: 18px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .popular-card-check {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 34px;
-    height: 34px;
-    z-index: 5;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  z-index: 5;
 }
 
 .popular-card-check img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .photo-wrap {
-    position: relative;
-    margin-bottom: 14px;
+  position: relative;
+  margin-bottom: 14px;
 }
 
 .photo-circle {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #ffc6c8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #fff;
-    box-shadow: 0 0 0 2px #f6d4d4;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ffc6c8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px #f6d4d4;
 }
 
 .photo-circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .party-emblem {
-    position: absolute;
-    left: 50%;
-    bottom: -10px;
-    transform: translateX(-50%);
-    width: 34px;
-    height: 34px;
-    background: #fff;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 34px;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 .party-emblem img {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .candidate-name {
-    margin-top: 8px;
-    margin-bottom: 2px;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.35;
+  margin-top: 8px;
+  margin-bottom: 2px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .candidate-meta {
-    font-size: 15px;
-    color: #666;
-    margin-bottom: 12px;
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 12px;
 }
 
 .candidate-meta-link {
-    color: #666;
-    text-decoration: none;
+  color: #666;
+  text-decoration: none;
 }
 
 .constituency-pill {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 7px 18px;
-    background: #efefef;
-    border-radius: 999px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #555;
-    margin-bottom: 18px;
-    text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 18px;
+  background: #efefef;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 18px;
+  text-decoration: none;
 }
 
 .card-footer {
-    margin-top: auto;
+  margin-top: auto;
 }
 
 .votes {
-    font-size: 22px;
-    font-weight: 800;
-    color: #111;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
 }
 
 .votes-winner {
-    color: #20a43c;
+  color: #20a43c;
 }
 
-.homePageUniquePartyCard{
+.homePageUniquePartyCard {
   width: auto;
 }
 
-
 /* ================= Desktop ================= */
 
-@media (max-width:1600px){
-
-    .popular-candidates-grid,
-    .popular-grid{
-        grid-template-columns:repeat(5,minmax(200px,1fr));
-    }
-
+@media (max-width: 1600px) {
+  .popular-candidates-grid,
+  .popular-grid {
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+  }
 }
 
-@media (max-width:1300px){
-
-    .popular-candidates-grid,
-    .popular-grid{
-        grid-template-columns:repeat(4,minmax(200px,1fr));
-    }
-
+@media (max-width: 1300px) {
+  .popular-candidates-grid,
+  .popular-grid {
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+  }
 }
 
-@media (max-width:992px){
-  .homePageUniquePartyCard{
+@media (max-width: 992px) {
+  .homePageUniquePartyCard {
     width: 33%;
   }
-    .popular-candidates-grid,
-    .popular-grid{
-        grid-template-columns:repeat(3,minmax(180px,1fr));
-    }
+  .popular-candidates-grid,
+  .popular-grid {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+  }
 
-    .photo-circle{
-        width:120px;
-        height:120px;
-    }
-
+  .photo-circle {
+    width: 120px;
+    height: 120px;
+  }
 }
 
 /* ================= Mobile ================= */
 
-@media (max-width:768px){
-    
-    .popular-candidates-grid,
-    .popular-grid{
-        grid-template-columns:repeat(2,1fr) !important;
-        gap:12px;
-    }
+@media (max-width: 768px) {
+  .popular-candidates-grid,
+  .popular-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
 
-    .popular-card{
-        min-height:245px;
-       
-        
-    }
+  .popular-card {
+    min-height: 245px;
+  }
 
-    .popular-card-inner{
-        padding:12px 8px 14px;
-    }
+  .popular-card-inner {
+    padding: 12px 8px 14px;
+  }
 
-    .photo-circle{
-        width:90px;
-        height:90px;
-    }
+  .photo-circle {
+    width: 90px;
+    height: 90px;
+  }
 
-    .party-emblem{
-        width:24px;
-        height:24px;
-        bottom:-8px;
-    }
+  .party-emblem {
+    width: 24px;
+    height: 24px;
+    bottom: -8px;
+  }
 
-    .party-emblem img{
-        width:15px;
-        height:15px;
-    }
+  .party-emblem img {
+    width: 15px;
+    height: 15px;
+  }
 
-    .popular-card-check{
-        width:22px;
-        height:22px;
-        top:8px;
-        right:8px;
-    }
+  .popular-card-check {
+    width: 22px;
+    height: 22px;
+    top: 8px;
+    right: 8px;
+  }
 
-    .candidate-name{
-        font-size:14px;
-    }
+  .candidate-name {
+    font-size: 14px;
+  }
 
-    .candidate-meta{
-        font-size:11px;
-        margin-bottom:6px;
-    }
+  .candidate-meta {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
 
-    .constituency-pill{
-        font-size:11px;
-        padding:4px 8px;
-        margin-bottom:10px;
-    }
+  .constituency-pill {
+    font-size: 11px;
+    padding: 4px 8px;
+    margin-bottom: 10px;
+  }
 
-    .votes{
-        font-size:18px;
-    }
-
+  .votes {
+    font-size: 18px;
+  }
 }
 
-@media (max-width:480px){
-  .homePageUniquePartyCard{
+@media (max-width: 480px) {
+  .homePageUniquePartyCard {
     width: 48%;
   }
-    .popular-candidates-grid,
-    .popular-grid{
-        grid-template-columns:repeat(2,1fr) !important;
-        gap:10px;
-    }
+  .popular-candidates-grid,
+  .popular-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
 
-    .popular-card{
-        min-height:220px;
-    }
+  .popular-card {
+    min-height: 220px;
+  }
 
-    .photo-circle{
-        width:80px;
-        height:80px;
-    }
+  .photo-circle {
+    width: 80px;
+    height: 80px;
+  }
 
-    .candidate-name{
-        font-size:13px;
-    }
+  .candidate-name {
+    font-size: 13px;
+  }
 
-    .candidate-meta{
-        font-size:10px;
-    }
+  .candidate-meta {
+    font-size: 10px;
+  }
 
-    .constituency-pill{
-        font-size:10px;
-        padding:3px 7px;
-    }
+  .constituency-pill {
+    font-size: 10px;
+    padding: 3px 7px;
+  }
 
-    .votes{
-        font-size:17px;
-    }
-
+  .votes {
+    font-size: 17px;
+  }
 }
-
 
 .all-parties-candidates.section {
   position: relative;
@@ -810,7 +793,6 @@
   .popular-candidates-page .popular-candidates-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
 
   .manifesto-card-cover,
   .manifesto-card-image {
@@ -969,7 +951,6 @@ body.show__search--modal .global-search-form {
   max-width: 100%;
 }
 
-
 .np-map svg,
 .province-map svg,
 .map-wrapper svg,
@@ -994,44 +975,44 @@ body.show__search--modal .global-search-form {
     font-size: 14px;
   }
 }
-.partyContainer{
-  height: "100%"
+.partyContainer {
+  height: "100%";
 }
-.partyCard{
-  transition: all 0.3s ease ;
-  cursor: pointer; 
+.partyCard {
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
-.partyCard:hover{
+.partyCard:hover {
   transform: translateY(-3px);
 }
-.partyName{
+.partyName {
   color: "rgba(0,0,0,0.85)";
   transition: all 0.3s ease;
 }
-.partyCard:hover .partyName{
+.partyCard:hover .partyName {
   color: #bf1e2e;
 }
-.partyPageGrid{
+.partyPageGrid {
   grid-template-columns: 2.5fr 1fr;
 }
 
-.partyPageBtn{
+.partyPageBtn {
   font-size: 13px;
   padding: 10px 12px;
   transition: all 0.3s ease-in-out;
   box-shadow: 0px 7px 15px rgba(0, 0, 0, 0.04);
   font-weight: 700;
   cursor: pointer;
-  color:rgba(51, 51, 51, 0.9411764706);
+  color: rgba(51, 51, 51, 0.9411764706);
   border: none;
   border-radius: 3px;
 }
-.partyPageBtn:hover{
+.partyPageBtn:hover {
   background: #bf1e2e;
   color: #fff;
 }
 
-.candidatePageContainer{
+.candidatePageContainer {
   grid-template-columns: 2fr 1fr;
 }
 @media (max-width: 900px) {
@@ -1246,7 +1227,6 @@ body.show__search--modal .global-search-form {
     padding-left: 14px;
     padding-right: 14px;
   }
-  
 
   [style*="background-color: rgb(8, 162, 34)"],
   [style*="background-color:#08a222"],
@@ -1301,8 +1281,8 @@ body.show__search--modal .global-search-form {
   .section-bottom {
     margin-bottom: 24px;
   }
-  
-  .candidatePageContainer{
+
+  .candidatePageContainer {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
   }
@@ -1315,12 +1295,10 @@ body.show__search--modal .global-search-form {
     grid-template-columns: 1fr;
   }
 
-  .partyPageGrid{
+  .partyPageGrid {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
   }
-  
-  
 
   .section-lead-table .parties-card,
   .section-candidates .col2.parties-card,
@@ -1338,7 +1316,6 @@ body.show__search--modal .global-search-form {
     line-height: 1.25;
     margin-bottom: 10px;
   }
-  
 
   .breadcrumb {
     line-height: 1.4;
@@ -1354,11 +1331,11 @@ body.show__search--modal .global-search-form {
   .navigation .menu-container > ul > li > a {
     font-size: 14px !important;
   }
-  .dn-grid{
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-gap: 25px;
-}
+  .dn-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 25px;
+  }
 
   .navigation .menu-container .nav-right .button {
     font-size: 13px !important;

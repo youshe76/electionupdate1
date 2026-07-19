@@ -49,20 +49,36 @@ export default function HotSeatsPreviewSection() {
       <div className="elc-container">
         <div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
           <h3 className="heading-title">हट सिटहरु</h3>
-          <Link className="btn" to="/hot-seats" target="_blank" rel="noopener noreferrer">
+          <Link
+            className="btn"
+            to="/hot-seats"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             विस्तृत
           </Link>
         </div>
         <div className="dn-grid">
           <div className="col12 hotseat-row">
-            <div className="dn-grid dn-grid-small">
+            <div
+              className=""
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gap: "20px",
+              }}
+            >
               {previewSeats.map((hotSeat) => (
-                <div key={hotSeat.constituency} className="col4">
+                <div key={hotSeat.constituency} className="">
                   <div className="candidate-card">
                     <div className="candidate-card-header">
                       <h3>
                         {hotSeat.slug ? (
-                          <Link to={`/constituency/${hotSeat.slug}`} target="_blank" rel="noopener noreferrer">
+                          <Link
+                            to={`/constituency/${hotSeat.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {hotSeat.constituency}
                           </Link>
                         ) : (
@@ -77,7 +93,11 @@ export default function HotSeatsPreviewSection() {
                           className={`candidate${idx === 0 ? " candidate-win" : ""}`}
                         >
                           {candidate.slug ? (
-                            <Link to={`/candidate/${candidate.slug}`} target="_blank" rel="noopener noreferrer">
+                            <Link
+                              to={`/candidate/${candidate.slug}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
                               <CandidateProfile candidate={candidate} />
                             </Link>
                           ) : (
@@ -97,10 +117,66 @@ export default function HotSeatsPreviewSection() {
   );
 }
 
+// function CandidateProfile({ candidate }) {
+//   return (
+//     <>
+//       <div
+//         style={{
+//           maxWidth: "110px",
+//         }}
+//       >
+//         <img
+//           src={candidate.image}
+//           alt={candidate.name}
+//           onError={(e) => {
+//             e.target.onerror = null;
+//             e.target.src = "/assets/images/placeholder.png";
+//           }}
+//           style={{
+//             position: "relative",
+//           }}
+//         />
+//         {candidate.partyLogo && candidate.partyLogo !== "#" ? (
+//           <div
+//             className=""
+//             style={{
+//               position: "absolute",
+//               height: "20px",
+//               aspectRatio: "1",
+//               borderRadius: "50%",
+//               top: "0",
+//               left: "0",
+//             }}
+//           >
+//             <img
+//               src={candidate.partyLogo}
+//               alt={candidate.party}
+//               style={{
+//                 objectFit: "contain",
+//               }}
+//               onError={(e) => {
+//                 e.target.style.display = "none";
+//               }}
+//             />
+//           </div>
+//         ) : null}
+//       </div>
+//       <span>{candidate.name}</span>
+//       <div>{toNepaliNumber(candidate.votes)}</div>
+//     </>
+//   );
+// }
+
 function CandidateProfile({ candidate }) {
+  console.log(candidate);
   return (
     <>
-      <div className="profile">
+      <div
+        style={{
+          maxWidth: "110px",
+          position: "relative",
+        }}
+      >
         <img
           src={candidate.image}
           alt={candidate.name}
@@ -108,12 +184,40 @@ function CandidateProfile({ candidate }) {
             e.target.onerror = null;
             e.target.src = "/assets/images/placeholder.png";
           }}
+          style={{
+            position: "relative",
+            width: "100%",
+            display: "block",
+            borderRadius: "50%",
+          }}
         />
         {candidate.partyLogo && candidate.partyLogo !== "#" ? (
-          <div className="party">
+          <div
+            style={{
+              position: "absolute",
+              height: "20px",
+              width: "20px",
+              borderRadius: "50%",
+              bottom: "-10px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "white",
+              border: "2px solid white",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+              overflow: "hidden",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <img
               src={candidate.partyLogo}
               alt={candidate.party}
+              style={{
+                objectFit: "contain",
+                width: "100%",
+                height: "100%",
+              }}
               onError={(e) => {
                 e.target.style.display = "none";
               }}
@@ -121,8 +225,21 @@ function CandidateProfile({ candidate }) {
           </div>
         ) : null}
       </div>
-      <span>{candidate.name}</span>
-      <div className="votes">{toNepaliNumber(candidate.votes)}</div>
+      <span
+        style={{
+          fontSize: "12px",
+        }}
+      >
+        {candidate.name}
+      </span>
+      <div
+        style={{
+          color: candidate?.winner ? "#2fa12f" : "black",
+          fontSize: "18px",
+        }}
+      >
+        {toNepaliNumber(candidate.votes)}
+      </div>
     </>
   );
 }
