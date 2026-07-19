@@ -526,6 +526,10 @@
 /* ================= Mobile ================= */
 
 @media (max-width: 768px) {
+  .homePageUniquePartyCard {
+    width: 32%;
+    height: 220px;
+  }
   .popular-candidates-grid,
   .popular-grid {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -586,6 +590,7 @@
 @media (max-width: 480px) {
   .homePageUniquePartyCard {
     width: 48%;
+    height: auto;
   }
   .popular-candidates-grid,
   .popular-grid {
@@ -1328,6 +1333,9 @@ body.show__search--modal .global-search-form {
 }
 
 @media (max-width: 420px) {
+  .homePageUniquePartyCard {
+    height: 220px;
+  }
   .navigation .menu-container > ul > li > a {
     font-size: 14px !important;
   }
