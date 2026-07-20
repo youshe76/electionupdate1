@@ -145,6 +145,10 @@ export default function Candidate() {
                   "linear-gradient(120deg, rgb(255, 198, 197) 46%, rgba(234, 234, 234, 0) 100%)",
                 height: "50vh",
                 padding: "5%",
+                display: "flex",
+                justifyContent: "space-evenly",
+
+                flexDirection: "column ",
               }}
             >
               <div
@@ -152,6 +156,7 @@ export default function Candidate() {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  width: "100%",
                 }}
               >
                 {candidate.partyLogo && (
@@ -254,7 +259,6 @@ export default function Candidate() {
                   gridTemplateColumns: "1fr 1fr",
                   gridTemplateRows: "1fr 1fr",
                   gap: "10px",
-                  marginTop: "20px",
                 }}
               >
                 {[
