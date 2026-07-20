@@ -105,17 +105,18 @@ export default function Candidate() {
           <div
             style={{
               display: "grid",
-              paddingLeft: "5vw",
+
               gridTemplateColumns: "1fr 1fr",
-              gap: "20px",
+
               marginBottom: "20px",
               border: "1px solid red",
-              height: "50vh",
+              minHeight: "50vh",
             }}
           >
             <div
               style={{
                 height: "50vh",
+                width: "100%",
               }}
             >
               <img
@@ -132,10 +133,9 @@ export default function Candidate() {
                 }}
                 style={{
                   height: "100%",
-                  borderRadius: "8px",
-                  border: "1px solid #ddd",
-                  objectFit: "contain",
-                  marginLeft: "auto",
+                  width: "100%",
+
+                  objectFit: "cover",
                 }}
               />
             </div>
