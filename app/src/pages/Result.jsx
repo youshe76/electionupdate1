@@ -80,12 +80,22 @@ const parties = [
     votes: "3,30,684",
     color: "#f0d105",
   },
+  {
+    slug: "swatantra",
+    name: "स्वतन्त्र",
+    image: "https://npcdn.ratopati.com/media/news/swatantra_9p27i1Pv2j.png",
+    direct: 1,
+    proportional: "-",
+    total: 0,
+    votes: "",
+    color: "rgba(137, 40, 140, 1)",
+  },
 ];
 
 export default function Result() {
   return (
     <MainLayout
-      title="परिणाम"
+      title="प्रतिनिधिसभा परिणाम"
       description="View election results for the Nepal Election 2082."
     >
       <div
@@ -154,12 +164,14 @@ export default function Result() {
                       </tr>
                     </tbody>
                   </table>
-                  <span
-                    style={{ backgroundColor: party.color }}
-                    className="total-seat"
-                  >
-                    कुल सिट: <strong>{party.total}</strong>
-                  </span>
+                  {party.total > 0 && (
+                    <span
+                      style={{ backgroundColor: party.color }}
+                      className="total-seat"
+                    >
+                      कुल सिट: <strong>{party.total}</strong>
+                    </span>
+                  )}
                   <p>
                     सामानुपातिक मत:
                     <span className="vote-samanupatik">{party.votes}</span>
