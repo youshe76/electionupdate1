@@ -721,7 +721,7 @@ export default function Home() {
 									<div
 										key={party.slug}
 										className="col2 parties-card is-border"
-									>
+								 	>
 										<Link
 											to={`/party/${party.slug}`}
 											target="_blank"

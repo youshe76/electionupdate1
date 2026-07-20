@@ -11,9 +11,76 @@ import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
-import { districtsForProvince, provinceRouteSlug, cleanRouteSlug } from "../utils/geoUtils";
+import {
+  districtsForProvince,
+  provinceRouteSlug,
+  cleanRouteSlug,
+} from "../utils/geoUtils";
 import { fixImageUrl } from "../utils/imageUtils";
 import { getManifestoImage } from "../app/config/constants";
+
+const parties = [
+  {
+    slug: "rastriya-swatantra-party",
+    name: "राष्ट्रिय स्वतन्त्र पार्टी",
+    image: "/assets/images/rsp_AiC1qh2xlI.jpg",
+    direct: 125,
+    proportional: 57,
+    total: 182,
+    votes: "51,83,493",
+    color: "#07a4f2",
+  },
+  {
+    slug: "nepali-congress",
+    name: "नेपाली कांग्रेस",
+    image: "/assets/images/congress-logo_zVeY3un3Hj.jpg",
+    direct: 18,
+    proportional: 20,
+    total: 38,
+    votes: "17,59,172",
+    color: "#2e7a05",
+  },
+  {
+    slug: "cpn-uml",
+    name: "नेकपा (एमाले)",
+    image: "/assets/images/uml-1_zfT0bMAJFO.jpg",
+    direct: 9,
+    proportional: 16,
+    total: 25,
+    votes: "14,55,885",
+    color: "#910808",
+  },
+  {
+    slug: "nepali-communist-party",
+    name: "नेपाली कम्युनिष्ट पार्टी",
+    image: "/assets/images/nepali-communist_uVwmNizOSk.jpg",
+    direct: 8,
+    proportional: 9,
+    total: 17,
+    votes: "8,11,577",
+    color: "#f50f0f",
+  },
+  {
+    slug: "shram-samskriti-party",
+    name: "श्रम संस्कृति पार्टी",
+    image: "/assets/images/shram-sanskriti-party_jrxdNsjzjb.jpg",
+    direct: 3,
+    proportional: 4,
+    total: 7,
+    votes: "3,85,902",
+    color: "#d54b10",
+  },
+  {
+    slug: "rastriya-prajatantra-party",
+    name: "राष्ट्रिय प्रजातन्त्र पार्टी",
+    image: "/assets/images/raprapa_RPVSZDsBPg.jpg",
+    direct: 1,
+    proportional: 4,
+    total: 5,
+    votes: "3,30,684",
+    color: "#f0d105",
+  },
+];
 
 export default function Result() {
   return (
@@ -21,45 +88,87 @@ export default function Result() {
       title="परिणाम"
       description="View election results for the Nepal Election 2082."
     >
-      <div style={{ marginTop: "20px", padding: "20px", border: "1px solid #ddd", borderRadius: "8px", backgroundColor: "#fff" }}>
-        <h3 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "15px", borderBottom: "2px solid #bf1e2e", paddingBottom: "10px" }}>
+      <div
+        style={{
+          marginTop: "20px",
+          padding: "20px",
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+          backgroundColor: "#fff",
+        }}
+      >
+        <h3
+          style={{
+            fontSize: "20px",
+            fontWeight: "bold",
+            marginBottom: "15px",
+            borderBottom: "2px solid #bf1e2e",
+            paddingBottom: "10px",
+          }}
+        >
           प्रतिनिधिसभा परिणाम सारसंक्षेप
         </h3>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr style={{ borderBottom: "2px solid #ddd", backgroundColor: "#f5f5f5" }}>
-              <th style={{ padding: "10px", textAlign: "left" }}>राजनीतिक दल</th>
-              <th style={{ padding: "10px", textAlign: "center" }}>प्रत्यक्ष सिट</th>
-              <th style={{ padding: "10px", textAlign: "center" }}>समानुपातिक सिट</th>
-              <th style={{ padding: "10px", textAlign: "right" }}>कुल सिट</th>
-            </tr>
-          </thead>
-          <tbody>
-            {partyData.filter(p => p.wins > 0).map((party) => {
-              // Map some mock proportional seats based on popular status
-              let proportional = 0;
-              if (party.slug === "rastriya-swatantra-party") proportional = 57;
-              else if (party.slug === "nepali-congress") proportional = 20;
-              else if (party.slug === "cpn-uml") proportional = 16;
-              else if (party.slug === "nepali-communist-party") proportional = 9;
-              else if (party.slug === "shram-samskriti-party") proportional = 4;
-              else if (party.slug === "rastriya-prajatantra-party") proportional = 4;
-              
-              return (
-                <tr key={party.slug} style={{ borderBottom: "1px solid #eee" }}>
-                  <td style={{ padding: "10px" }}>
-                    <Link to={`/party/${party.slug}`} style={{ color: "#0066cc", textDecoration: "none", fontWeight: "bold" }} target="_blank" rel="noopener noreferrer">
-                      {party.name}
-                    </Link>
-                  </td>
-                  <td style={{ padding: "10px", textAlign: "center" }}>{party.wins}</td>
-                  <td style={{ padding: "10px", textAlign: "center" }}>{proportional}</td>
-                  <td style={{ padding: "10px", textAlign: "right", fontWeight: "bold" }}>{party.wins + proportional}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <section className="section section-lead-table">
+          <div className="elc-container">
+            {/* <div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
+              <h3 className="heading-title">प्रतिनिधिसभा परिणाम</h3>
+              <Link
+                className="btn"
+                to="/parties"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                विस्तृत
+              </Link>
+            </div> */}
+            <div className="dn-grid dn-grid-small">
+              {parties.map((party) => (
+                <div key={party.slug} className="col2 parties-card is-border">
+                  <Link
+                    to={`/party/${party.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src={party.image} alt={party.name} />
+                    <span className="title">{party.name}</span>
+                  </Link>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>प्रत्यक्ष</th>
+                        <th>समानुपातिक सिट</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <Link
+                            to={`/party/${party.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {party.direct}
+                          </Link>
+                        </td>
+                        <td>{party.proportional}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <span
+                    style={{ backgroundColor: party.color }}
+                    className="total-seat"
+                  >
+                    कुल सिट: <strong>{party.total}</strong>
+                  </span>
+                  <p>
+                    सामानुपातिक मत:
+                    <span className="vote-samanupatik">{party.votes}</span>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
     </MainLayout>
   );
