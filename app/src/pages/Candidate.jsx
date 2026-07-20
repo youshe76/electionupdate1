@@ -20,7 +20,7 @@ import { fixImageUrl } from "../utils/imageUtils";
 import { getManifestoImage } from "../app/config/constants";
 import getPersonLink from "../utils/getPersonLink";
 import description from "../../public/data/description.json";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, MapPin, VenusAndMars, Activity } from "lucide-react";
 
 function normalizeName(value) {
   return String(value || "")
@@ -147,21 +147,55 @@ export default function Candidate() {
                 padding: "5%",
               }}
             >
-              {candidate.partyLogo && (
-                <div style={{ marginBottom: "15px" }}>
-                  <img
-                    src={candidate.partyLogo}
-                    alt={candidate.party}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {candidate.partyLogo && (
+                  <div style={{}}>
+                    <img
+                      src={candidate.partyLogo}
+                      alt={candidate.party}
+                      style={{
+                        maxWidth: "100px",
+                        width: "48px",
+                        height: "48px",
+                        height: "auto",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </div>
+                )}
+                {candidate.isWinner ? (
+                  <div
                     style={{
-                      maxWidth: "100px",
-                      width: "48px",
-                      height: "48px",
-                      height: "auto",
-                      borderRadius: "50%",
+                      color: "green",
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
-                  />
-                </div>
-              )}
+                  >
+                    <span
+                      style={{
+                        fontSize: "20px",
+                      }}
+                    >
+                      {toNepaliNumber(candidate?.votes)}
+                    </span>
+                    <img
+                      src="/assets/img/win-tick.png"
+                      alt="win"
+                      style={{ width: "30px", marginLeft: "10px" }}
+                    />
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+              </div>
 
               <h2
                 style={{
@@ -213,47 +247,82 @@ export default function Candidate() {
                   </Link>
                 </div>
               </div>
-              <div style={{}}>
-                <strong>पद:</strong> {candidate.jobTitle}
-              </div>
-              <div style={{ marginBottom: "15px" }}>
-                <strong>मत:</strong> {candidate.votes?.toLocaleString() || "०"}
-              </div>
-              {candidate.isWinner && (
-                <div
-                  style={{
-                    marginBottom: "15px",
-                    color: "green",
-                    fontWeight: "bold",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <span>विजेता</span>
-                  <img
-                    src="/assets/img/win-tick.png"
-                    alt="win"
-                    style={{ width: "20px", marginLeft: "10px" }}
-                  />
-                </div>
-              )}
 
-              <div>
-                <Link
-                  to="/candidates"
-                  style={{
-                    display: "inline-block",
-                    padding: "2px 3px",
-                    backgroundColor: "#0066cc",
-                    color: "white",
-                    textDecoration: "none",
-                    borderRadius: "4px",
-                  }}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  सबै उम्मेदवारहरू
-                </Link>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateRows: "1fr 1fr",
+                  gap: "10px",
+                  marginTop: "20px",
+                }}
+              >
+                {[
+                  [
+                    "प्रदेश",
+                    candidate?.constituency,
+                    <MapPin
+                      height={35}
+                      width={35}
+                      stroke="#70a247"
+                      strokeWidth={1}
+                    />,
+                  ],
+                  [
+                    "जिल्ला",
+                    candidate?.constituency,
+                    <img
+                      src={candidate?.partyLogo}
+                      height={35}
+                      width={35}
+                      style={{ borderRadius: "50%" }}
+                    />,
+                  ],
+                  [
+                    "लिङ्ग",
+                    "Male",
+                    <VenusAndMars height={35} width={35} stroke="#046973" />,
+                  ],
+                  [
+                    "उमेर",
+                    candidate?.age || "-",
+                    <Activity stroke="#e66d02" height={35} width={35} />,
+                  ],
+                ].map((e) => {
+                  return (
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 35px",
+                        background: "#ffff",
+                        border: "1px solid rgba(26, 22, 22, 0.25)",
+                        padding: "10px",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "10px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "2px",
+                          flexDirection: "column",
+                        }}
+                      >
+                        {e[0]}
+                        <strong
+                          style={{
+                            fontSize: "16",
+                            fontWeight: "700",
+                          }}
+                        >
+                          {e[1]}
+                        </strong>
+                      </div>
+                      {e[2]}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
