@@ -99,12 +99,7 @@ export default function Candidate() {
         style={{ display: "grid", gap: "1%" }}
       >
         {width > 480 && (
-          <div
-            sytle={{
-              display: "flex",
-              gap: "100px",
-            }}
-          >
+          <div style={{}}>
             <div
               style={{
                 display: "grid",
@@ -113,12 +108,12 @@ export default function Candidate() {
 
                 marginBottom: "20px",
                 border: "1px solid red",
-                minHeight: "45vh",
+                minHeight: "25vw",
               }}
             >
               <div
                 style={{
-                  height: "45vh",
+                  minHeight: "25vw",
                   width: "100%",
                 }}
               >
@@ -140,7 +135,7 @@ export default function Candidate() {
                     height: "100%",
                     width: "100%",
 
-                    objectFit: "cover",
+                    objectFit: "contain",
                   }}
                 />
               </div>
@@ -148,7 +143,7 @@ export default function Candidate() {
                 style={{
                   background:
                     "linear-gradient(120deg, rgb(255, 198, 197) 46%, rgba(234, 234, 234, 0) 100%)",
-                  height: "45vh",
+                  minHeight: "25vw",
                   padding: "5%",
                   display: "flex",
                   justifyContent: "space-evenly",
@@ -270,8 +265,8 @@ export default function Candidate() {
                       "प्रदेश",
                       candidate?.constituency,
                       <MapPin
-                        height={35}
-                        width={35}
+                        height={30}
+                        width={30}
                         stroke="#70a247"
                         strokeWidth={1}
                       />,
@@ -281,15 +276,15 @@ export default function Candidate() {
                       candidate?.constituency,
                       <img
                         src={candidate?.partyLogo}
-                        height={35}
-                        width={35}
+                        height={30}
+                        width={30}
                         style={{ borderRadius: "50%" }}
                       />,
                     ],
                     [
                       "लिङ्ग",
                       "Male",
-                      <VenusAndMars height={35} width={35} stroke="#046973" />,
+                      <VenusAndMars height={30} width={30} stroke="#046973" />,
                     ],
                     [
                       "उमेर",
@@ -304,7 +299,7 @@ export default function Candidate() {
                           gridTemplateColumns: "1fr 35px",
                           background: "#ffff",
                           border: "1px solid rgba(26, 22, 22, 0.25)",
-                          padding: "10px",
+                          padding: "5px",
                           justifyContent: "center",
                           alignItems: "center",
                           borderRadius: "10px",
@@ -313,14 +308,21 @@ export default function Candidate() {
                         <div
                           style={{
                             display: "flex",
-                            gap: "2px",
+                            gap: "0px",
                             flexDirection: "column",
                           }}
                         >
-                          {e[0]}
+                          <p
+                            style={{
+                              fontSize: "13px",
+                              fontWeight: "500",
+                            }}
+                          >
+                            {e[0]}
+                          </p>
                           <strong
                             style={{
-                              fontSize: "16",
+                              fontSize: "16px",
                               fontWeight: "700",
                             }}
                           >
@@ -356,7 +358,7 @@ export default function Candidate() {
           <div
             style={{
               display: "grid",
-              height: "70vh",
+              minHeight: "120vw",
               width: "100%",
               gridTemplateRows: "1fr 1fr",
               gap: "5px",
