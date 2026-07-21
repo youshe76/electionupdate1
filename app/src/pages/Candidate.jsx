@@ -520,7 +520,6 @@ export default function Candidate() {
                   )}
                 </div>
               </div>
-
               <div
                 style={{
                   display: "grid",
@@ -597,15 +596,24 @@ export default function Candidate() {
                   );
                 })}
               </div>
-                  fontWeight: "700",
-                  fontSize: "22px",
-                  fontFamily: "Anek Devanagari, sans-serif",
-                  marginBottom: "10px",
+              style=
+              {{
+                fontWeight: "700",
+                fontSize: "22px",
+                fontFamily: "Anek Devanagari, sans-serif",
+                marginBottom: "10px",
+              }}
+              <h1>उम्मेदवारको व्यक्तिगत विवरण</h1>
+              <h1
+                style={{
+                  fontStyle: "normal",
+                  fontWeight: "400",
+                  fontSize: "20px",
+                  lineHeight: "1.9",
                 }}
               >
-                उम्मेदवारको व्यक्तिगत विवरण
+                {description[0][cleanSlug]}
               </h1>
-              <h1 style={{ fontStyle: "normal",fontWeight: "400", fontSize: "20px", lineHeight: "1.9" }}>{description[0][cleanSlug]}</h1>
             </div>
           </div>
         )}
