@@ -597,6 +597,15 @@ export default function Candidate() {
                   );
                 })}
               </div>
+                  fontWeight: "700",
+                  fontSize: "22px",
+                  fontFamily: "Anek Devanagari, sans-serif",
+                  marginBottom: "10px",
+                }}
+              >
+                उम्मेदवारको व्यक्तिगत विवरण
+              </h1>
+              <h1 style={{ fontStyle: "normal",fontWeight: "400", fontSize: "20px", lineHeight: "1.9" }}>{description[0][cleanSlug]}</h1>
             </div>
           </div>
         )}
