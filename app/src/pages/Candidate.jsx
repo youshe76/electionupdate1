@@ -110,12 +110,12 @@ export default function Candidate() {
 
               marginBottom: "20px",
               border: "1px solid red",
-              minHeight: "50vh",
+              minHeight: "40vh",
             }}
           >
             <div
               style={{
-                height: "50vh",
+                height: "40vh",
                 width: "100%",
               }}
             >
@@ -143,7 +143,7 @@ export default function Candidate() {
               style={{
                 background:
                   "linear-gradient(120deg, rgb(255, 198, 197) 46%, rgba(234, 234, 234, 0) 100%)",
-                height: "50vh",
+                height: "40vh",
                 padding: "5%",
                 display: "flex",
                 justifyContent: "space-evenly",

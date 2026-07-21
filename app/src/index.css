@@ -1225,6 +1225,10 @@ body.show__search--modal .global-search-form {
   .heading-title-wrap {
     gap: 10px;
   }
+  .candidatePageContainer {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1330,6 +1334,9 @@ body.show__search--modal .global-search-form {
   .store-buttons {
     flex-wrap: wrap;
   }
+}
+
+@media (max-width: 480px) {
 }
 
 @media (max-width: 420px) {
