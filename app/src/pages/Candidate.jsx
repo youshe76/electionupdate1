@@ -11,6 +11,7 @@ import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
+import candidateDetails from "../data/candidateDetails.json";
 import {
   districtsForProvince,
   provinceRouteSlug,
@@ -70,6 +71,38 @@ export default function Candidate() {
   if (sameCons.length > 5) {
     sameCons = sameCons.slice(0, 5);
   }
+  const found = [];
+  candidateDetails
+    .map((e) => e?.name_np.trim().replace(".", "").replace("-", ""))
+    .forEach(
+      (e, i) =>
+        e == candidate?.name.trim().replace(".", "").replace("-", "") &&
+        found.push(candidateDetails[i]),
+    );
+
+  // Helper function to strip ALL dots, dashes, and whitespace
+  // const clean = (str) => str?.replace(/[-.]/g, "").trim() || "";
+
+  // candidatesData.forEach((candidate) => {
+  //   const targetName = clean(candidate?.name);
+  //   if (!targetName) return;
+
+  //   // Find all items in candidateDetails that match this candidate's name
+  //   const matches = candidateDetails.filter((detail) => {
+  //     const detailName = clean(detail?.name_np);
+  //     return detailName.includes(targetName);
+  //   });
+
+  //   found.push(...matches);
+  // });
+  const extraDetails = found.filter((e) =>
+    e?.name_np
+      .replace(".", "")
+      .replace("-", "")
+      .trim()
+      .includes(candidate.name),
+  )[0];
+  console.log(extraDetails, candidate);
 
   if (!candidate) {
     return (
@@ -99,7 +132,12 @@ export default function Candidate() {
         style={{ display: "grid", gap: "1%" }}
       >
         {width > 480 && (
-          <div style={{}}>
+          <div
+            sytle={{
+              display: "flex",
+              gap: "100px",
+            }}
+          >
             <div
               style={{
                 display: "grid",
@@ -108,12 +146,12 @@ export default function Candidate() {
 
                 marginBottom: "20px",
                 border: "1px solid red",
-                minHeight: "25vw",
+                minHeight: "23vw",
               }}
             >
               <div
                 style={{
-                  minHeight: "25vw",
+                  minHeight: "23vw",
                   width: "100%",
                 }}
               >
@@ -135,7 +173,7 @@ export default function Candidate() {
                     height: "100%",
                     width: "100%",
 
-                    objectFit: "contain",
+                    objectFit: "cover",
                   }}
                 />
               </div>
@@ -143,7 +181,7 @@ export default function Candidate() {
                 style={{
                   background:
                     "linear-gradient(120deg, rgb(255, 198, 197) 46%, rgba(234, 234, 234, 0) 100%)",
-                  minHeight: "25vw",
+                  minHeight: "26vw",
                   padding: "5%",
                   display: "flex",
                   justifyContent: "space-evenly",
@@ -263,32 +301,35 @@ export default function Candidate() {
                   {[
                     [
                       "प्रदेश",
-                      candidate?.constituency,
+                      candidatesData.find((e) => e.name === candidate.name)
+                        ?.provinces,
                       <MapPin
-                        height={30}
-                        width={30}
+                        height={35}
+                        width={35}
                         stroke="#70a247"
                         strokeWidth={1}
                       />,
                     ],
                     [
                       "जिल्ला",
-                      candidate?.constituency,
+                      candidate?.district,
                       <img
                         src={candidate?.partyLogo}
-                        height={30}
-                        width={30}
+                        height={35}
+                        width={35}
                         style={{ borderRadius: "50%" }}
                       />,
                     ],
                     [
                       "लिङ्ग",
-                      "Male",
-                      <VenusAndMars height={30} width={30} stroke="#046973" />,
+                      extraDetails?.gender || "पुरुष",
+                      <VenusAndMars height={35} width={35} stroke="#046973" />,
                     ],
                     [
                       "उमेर",
-                      candidate?.age || "-",
+                      extraDetails?.age
+                        ? toNepaliNumber(extraDetails?.age)
+                        : "-",
                       <Activity stroke="#e66d02" height={35} width={35} />,
                     ],
                   ].map((e) => {
@@ -299,7 +340,7 @@ export default function Candidate() {
                           gridTemplateColumns: "1fr 35px",
                           background: "#ffff",
                           border: "1px solid rgba(26, 22, 22, 0.25)",
-                          padding: "5px",
+                          padding: "10px",
                           justifyContent: "center",
                           alignItems: "center",
                           borderRadius: "10px",
@@ -308,21 +349,14 @@ export default function Candidate() {
                         <div
                           style={{
                             display: "flex",
-                            gap: "0px",
+                            gap: "2px",
                             flexDirection: "column",
                           }}
                         >
-                          <p
-                            style={{
-                              fontSize: "13px",
-                              fontWeight: "500",
-                            }}
-                          >
-                            {e[0]}
-                          </p>
+                          {e[0]}
                           <strong
                             style={{
-                              fontSize: "16px",
+                              fontSize: "16",
                               fontWeight: "700",
                             }}
                           >
@@ -341,15 +375,22 @@ export default function Candidate() {
               <div>
                 <h1
                   style={{
-                     fontWeight: "700",
-                  fontSize: "22px",
-                  fontFamily: "Anek Devanagari, sans-serif",
-                  marginBottom: "10px",
+                    fontWeight: "700",
+                    fontSize: "22px",
+                    fontFamily: "Anek Devanagari, sans-serif",
+                    marginBottom: "10px",
                   }}
                 >
                   उम्मेदवारको व्यक्तिगत विवरण
                 </h1>
-                <h1 style={{ fontStyle: "normal",fontWeight: "400", fontSize: "20px", lineHeight: "1.9" }}>
+                <h1
+                  style={{
+                    fontStyle: "normal",
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "1.9",
+                  }}
+                >
                   {description[0][cleanSlug]}
                 </h1>
               </div>
@@ -360,7 +401,7 @@ export default function Candidate() {
           <div
             style={{
               display: "grid",
-              minHeight: "120vw",
+              minHeight: "70vh",
               width: "100%",
               gridTemplateRows: "1fr 1fr",
               gap: "5px",
@@ -534,7 +575,8 @@ export default function Candidate() {
                 {[
                   [
                     "प्रदेश",
-                    candidate?.constituency,
+                    candidatesData.find((e) => e.name === candidate.name)
+                      ?.provinces,
                     <MapPin
                       height={25}
                       width={25}
@@ -544,7 +586,7 @@ export default function Candidate() {
                   ],
                   [
                     "जिल्ला",
-                    candidate?.constituency,
+                    candidate?.district,
                     <img
                       src={candidate?.partyLogo}
                       height={25}
@@ -554,12 +596,12 @@ export default function Candidate() {
                   ],
                   [
                     "लिङ्ग",
-                    "Male",
+                    extraDetails?.gender || "पुरुष",
                     <VenusAndMars height={25} width={25} stroke="#046973" />,
                   ],
                   [
                     "उमेर",
-                    candidate?.age || "-",
+                    extraDetails?.age ? toNepaliNumber(extraDetails?.age) : "-",
                     <Activity stroke="#e66d02" height={25} width={25} />,
                   ],
                 ].map((e) => {
