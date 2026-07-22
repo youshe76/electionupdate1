@@ -327,7 +327,9 @@ export default function Candidate() {
                     ],
                     [
                       "उमेर",
-                      toNepaliNumber(extraDetails?.age) || "-",
+                      extraDetails?.age
+                        ? toNepaliNumber(extraDetails?.age)
+                        : "-",
                       <Activity stroke="#e66d02" height={35} width={35} />,
                     ],
                   ].map((e) => {
