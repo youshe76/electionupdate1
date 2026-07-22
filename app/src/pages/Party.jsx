@@ -373,6 +373,7 @@ export default function Party() {
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
+                      width: "100%",
                     }}
                   >
                     <h2
