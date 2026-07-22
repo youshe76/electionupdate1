@@ -14,7 +14,6 @@ import { fixImageUrl } from "../utils/imageUtils";
 import getPersonLink from "../utils/getPersonLink";
 import { ChevronRight } from "lucide-react";
 
-
 import samanupatik from "../data/samanupatik.json";
 console.log(samanupatik);
 
@@ -79,9 +78,12 @@ export default function Party() {
       breadcrumb={breadcrumb}
       contentClassName="party-detail-page"
       secondaryChildren={
-        <section className="all-parties-candidates section" style={{
-          background:"rgba(253, 231, 230, 0.2196078431)"
-        }}>
+        <section
+          className="all-parties-candidates section"
+          style={{
+            background: "rgba(253, 231, 230, 0.2196078431)",
+          }}
+        >
           <div className="elc-container">
             <div className="heading-title-wrap flex flex-between flex-wrap flex-middle">
               <h3 className="heading-title">{party.name}का उम्मेदवारहरु</h3>
@@ -107,16 +109,16 @@ export default function Party() {
                 <button
                   onClick={() => setClicked(true)}
                   className="partyPageBtn"
-                  style={
-                    {
-                      background: clicked && "#bf1e2e",
-                      color: clicked && "#fff"
-                    }
-                  }
+                  style={{
+                    background: clicked && "#bf1e2e",
+                    color: clicked && "#fff",
+                  }}
                 >
                   समानुपातिक २०८२
                 </button>
-                <a href={"https://election.ratopati.com/party/"+party?.slug}><button className="partyPageBtn">प्रत्यक्ष २०७९</button></a>
+                <a href={"https://election.ratopati.com/party/" + party?.slug}>
+                  <button className="partyPageBtn">प्रत्यक्ष २०७९</button>
+                </a>
               </div>
             </div>
 
@@ -201,39 +203,46 @@ export default function Party() {
                 {clicked && (
                   <div
                     style={{
-                      
                       display: "grid",
-                      gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+                      gridTemplateColumns:
+                        "repeat(auto-fit, minmax(350px, 1fr))",
                       width: "100%",
                       height: "auto",
                       minHeight: "100px",
-                      gap:"15px"
+                      gap: "15px",
                     }}
                   >
                     {samanupatik
                       .filter((e) => e?.party === cleanSlug)
                       ?.map((e) => (
-                          <Link to={"/party/"+cleanSlug}>
-                            <div
+                        <Link
+                          to={
+                            "/constituency/" +
+                            constituencyData.find(
+                              (constituency) =>
+                                constituency?.name === e?.constituency,
+                            )?.slug
+                          }
+                        >
+                          <div
                             style={{
                               display: "flex",
                               padding: "2px 3px",
                               justifyContent: "space-between",
-                              alignItems:"center",
+                              alignItems: "center",
                               border: "1px solid rgba(0, 0, 0, 0.17)",
                               borderRadius: "5px",
-                              padding:"5px 10px",
+                              padding: "5px 10px",
                               alignItems: "center",
-                              background:"#fff"
-                              
+                              background: "#fff",
                             }}
                           >
                             <div
                               style={{
                                 display: "flex",
-                                
+
                                 gap: "10px",
-                                alignItems:"center"
+                                alignItems: "center",
                               }}
                             >
                               <img
@@ -243,19 +252,26 @@ export default function Party() {
                                   width: "42px",
                                 }}
                               />
-                              <p 
-                              style={{
-                                color:"rgba(0, 0, 0, 0.7882352941)",
-                                fontWeight:"700"
-                              }}>{e?.constituency}</p>
+                              <p
+                                style={{
+                                  color: "rgba(0, 0, 0, 0.7882352941)",
+                                  fontWeight: "700",
+                                }}
+                              >
+                                {e?.constituency}
+                              </p>
                             </div>
                             <p
-                            style={{
-                              fontSize:"20px",
-                              fontWeight:"900"
-                            }}>{toNepaliNumber(e?.votes)}</p>
+                              style={{
+                                fontSize: "20px",
+                                fontWeight: "900",
+                                color: "black",
+                              }}
+                            >
+                              {toNepaliNumber(e?.votes)}
+                            </p>
                           </div>
-                          </Link>
+                        </Link>
                       ))}
                   </div>
                 )}
@@ -267,7 +283,7 @@ export default function Party() {
     >
       <div
         className={"partyPageGrid"}
-        style={{ display: "grid", justifyContent: "center" }}
+        style={{ display: "grid", justifyContent: "center", gap: "10px" }}
       >
         <div style={{ width: "100%" }}>
           <div className="candidate-detail-wrapper">
@@ -340,12 +356,50 @@ export default function Party() {
           }}
         >
           {featuredCandidates.length > 0 ? (
-            <aside className="candidate-sidebar">
-              <div className="sidebar">
+            <aside
+              className="candidate-sidebar"
+              style={{
+                width: "100%",
+              }}
+            >
+              <div
+                className="sidebar"
+                style={{
+                  width: "100%",
+                }}
+              >
                 <div className="sidebar-candidate">
-                  <h2 className="heading-title">
-                    <span>विजयी उम्मेदवारहरु</span>
-                  </h2>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "100%",
+                    }}
+                  >
+                    <h2
+                      className="heading-title"
+                      style={{ marginBottom: "15px", fontSize: "21px" }}
+                    >
+                      <span>विजयी उम्मेदवारहरु</span>
+                    </h2>
+                    <Link to={"/popular-candidates"}>
+                      {" "}
+                      <ChevronRight
+                        style={{
+                          background: "#bf1e2e",
+                          fontWeight: "800",
+                          height: "22px",
+                          width: "22px",
+                          color: "#fff",
+                          borderRadius: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          fontSize: "10px",
+                          alignItems: "center",
+                        }}
+                      />
+                    </Link>
+                  </div>
                   {featuredCandidates.map((candidate) => (
                     <div
                       key={candidate.slug}
