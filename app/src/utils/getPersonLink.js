@@ -7,16 +7,16 @@ export default function getPersonLink(value){
     // "https://resizing.flixster.com/B1Kkan6fq5uf-NKeeSZeM7rbJMo=/218x280/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/83747_v9_aa.jpg",
     
     // "https://th.bing.com/th/id/OIP.NOxEXVXEfau6Fp1TRJ-NqgAAAA?w=115",
-    "https://npcdn.ratopati.com/election/candidates/2082/dhaneshwar-pandit_GItwb7UuiC.jpg",
-    "https://npcdn.ratopati.com/election/candidates/2082/kiran-maharjan_awvxbvmi5m.jpg",
-    "https://npcdn.ratopati.com/election/candidates/2082/jay-prakash-pant_mOmwuqflna.jpg",
-    "https://npcdn.ratopati.com/election/candidates/2082/aitan-kumar-mall_uqCwJhqg1D.jpg",
-    "https://npcdn.ratopati.com/election/candidates/2082/kishor-singh-rathor_nh0AVjj9B0.jpg",
-    "https://npcdn.ratopati.com/election/candidates/2082/rajesh-chand_oKWZIzx9nM.jpg",
-    "https://npcdn.ratopati.com/election/candidates/2082/parbat-gurung_6hLCGSmdoH.jpg",
-    "https://npcdn.ratopati.com/election/media/upload-new/gokarna-bista_tcrwg7la2G.jpg",
-    "https://npcdn.ratopati.com/election/candidates/2082/ajambar-rai-kangmang_YZjxBu5Oiv.jpg",
-    "https://npcdn.ratopati.com/election/candidates/2082/sanjiv-gurung_pYQ38idKIU.jpg"
+    "/election/candidates/2082/dhaneshwar-pandit_GItwb7UuiC.jpg",
+    "/election/candidates/2082/kiran-maharjan_awvxbvmi5m.jpg",
+    "/election/candidates/2082/jay-prakash-pant_mOmwuqflna.jpg",
+    "/election/candidates/2082/aitan-kumar-mall_uqCwJhqg1D.jpg",
+    "/election/candidates/2082/kishor-singh-rathor_nh0AVjj9B0.jpg",
+    "/election/candidates/2082/rajesh-chand_oKWZIzx9nM.jpg",
+    "/election/candidates/2082/parbat-gurung_6hLCGSmdoH.jpg",
+    "/election/media/upload-new/gokarna-bista_tcrwg7la2G.jpg",
+    "/election/candidates/2082/ajambar-rai-kangmang_YZjxBu5Oiv.jpg",
+    "/election/candidates/2082/sanjiv-gurung_pYQ38idKIU.jpg"
     
     ]
     return placeHolderPhotoArray[value % placeHolderPhotoArray.length];
