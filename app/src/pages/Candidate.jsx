@@ -146,12 +146,12 @@ export default function Candidate() {
 
                 marginBottom: "20px",
                 border: "1px solid red",
-                minHeight: "45vh",
+                minHeight: "23vw",
               }}
             >
               <div
                 style={{
-                  height: "45vh",
+                  minHeight: "23vw",
                   width: "100%",
                 }}
               >
@@ -181,7 +181,7 @@ export default function Candidate() {
                 style={{
                   background:
                     "linear-gradient(120deg, rgb(255, 198, 197) 46%, rgba(234, 234, 234, 0) 100%)",
-                  height: "45vh",
+                  minHeight: "26vw",
                   padding: "5%",
                   display: "flex",
                   justifyContent: "space-evenly",
@@ -401,7 +401,7 @@ export default function Candidate() {
           <div
             style={{
               display: "grid",
-              height: "70vh",
+              minHeight: "70vh",
               width: "100%",
               gridTemplateRows: "1fr 1fr",
               gap: "5px",
@@ -575,7 +575,8 @@ export default function Candidate() {
                 {[
                   [
                     "प्रदेश",
-                    candidate?.constituency,
+                    candidatesData.find((e) => e.name === candidate.name)
+                      ?.provinces,
                     <MapPin
                       height={25}
                       width={25}
@@ -585,7 +586,7 @@ export default function Candidate() {
                   ],
                   [
                     "जिल्ला",
-                    candidate?.constituency,
+                    candidate?.district,
                     <img
                       src={candidate?.partyLogo}
                       height={25}
@@ -595,12 +596,12 @@ export default function Candidate() {
                   ],
                   [
                     "लिङ्ग",
-                    "Male",
+                    extraDetails?.gender || "पुरुष",
                     <VenusAndMars height={25} width={25} stroke="#046973" />,
                   ],
                   [
                     "उमेर",
-                    candidate?.age || "-",
+                    extraDetails?.age ? toNepaliNumber(extraDetails?.age) : "-",
                     <Activity stroke="#e66d02" height={25} width={25} />,
                   ],
                 ].map((e) => {
