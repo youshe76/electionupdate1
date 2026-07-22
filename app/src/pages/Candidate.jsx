@@ -401,13 +401,13 @@ export default function Candidate() {
           <div
             style={{
               display: "grid",
-              minHeight: "70vh",
+              minHeight: "50vh",
               width: "100%",
               gridTemplateRows: "1fr 1fr",
               gap: "5px",
               border: "1px solid red",
               background:
-                "linear-gradient(0deg, rgb(255, 198, 197) 46%, rgba(234, 234, 234, 0) 100%)",
+                "linear-gradient(180deg, rgb(255, 198, 197) 46%, rgba(234, 234, 234, 0) 100%)",
               padding: "10px",
             }}
           >
