@@ -11,6 +11,7 @@ import voteDifferenceData from "../data/vote-difference.json";
 import { MainLayout } from "../layouts/MainLayout";
 import ConstituencyElectionCard from "../components/election/ConstituencyElectionCard";
 import { toNepaliNumber } from "../utils";
+import candidateDetails from "../data/candidateDetails.json";
 import {
   districtsForProvince,
   provinceRouteSlug,
@@ -70,6 +71,38 @@ export default function Candidate() {
   if (sameCons.length > 5) {
     sameCons = sameCons.slice(0, 5);
   }
+  const found = [];
+  candidateDetails
+    .map((e) => e?.name_np.trim().replace(".", "").replace("-", ""))
+    .forEach(
+      (e, i) =>
+        e == candidate?.name.trim().replace(".", "").replace("-", "") &&
+        found.push(candidateDetails[i]),
+    );
+
+  // Helper function to strip ALL dots, dashes, and whitespace
+  // const clean = (str) => str?.replace(/[-.]/g, "").trim() || "";
+
+  // candidatesData.forEach((candidate) => {
+  //   const targetName = clean(candidate?.name);
+  //   if (!targetName) return;
+
+  //   // Find all items in candidateDetails that match this candidate's name
+  //   const matches = candidateDetails.filter((detail) => {
+  //     const detailName = clean(detail?.name_np);
+  //     return detailName.includes(targetName);
+  //   });
+
+  //   found.push(...matches);
+  // });
+  const extraDetails = found.filter((e) =>
+    e?.name_np
+      .replace(".", "")
+      .replace("-", "")
+      .trim()
+      .includes(candidate.name),
+  )[0];
+  console.log(extraDetails, candidate);
 
   if (!candidate) {
     return (
@@ -268,7 +301,8 @@ export default function Candidate() {
                   {[
                     [
                       "प्रदेश",
-                      candidate?.constituency,
+                      candidatesData.find((e) => e.name === candidate.name)
+                        ?.provinces,
                       <MapPin
                         height={35}
                         width={35}
@@ -278,7 +312,7 @@ export default function Candidate() {
                     ],
                     [
                       "जिल्ला",
-                      candidate?.constituency,
+                      candidate?.district,
                       <img
                         src={candidate?.partyLogo}
                         height={35}
@@ -288,12 +322,12 @@ export default function Candidate() {
                     ],
                     [
                       "लिङ्ग",
-                      "Male",
+                      extraDetails?.gender || "पुरुष",
                       <VenusAndMars height={35} width={35} stroke="#046973" />,
                     ],
                     [
                       "उमेर",
-                      candidate?.age || "-",
+                      toNepaliNumber(extraDetails?.age) || "-",
                       <Activity stroke="#e66d02" height={35} width={35} />,
                     ],
                   ].map((e) => {
@@ -339,15 +373,22 @@ export default function Candidate() {
               <div>
                 <h1
                   style={{
-                     fontWeight: "700",
-                  fontSize: "22px",
-                  fontFamily: "Anek Devanagari, sans-serif",
-                  marginBottom: "10px",
+                    fontWeight: "700",
+                    fontSize: "22px",
+                    fontFamily: "Anek Devanagari, sans-serif",
+                    marginBottom: "10px",
                   }}
                 >
                   उम्मेदवारको व्यक्तिगत विवरण
                 </h1>
-                <h1 style={{ fontStyle: "normal",fontWeight: "400", fontSize: "20px", lineHeight: "1.9" }}>
+                <h1
+                  style={{
+                    fontStyle: "normal",
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "1.9",
+                  }}
+                >
                   {description[0][cleanSlug]}
                 </h1>
               </div>
