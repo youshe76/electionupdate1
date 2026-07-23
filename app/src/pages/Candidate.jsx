@@ -125,7 +125,7 @@ export default function Candidate() {
   return (
     <MainLayout
       title={candidate.name}
-      description={`Candidate profile page for ${candidate.name}.`}
+     
     >
       <div
         className="candidatePageContainer"
