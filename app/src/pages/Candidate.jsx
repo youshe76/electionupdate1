@@ -102,7 +102,6 @@ export default function Candidate() {
       .trim()
       .includes(candidate.name),
   )[0];
-  console.log(extraDetails, candidate);
 
   if (!candidate) {
     return (
@@ -195,17 +194,25 @@ export default function Candidate() {
                 >
                   {candidate.partyLogo && (
                     <div style={{}}>
-                      <img
-                        src={candidate.partyLogo}
-                        alt={candidate.party}
-                        style={{
-                          maxWidth: "100px",
-                          width: "48px",
-                          height: "48px",
-                          height: "auto",
-                          borderRadius: "50%",
-                        }}
-                      />
+                      <Link
+                        to={
+                          "/party/" +
+                          partyData.find((p) => p?.name === candidate.party)
+                            ?.slug
+                        }
+                      >
+                        <img
+                          src={candidate.partyLogo}
+                          alt={candidate.party}
+                          style={{
+                            maxWidth: "100px",
+                            width: "48px",
+                            height: "48px",
+                            height: "auto",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      </Link>
                     </div>
                   )}
                   {candidate.votes ? (
@@ -312,6 +319,7 @@ export default function Candidate() {
                     [
                       "जिल्ला",
                       candidate?.district,
+
                       <img
                         src={candidate?.partyLogo}
                         height={35}
@@ -331,39 +339,54 @@ export default function Candidate() {
                         : "-",
                       <Activity stroke="#e66d02" height={35} width={35} />,
                     ],
-                  ].map((e) => {
+                  ].map((e, idx) => {
                     return (
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 35px",
-                          background: "#ffff",
-                          border: "1px solid rgba(26, 22, 22, 0.25)",
-                          padding: "10px",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: "10px",
-                        }}
+                      <Link
+                        to={
+                          (idx == 0 &&
+                            "/province/" +
+                              provinceData.find((p) => p?.name === e[1])
+                                ?.slug) ||
+                          (idx == 1 &&
+                            "/district/" +
+                              districtData.find((d) => d?.name == e[1])
+                                ?.slug) ||
+                          ""
+                        }
                       >
                         <div
                           style={{
-                            display: "flex",
-                            gap: "2px",
-                            flexDirection: "column",
+                            display: "grid",
+                            gridTemplateColumns: "1fr 35px",
+                            background: "#ffff",
+                            border: "1px solid rgba(26, 22, 22, 0.25)",
+                            padding: "10px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: "10px",
+                            color: "black",
                           }}
                         >
-                          {e[0]}
-                          <strong
+                          <div
                             style={{
-                              fontSize: "16",
-                              fontWeight: "700",
+                              display: "flex",
+                              gap: "2px",
+                              flexDirection: "column",
                             }}
                           >
-                            {e[1]}
-                          </strong>
+                            {e[0]}
+                            <strong
+                              style={{
+                                fontSize: "16",
+                                fontWeight: "700",
+                              }}
+                            >
+                              {e[1]}
+                            </strong>
+                          </div>
+                          {e[2]}
                         </div>
-                        {e[2]}
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>
@@ -605,39 +628,52 @@ export default function Candidate() {
                     extraDetails?.age ? toNepaliNumber(extraDetails?.age) : "-",
                     <Activity stroke="#e66d02" height={25} width={25} />,
                   ],
-                ].map((e) => {
+                ].map((e, idx) => {
                   return (
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 25px",
-                        background: "#ffff",
-                        border: "1px solid rgba(26, 22, 22, 0.25)",
-                        padding: "5px",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: "5px",
-                      }}
+                    <Link
+                      to={
+                        (idx == 0 &&
+                          "/province/" +
+                            provinceData.find((p) => p?.name === e[1])?.slug) ||
+                        (idx == 1 &&
+                          "/district/" +
+                            districtData.find((d) => d?.name == e[1])?.slug) ||
+                        ""
+                      }
                     >
                       <div
                         style={{
-                          display: "flex",
-                          gap: "2px",
-                          flexDirection: "column",
+                          display: "grid",
+                          gridTemplateColumns: "1fr 25px",
+                          background: "#ffff",
+                          border: "1px solid rgba(26, 22, 22, 0.25)",
+                          padding: "5px",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: "5px",
+                          color: "black",
                         }}
                       >
-                        {e[0]}
-                        <strong
+                        <div
                           style={{
-                            fontSize: "16",
-                            fontWeight: "700",
+                            display: "flex",
+                            gap: "2px",
+                            flexDirection: "column",
                           }}
                         >
-                          {e[1]}
-                        </strong>
+                          {e[0]}
+                          <strong
+                            style={{
+                              fontSize: "16",
+                              fontWeight: "700",
+                            }}
+                          >
+                            {e[1]}
+                          </strong>
+                        </div>
+                        {e[2]}
                       </div>
-                      {e[2]}
-                    </div>
+                    </Link>
                   );
                 })}
               </div>
