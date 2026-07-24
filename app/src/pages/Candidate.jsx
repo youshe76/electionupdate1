@@ -123,10 +123,7 @@ export default function Candidate() {
   window.onresize = () => setWidth(window.innerWidth);
 
   return (
-    <MainLayout
-      title={candidate.name}
-     
-    >
+    <MainLayout title={candidate.name}>
       <div
         className="candidatePageContainer"
         style={{ display: "grid", gap: "1%" }}
@@ -211,7 +208,7 @@ export default function Candidate() {
                       />
                     </div>
                   )}
-                  {candidate.isWinner ? (
+                  {candidate.votes ? (
                     <div
                       style={{
                         color: "green",
@@ -228,11 +225,13 @@ export default function Candidate() {
                       >
                         {toNepaliNumber(candidate?.votes)}
                       </span>
-                      <img
-                        src="/assets/img/win-tick.png"
-                        alt="win"
-                        style={{ width: "30px", marginLeft: "10px" }}
-                      />
+                      {candidate?.isWinner && (
+                        <img
+                          src="/assets/img/win-tick.png"
+                          alt="win"
+                          style={{ width: "30px", marginLeft: "10px" }}
+                        />
+                      )}
                     </div>
                   ) : (
                     <div></div>
@@ -447,7 +446,7 @@ export default function Candidate() {
                     {candidate.constituency}
                   </Link>
                 </div>
-                {candidate.isWinner ? (
+                {candidate?.votes ? (
                   <div
                     style={{
                       color: "green",
@@ -464,11 +463,13 @@ export default function Candidate() {
                     >
                       {toNepaliNumber(candidate?.votes)}
                     </span>
-                    <img
-                      src="/assets/img/win-tick.png"
-                      alt="win"
-                      style={{ width: "30px", marginLeft: "10px" }}
-                    />
+                    {candidate?.winner && (
+                      <img
+                        src="/assets/img/win-tick.png"
+                        alt="win"
+                        style={{ width: "30px", marginLeft: "10px" }}
+                      />
+                    )}
                   </div>
                 ) : (
                   <div></div>

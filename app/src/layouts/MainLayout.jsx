@@ -5,7 +5,10 @@ import Header from "../components/ui/Header/Header";
 import Footer from "../components/ui/Footer/Footer";
 import candidatesData from "../data/candidates.json";
 import constituencyData from "../data/constituency.json";
+import districtData from "../data/district.json";
 import partyData from "../data/party.json";
+import { cleanRouteSlug } from "../utils";
+import { useParams } from "react-router-dom";
 
 /**
  * MainLayout Component
@@ -25,6 +28,21 @@ export function MainLayout({
 }) {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [href, setHref] = useState(window.location.href);
+  window.onchange = () => setHref(window.location.href);
+  const [temp, setTemp] = useState(
+    districtData.find((e) =>
+      e?.slug.includes(href.split("/")[-1 + href.split("/").length]),
+    ),
+  );
+  const [temp1, setTemp1] = useState(
+    districtData.find((e) =>
+      e?.slug.includes(
+        href.split("/")[-1 + href.split("/").length].split("-")[0],
+      ),
+    ),
+  );
 
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -53,7 +71,9 @@ export function MainLayout({
       .map((candidate) => ({
         type: "Candidate",
         title: candidate.name,
-        subtitle: [candidate.party, candidate.constituency].filter(Boolean).join(" - "),
+        subtitle: [candidate.party, candidate.constituency]
+          .filter(Boolean)
+          .join(" - "),
         image: candidate.image,
         url: `/candidate/${candidate.slug}`,
       }));
@@ -82,12 +102,17 @@ export function MainLayout({
       .map((constituency) => ({
         type: "Constituency",
         title: constituency.name,
-        subtitle: [constituency.district_name, constituency.province_name].filter(Boolean).join(" - "),
+        subtitle: [constituency.district_name, constituency.province_name]
+          .filter(Boolean)
+          .join(" - "),
         image: constituency.map_image,
         url: `/constituency/${constituency.slug}`,
       }));
 
-    return [...candidateResults, ...partyResults, ...constituencyResults].slice(0, 10);
+    return [...candidateResults, ...partyResults, ...constituencyResults].slice(
+      0,
+      10,
+    );
   }, [searchQuery]);
 
   const closeSearch = () => {
@@ -104,18 +129,26 @@ export function MainLayout({
 
   return (
     <>
-    <Header/>
+      <Header />
       <div className="candidate-search-form global-search-form">
         <div className="search-overlay" onClick={closeSearch}></div>
         <div className="flex">
           <div className="elc-container">
             <div className="form-label">
               Search candidates, parties or constituencies
-              <button className="trigger-close" type="button" onClick={closeSearch} aria-label="Close search">
+              <button
+                className="trigger-close"
+                type="button"
+                onClick={closeSearch}
+                aria-label="Close search"
+              >
                 <X size={30} strokeWidth={1.5} />
               </button>
             </div>
-            <form className="input-wrap" onSubmit={(event) => event.preventDefault()}>
+            <form
+              className="input-wrap"
+              onSubmit={(event) => event.preventDefault()}
+            >
               <input
                 type="search"
                 name="query"
@@ -139,18 +172,26 @@ export function MainLayout({
                         onClick={closeSearch}
                       >
                         <span className="search-result-image">
-                          {result.image ? <img src={result.image} alt="" /> : null}
+                          {result.image ? (
+                            <img src={result.image} alt="" />
+                          ) : null}
                         </span>
                         <span className="search-result-content">
-                          <span className="search-result-type">{result.type}</span>
+                          <span className="search-result-type">
+                            {result.type}
+                          </span>
                           <strong>{result.title}</strong>
-                          {result.subtitle ? <small>{result.subtitle}</small> : null}
+                          {result.subtitle ? (
+                            <small>{result.subtitle}</small>
+                          ) : null}
                         </span>
                       </Link>
                     ))}
                   </div>
                 ) : (
-                  <span className="counter search-counter">No results found</span>
+                  <span className="counter search-counter">
+                    No results found
+                  </span>
                 )}
               </div>
             </form>
@@ -173,10 +214,18 @@ export function MainLayout({
           <div className="menu-container">
             <ul>
               <li>
-                <Link to="/" target="_blank" rel="noopener noreferrer">होम पेज</Link>
+                <Link to="/" target="_blank" rel="noopener noreferrer">
+                  होम पेज
+                </Link>
               </li>
               <li>
-                <Link to="/candidates" target="_blank" rel="noopener noreferrer">उम्मेदवारहरु</Link>
+                <Link
+                  to="/candidates"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  उम्मेदवारहरु
+                </Link>
               </li>
               <li>
                 <a href="#" onClick={(e) => e.preventDefault()}>
@@ -184,42 +233,102 @@ export function MainLayout({
                 </a>
                 <ul>
                   <li>
-                    <Link to="/province/koshi" target="_blank" rel="noopener noreferrer">कोशी प्रदेश</Link>
+                    <Link
+                      to="/province/koshi"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      कोशी प्रदेश
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/province/madhesh" target="_blank" rel="noopener noreferrer">मधेस प्रदेश</Link>
+                    <Link
+                      to="/province/madhesh"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      मधेस प्रदेश
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/province/bagmati" target="_blank" rel="noopener noreferrer">बागमती प्रदेश</Link>
+                    <Link
+                      to="/province/bagmati"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      बागमती प्रदेश
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/province/gandaki" target="_blank" rel="noopener noreferrer">गण्डकी प्रदेश</Link>
+                    <Link
+                      to="/province/gandaki"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      गण्डकी प्रदेश
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/province/lumbini" target="_blank" rel="noopener noreferrer">लुम्बिनी प्रदेश</Link>
+                    <Link
+                      to="/province/lumbini"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      लुम्बिनी प्रदेश
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/province/karnali" target="_blank" rel="noopener noreferrer">कर्णाली प्रदेश</Link>
+                    <Link
+                      to="/province/karnali"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      कर्णाली प्रदेश
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/province/sudurpaschim" target="_blank" rel="noopener noreferrer">सुदूरपश्चिम प्रदेश</Link>
+                    <Link
+                      to="/province/sudurpaschim"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      सुदूरपश्चिम प्रदेश
+                    </Link>
                   </li>
                 </ul>
               </li>
               <li>
-                <Link to="/parties" target="_blank" rel="noopener noreferrer">राजनीतिक दल</Link>
+                <Link to="/parties" target="_blank" rel="noopener noreferrer">
+                  राजनीतिक दल
+                </Link>
               </li>
               <li>
-                <Link to="/hot-seats" target="_blank" rel="noopener noreferrer">हट सिटहरु</Link>
+                <Link to="/hot-seats" target="_blank" rel="noopener noreferrer">
+                  हट सिटहरु
+                </Link>
               </li>
               <li>
-                <Link to="/vote-difference" target="_blank" rel="noopener noreferrer">मतान्तर</Link>
+                <Link
+                  to="/vote-difference"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  मतान्तर
+                </Link>
               </li>
               <li>
-                <Link to="/popular-candidates" target="_blank" rel="noopener noreferrer">चर्चित उम्मेदवारहरु</Link>
+                <Link
+                  to="/popular-candidates"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  चर्चित उम्मेदवारहरु
+                </Link>
               </li>
               <li>
-                <Link to="/manifesto" target="_blank" rel="noopener noreferrer">घोषणा पत्र</Link>
+                <Link to="/manifesto" target="_blank" rel="noopener noreferrer">
+                  घोषणा पत्र
+                </Link>
               </li>
             </ul>
             <div className="nav-right">
@@ -260,8 +369,39 @@ export function MainLayout({
             <div className="elc-container">
               <div className="backward flex flex-wrap flex-between flex-middle">
                 <div className="breadcrumb">
-                  <Link to="/" target="_blank" rel="noopener noreferrer">प्रतिनिधि सभा निर्वाचन २०८२</Link>
+                  <Link to="/" target="_blank" rel="noopener noreferrer">
+                    प्रतिनिधि सभा निर्वाचन २०८२
+                  </Link>
                   <span className="sep">/</span>
+                  {href.includes("district") && (
+                    <>
+                      <Link to={"/province/" + temp?.province_slug}>
+                        {temp?.province_name}
+                      </Link>
+                      <span className="sep">/</span>
+                      <Link>
+                        {districtData.find(
+                          (e) =>
+                            e?.slug.includes(
+                              href.split("/")[-1 + href.split("/").length],
+                            )?.name,
+                        )}{" "}
+                      </Link>
+                    </>
+                  )}
+                  {href.includes("constituency") && (
+                    <>
+                      <Link to={"/province/" + temp1?.province_slug}>
+                        {temp1?.province_name}{" "}
+                      </Link>
+                      <span className="sep">/</span>
+                      <Link to={"/district/" + temp1?.slug}>
+                        {temp1?.name}{" "}
+                      </Link>
+                      <span className="sep">/</span>
+                    </>
+                  )}
+
                   <span>{title}</span>
                 </div>
                 {breadcrumbRight}
