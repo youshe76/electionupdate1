@@ -126,23 +126,30 @@ export default function Province() {
           </div>
 
           <div className="col4">
+          <div
+              className="heading-title"
+              style={{ textAlign: "center", marginTop: "20px" }}
+            >
+              {" "}
+              मतदाता विवरण
+            </div>
             <ul className="stats">
               <li style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
-                <img src="/assets/img/vote.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <img src="/assets/images/vote.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
                 <h5>
                   {toNepaliNumber(province.voters?.total || 0)}
                   <span style={{ fontSize: "12px", color: "#666", display: "block" }}>जम्मा मतदाता</span>
                 </h5>
               </li>
               <li style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
-                <img src="/assets/img/man.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <img src="/assets/images/man.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
                 <h5>
                   {toNepaliNumber(province.voters?.male || 0)}
                   <span style={{ fontSize: "12px", color: "#666", display: "block" }}>पुरुष मतदाता</span>
                 </h5>
               </li>
               <li style={{ display: "flex", alignItems: "center" }}>
-                <img src="/assets/img/woman.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
+                <img src="/assets/images/woman.png" alt="" style={{ maxWidth: "40px", marginRight: "15px" }} />
                 <h5>
                   {toNepaliNumber(province.voters?.female || 0)}
                   <span style={{ fontSize: "12px", color: "#666", display: "block" }}>महिला मतदाता</span>

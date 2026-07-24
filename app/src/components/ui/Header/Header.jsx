@@ -176,9 +176,10 @@ const Header = () => {
           <Link to="/" style={{ textDecoration: "none" }}>
             <div
               style={{
-                fontSize: "24px",
+                fontSize: "22px",
                 fontWeight: "600",
                 color: "#000",
+                
                 lineHeight: "1.2",
               }}
             >
@@ -187,9 +188,11 @@ const Header = () => {
 
             <div
               style={{
-                fontSize: "24px",
+                fontSize: "22px",
                 color: "#000",
                 lineHeight: "1.2",
+                marginBottom:"8px",
+                
               }}
             >
               (जोइन्ट विथ अस)
@@ -206,7 +209,7 @@ const Header = () => {
           justifyContent: "center",
           alignItems: "center",
           gap: "15px",
-          paddingRight: "70px",
+          paddingRight: "100px",
         }}
       >
         <img
@@ -257,7 +260,7 @@ const Header = () => {
       </div>
 
       {/* RIGHT */}
-      <div style={{ height: "100%", display: "flex" }}>
+      <div style={{ height: "100%",  display: "flex" }}>
         <div
           style={{
             backgroundColor: "#2563eb",
@@ -281,15 +284,24 @@ const Header = () => {
           <div>10:00 AM to 3:00 PM (Sun To Thu)</div>
           <div>10:00 AM to 2:00 PM (Fri)</div>
           <div style={{ marginTop: "5px" }}>{nepaliTime}</div>
-          <div
-            style={{
-              fontWeight: "bolder",
-              marginTop: "5px",
-              cursor: "pointer",
-            }}
+          <a
+            href="https://jointwithus.com.np/register"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none", color: "inherit" }}
           >
-            Membership Form
-          </div>
+            <h2
+              className="membership-title"
+              style={{
+                fontWeight: "1000",
+                marginTop: "5px",
+                cursor: "pointer",
+                fontSize: "16px",
+              }}
+            >
+              Membership Form
+            </h2>
+          </a>
         </div>
       </div>
     </div>

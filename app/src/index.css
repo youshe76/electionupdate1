@@ -1361,3 +1361,9 @@ body.show__search--modal .global-search-form {
     border-radius: 8px;
   }
 }
+
+.membership-title:hover{
+  color: rgb(231, 183, 60);
+  
+
+}

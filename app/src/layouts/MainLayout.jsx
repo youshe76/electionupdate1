@@ -153,14 +153,14 @@ export function MainLayout({
                 type="search"
                 name="query"
                 autoComplete="off"
-                placeholder="Type at least 2 letters..."
+                placeholder="Type at least 3 letters..."
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
               />
               <div className="form-autocomplete">
                 {searchQuery.trim().length < 2 ? (
                   <span className="counter search-counter">
-                    Type at least 2 letters...
+                    Type at least 3 letters...
                   </span>
                 ) : searchResults.length > 0 ? (
                   <div className="search-result-list">
